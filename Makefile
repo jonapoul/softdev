@@ -30,13 +30,13 @@ $(BINDIR):
 	mkdir -p $(BINDIR)
 
 clean:
-	@rm -f $(OBJDIR)/*   2>/dev/null || true
-	@rm -f $(BINDIR)/*   2>/dev/null || true
-	@rm -f $(SRCDIR)/*.o 2>/dev/null || true
+	rm -f $(OBJDIR)/*   2>/dev/null || true
+	rm -f $(BINDIR)/*   2>/dev/null || true
+	rm -f $(SRCDIR)/*.o 2>/dev/null || true
 
 rebuild: clean $(EXEC)
 
-$(PCH_OUT): $(PCH_SRC)
+$(PCH_OUT): $(PCH_SRC) | $(OBJDIR)
 	$(CC) $(CCFLAGS) $(INC) -o $@ $<
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(PCH_OUT) | $(OBJDIR)
