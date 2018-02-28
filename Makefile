@@ -1,15 +1,29 @@
-CC      = g++ -std=c++11
-CCFLAGS = -c -Wall
-LDFLAGS = -Wall
+CXX      = g++ -std=c++11
+CXXFLAGS = -c -Wall
+LDFLAGS  = -Wall
 
-ROOTDIR := $(shell pwd)
-OBJDIR  := $(ROOTDIR)/obj
-BINDIR  := $(ROOTDIR)/bin
-SRCDIR  := $(ROOTDIR)/src
-INCDIR  := $(ROOTDIR)/inc
-LIBS     =
+# ROOTDIR := $(shell pwd)
+OBJDIR  := obj
+BINDIR  := bin
+SRCDIR  := src
+INCDIR  := inc
+DATDIR  := data
+LIBDIRS = lib/libpf \
+          lib/matplotlib-cpp
 
-INC  = -I$(INCDIR)
+INC_MPL := -Ilib/matplotlib-cpp -I/usr/include/python2.7
+LIB_MPL := -lpython2.7
+
+INC_LIBPF := -Ilib/libpf
+LIB_LIBPF := lib/libpf/libPF.a
+
+LIBS = $(LIB_MPL) \
+       $(LIB_LIBPF)
+
+INC  = -I$(INCDIR) \
+         $(INC_MPL) \
+         $(INC_LIBPF)
+
 SRC := $(wildcard $(SRCDIR)/*.cpp)
 OBJ := $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SRC))
 
@@ -18,16 +32,22 @@ PCH_OUT = $(OBJDIR)/pch.h.gch
 
 EXEC = main
 
-default: $(EXEC)
+default: dir $(EXEC)
 
-$(EXEC): $(OBJ) | $(BINDIR)
-	@echo $(OBJ)
-	$(CC) $(LDFLAGS) $(INC) $^ -o $(BINDIR)/$@ $(LIBS)
+$(EXEC): $(LIBDIRS) $(OBJ) | dir
+	$(CXX) $(LDFLAGS) $(INC) $(OBJ) -o $(BINDIR)/$@ $(LIBS)
 
-$(OBJDIR):
+dir:
 	mkdir -p $(OBJDIR)
-$(BINDIR):
 	mkdir -p $(BINDIR)
+	mkdir -p $(DATDIR)
+	mkdir -p lib
+
+lib/libpf:
+	cd lib; git clone git@bitbucket.org:eric_tittley/libpf.git; cd libpf; make
+
+lib/matplotlib-cpp:
+	cd lib && git clone https://github.com/lava/matplotlib-cpp.git
 
 clean:
 	rm -f $(OBJDIR)/*   2>/dev/null || true
@@ -36,8 +56,12 @@ clean:
 
 rebuild: clean $(EXEC)
 
-$(PCH_OUT): $(PCH_SRC) | $(OBJDIR)
-	$(CC) $(CCFLAGS) $(INC) -o $@ $<
+update: | $(LIBDIRS)
+	cd lib/matplotlib-cpp && git pull
+	cd lib/libpf && git pull
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(PCH_OUT) | $(OBJDIR)
-	$(CC) $(CCFLAGS) $(INC) -include $(PCH_SRC) -c $< -o $@ $(LIBS)
+$(PCH_OUT): $(PCH_SRC) | dir
+	$(CXX) $(CXXFLAGS) $(INC) $(MPLINC) $(MPLLIB) -o $@ $<
+
+$(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(PCH_OUT) | dir
+	$(CXX) $(CXXFLAGS) $(INC) -include $(PCH_SRC) -c $< -o $@
