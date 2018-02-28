@@ -1,13 +1,26 @@
 #ifndef __PARAMETERS_H__
 #define __PARAMETERS_H__
 
+enum ParametersEntries {
+   iMinRoll,
+   iMaxRoll,
+   iBaseMovement,
+   iBaseStrength,
+   iBaseShooting,
+   iBaseArmour,
+   iBaseMorale,
+   iBaseHealth,
+   iBaseCost,
+   nParameters
+};
+
 class Parameters {
 public:
    Parameters(char const * const Filename);
 
    int MinRoll;
    int MaxRoll;
-   int BaseMovement;
+   float BaseMovement;
    int BaseStrength;
    int BaseShooting;
    int BaseArmour;

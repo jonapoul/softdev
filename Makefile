@@ -35,7 +35,7 @@ EXEC = main
 default: dir $(EXEC)
 
 $(EXEC): $(LIBDIRS) $(OBJ) | dir
-	$(CXX) $(LDFLAGS) $(INC) $(OBJ) -o $(BINDIR)/$@ $(LIBS)
+	$(CXX) -o $(BINDIR)/$@ $(LDFLAGS) $(OBJ) $(LIBS)
 
 dir:
 	mkdir -p $(OBJDIR)
@@ -47,16 +47,17 @@ lib/libpf:
 	cd lib; git clone git@bitbucket.org:eric_tittley/libpf.git; cd libpf; make
 
 lib/matplotlib-cpp:
-	cd lib && git clone https://github.com/lava/matplotlib-cpp.git
+	cd lib; git clone https://github.com/lava/matplotlib-cpp.git; cd matplotlib-cpp; make
 
 clean:
-	rm -f $(OBJDIR)/*   2>/dev/null || true
-	rm -f $(BINDIR)/*   2>/dev/null || true
-	rm -f $(SRCDIR)/*.o 2>/dev/null || true
+	rm -f  $(OBJDIR)/*   2>/dev/null || true
+	rm -f  $(BINDIR)/*   2>/dev/null || true
+	rm -f  $(SRCDIR)/*.o 2>/dev/null || true
 
 rebuild: clean $(EXEC)
 
 update: | $(LIBDIRS)
+	git pull
 	cd lib/matplotlib-cpp && git pull
 	cd lib/libpf && git pull
 

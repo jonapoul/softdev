@@ -2,7 +2,7 @@ MinRoll         0    # min number a die can roll
 MaxRoll       100    # max number a die can roll
 BaseMovement    1    # inches each squaddie can move per turn
 BaseStrength   20    # number to roll under for successful attack/defence
-BasedShooting  50    # number to roll under to successfully shoot someone
+BaseShooting   50    # number to roll under to successfully shoot someone
 BaseArmour     20    # value a weapon must exceed to injure the squaddie*/
 BaseMorale    100    # % likelihood of a squaddie to keep fighting
 BaseHealth    100    # hitpoints for each squaddie, before any skills
