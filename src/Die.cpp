@@ -35,8 +35,6 @@ int Die::max() const {
 
 /* Generate a load of numbers and test their distribution */
 void Die::testRandomness() const {
-   namespace plt = matplotlibcpp;
-
    size_t const NumGenerated = 1000000;
    size_t const NumBins = max() - min();
    std::cout << "Testing die for uniform randomness between " << min()
@@ -71,19 +69,4 @@ void Die::testRandomness() const {
    printf("Within 1σ = %f%%, should be 68.27%%\n", 100*(double)within1Sigma/(double)NumBins);
    printf("Within 2σ = %f%%, should be 95.45%%\n", 100*(double)within2Sigma/(double)NumBins);
    printf("Within 3σ = %f%%, should be 99.74%%\n", 100*(double)within3Sigma/(double)NumBins);
-
-   /* Plot our histogram with overlaid lines for +/-sigma boundaries */
-   std::vector<double> x = { min()-1.0, (double)max() };
-   auto horiz = [](double const yval) { return std::vector<double>(2, yval); };
-   plt::named_hist("Frequencies", Generated, NumBins, "b");
-   plt::named_plot("Mean",   x, horiz(mean),         "r-");
-   plt::named_plot("1sigma", x, horiz(mean+1*sigma), "c-");
-   plt::plot(                x, horiz(mean-1*sigma), "c-");
-   plt::named_plot("2sigma", x, horiz(mean+2*sigma), "g-");
-   plt::plot(                x, horiz(mean-2*sigma), "g-");
-   plt::named_plot("3sigma", x, horiz(mean+3*sigma), "y-");
-   plt::plot(                x, horiz(mean-3*sigma), "y-");
-   plt::legend();
-   plt::ylim(mean-4*sigma, mean+4*sigma);
-   plt::show();
 }

@@ -1,15 +1,19 @@
-#include "pch.h"
+#include <QApplication>
+#include <QPushButton>
+#include "GameWindow.h"
 
-#include "functions.h"
-#include "Game.h"
+int main(int argc, char **argv) {
+  QApplication app (argc, argv);
 
-int main() {
-   auto start = std::chrono::high_resolution_clock::now();
+  GameWindow window;
+//  window.setFixedSize(100, 50);
+//  QPushButton * button = new QPushButton("Button text!", &window);
+//  button->setToolTip("This is a tooltip");
+//  button->setGeometry(10, 10, 200, 150);
+//  button->setIcon(QIcon::fromTheme("face-smile"));
 
-   Game* game = new Game();
-   game->run();
+//  window.showMaximized();
+  window.show();
 
-   delete game;
-   std::cout << "Runtime = " << time_since(start) << std::endl
-             << "Leaving..." << std::endl;
+  return app.exec();
 }
