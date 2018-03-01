@@ -1,5 +1,7 @@
 obj
 bin
 lib
+moc
 notes
 *.sublime-*
+Makefile
