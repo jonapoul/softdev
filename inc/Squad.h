@@ -1,6 +1,7 @@
 #ifndef __SQUAD_H__
 #define __SQUAD_H__
 
+#include <vector>
 class Captain;
 class Hierophant;
 class SquadMember;

@@ -1,6 +1,8 @@
 #ifndef __SQUADMEMBER_H__
 #define __SQUADMEMBER_H__
 
+#include <string>
+#include <vector>
 class Squad;
 
 class SquadMember {

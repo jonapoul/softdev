@@ -1,7 +1,7 @@
-#include "pch.h"
+#include <iostream>
+#include <cstring>
 
 #include "Parameters.h"
-
 extern "C" {
 #include "PF.h"
 }

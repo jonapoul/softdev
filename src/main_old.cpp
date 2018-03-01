@@ -1,5 +1,4 @@
-#include "pch.h"
-
+#include <iostream>
 #include "functions.h"
 #include "Game.h"
 

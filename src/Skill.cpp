@@ -1,5 +1,4 @@
-#include "pch.h"
-
+#include <string>
 #include "Skill.h"
 
 Skill::Skill() {

@@ -1,9 +1,7 @@
 #ifndef __HIEROPHANT_H__
 #define __HIEROPHANT_H__
 
-#include "pch.h"
 #include "SquadMember.h"
-
 class SkillTree;
 class Skill;
 

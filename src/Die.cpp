@@ -1,4 +1,7 @@
-#include "pch.h"
+#include <iostream>
+#include <random>
+#include <vector>
+#include <numeric>
 
 #include "Die.h"
 #include "functions.h"

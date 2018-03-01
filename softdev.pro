@@ -3,36 +3,35 @@
 ######################################################################
 
 TEMPLATE     = app
-TARGET       =
+TARGET       = softdev_app_target
 DEPENDPATH  += . inc src lib/libpf
 INCLUDEPATH += . inc lib/libpf
 DESTDIR      = bin
 OBJECTS_DIR  = obj
 MOC_DIR      = moc
+QT          += core gui
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 # Input
 HEADERS += inc/Captain.h \
            inc/Die.h \
            inc/functions.h \
            inc/Game.h \
-           inc/GameWindow.h \
            inc/Hierophant.h \
            inc/Parameters.h \
-           inc/pch.h \
            inc/Player.h \
            inc/Skill.h \
            inc/SkillTree.h \
            inc/Squad.h \
            inc/SquadMember.h \
-           lib/libpf/PF.h
+           lib/libpf/PF.h \
+           inc/GameWindow.h
 SOURCES += src/Captain.cpp \
            src/Die.cpp \
            src/functions.cpp \
            src/Game.cpp \
-           src/GameWindow.cpp \
            src/Hierophant.cpp \
            src/main.cpp \
-           src/main_old.cpp \
            src/Parameters.cpp \
            src/Player.cpp \
            src/Skill.cpp \
@@ -43,4 +42,5 @@ SOURCES += src/Captain.cpp \
            lib/libpf/PF_ReadParameterFile.c \
            lib/libpf/PF_RPF_ExtractCommentlessLine.c \
            lib/libpf/PF_RPF_ReadArray.c \
-           lib/libpf/PF_WriteParameters.c
+           lib/libpf/PF_WriteParameters.c \
+           src/GameWindow.cpp

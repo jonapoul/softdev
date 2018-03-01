@@ -1,5 +1,3 @@
-#include "pch.h"
-
 #include "Game.h"
 #include "Parameters.h"
 #include "Die.h"

@@ -1,7 +1,8 @@
 #ifndef __FUNCTIONS_H__
 #define __FUNCTIONS_H__
 
-#include "pch.h"
+#include <chrono>
+#include <string>
 
 #define PRINT(x) printf("%s: %03i: %s = %e\n",__FILE__,__LINE__,#x,(double)x);
 #define ASSERT(check) assert_impl(check, #check, __FILE__, __LINE__);
