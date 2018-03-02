@@ -1,0 +1,8 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+   <qresource>
+      <file>stylesheet.qss</file>
+      <file>fonts/Roboto.ttf</file>
+      <file>fonts/KronaOne.ttf</file>
+   </qresource>
+</RCC>

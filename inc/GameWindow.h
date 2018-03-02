@@ -2,78 +2,57 @@
 #define GAMEWINDOW_H
 
 #include <QMainWindow>
-class QPushButton;
+
 class QMenu;
 class QActionGroup;
 class QAction;
 class QLabel;
+class QCloseEvent;
 
 class GameWindow : public QMainWindow {
   Q_OBJECT
 
 public:
-  GameWindow();
+   explicit GameWindow();
 
 protected:
 #ifndef QT_NO_CONTEXTMENU
-   void contextMenuEvent(QContextMenuEvent *event) override;
+   void contextMenuEvent(QContextMenuEvent * event) override;
 #endif
+   void closeEvent(QCloseEvent * event) override;
 
 private:
-   QPushButton * TestButton;
    void createActions();
    void createMenus();
+   bool shouldExit();
+
    QMenu * FileMenu;
    QMenu * EditMenu;
    QMenu * FormatMenu;
    QMenu * HelpMenu;
    QActionGroup * AlignmentGroup;
    QAction * NewAction;
-   QAction * OpenAction;
-   QAction * SaveAction;
-   QAction * PrintAction;
    QAction * ExitAction;
    QAction * UndoAction;
    QAction * RedoAction;
-   QAction * CutAction;
-   QAction * CopyAction;
-   QAction * PasteAction;
    QAction * BoldAction;
    QAction * ItalicAction;
    QAction * LeftAlignAction;
    QAction * RightAlignAction;
-   QAction * JustifyAction;
-   QAction * CenterAction;
-   QAction * SetLineSpacingAction;
-   QAction * SetParagraphSpacingAction;
    QAction * AboutAction;
    QAction * AboutQtAction;
    QLabel * InfoLabel;
 
-signals:
-
-public slots:
-
 private slots:
-   void newFile();
-   void open();
-   void save();
-   void print();
-   void undo();
-   void redo();
-   void cut();
-   void copy();
-   void paste();
-   void bold();
-   void italic();
-   void leftAlign();
-   void rightAlign();
-   void justify();
-   void center();
-   void setLineSpacing();
-   void setParagraphSpacing();
-   void about();
-   void aboutQt();
+   void NewFile();
+   void Undo();
+   void Redo();
+   void Bold();
+   void Italic();
+   void LeftAlign();
+   void RightAlign();
+   void About();
+   void AboutQt();
 
 };
 
