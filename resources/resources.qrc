@@ -4,5 +4,6 @@
       <file>stylesheet.qss</file>
       <file>fonts/Roboto.ttf</file>
       <file>fonts/KronaOne.ttf</file>
+      <file alias="logo.jpg">images/logo.jpg</file>
    </qresource>
 </RCC>

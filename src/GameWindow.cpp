@@ -1,61 +1,121 @@
+#include <iostream>
 #include <QtWidgets>
+
 #include "GameWindow.h"
 
+#include "GameEngine.h"
+
 GameWindow::GameWindow() {
+   /* Build the initial UI */
+   this->createActions();
+   this->createMenus();
+#ifndef QT_NO_CONTEXTMENU
+   QString initMessage = tr("A context menu is available by right-clicking");
+   this->statusBar()->showMessage(initMessage);
+#endif
+   this->loadTitleScreen();
+
+   /* Limit the size, so we don't have to worry about responsive UI design or
+      any of that silliness */
+   this->setMinimumSize(1152, 648);
+   this->setMaximumSize(1152, 648);
+   //this->setWindowState(Qt::WindowMaximized);
+
+   /* Set up the game engine, load paramater files etc */
+   this->engine = new GameEngine();
+}
+
+GameWindow::~GameWindow() {
+   delete this->engine;
+}
+
+void GameWindow::loadTitleScreen() {
+   /* We'll hook everything to this central widget, so it'll get autodeleted
+      when we change to another screen */
    QWidget * widget = new QWidget;
    this->setCentralWidget(widget);
 
-   QWidget * topFiller = new QWidget;
-   topFiller->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-   QPalette pal = palette();
-   pal.setColor(QPalette::Background, Qt::black);
-   topFiller->setAutoFillBackground(true);
-   topFiller->setPalette(pal);
+   /* Loading the game's logo front and centre */
+   QGroupBox * logoBox = new QGroupBox;
+   logoBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+   QHBoxLayout * logoLayout = new QHBoxLayout;
+   QImage logo;
+   logo.load(":/logo.jpg");
+   QPixmap pixmap = QPixmap::fromImage(logo);
+   QLabel * logoLabel = new QLabel;
+   logoLabel->setPixmap(pixmap);
+   logoLabel->setScaledContents(true);
+   logoLabel->setFixedSize(logoBox->size());
+   logoLayout->addWidget(logoLabel);
+   logoBox->setLayout(logoLayout);
 
-   QString const label = tr("Choose a menu option, or right-click to invoke a context menu");
-   this->InfoLabel = new QLabel(label);
-   this->InfoLabel->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
-   this->InfoLabel->setAlignment(Qt::AlignCenter);
-   QFont roboto = QFont("KronaOne", 20, 10);
-   this->setFont(roboto);
+   /* Three buttons to start with */
+   QGroupBox * buttonsBox = new QGroupBox;
+   buttonsBox->setAlignment(Qt::AlignHCenter);
+   buttonsBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+   QHBoxLayout * buttonsLayout = new QHBoxLayout;
+   QPushButton * logInButton = new QPushButton(tr("Log In"));
+   QPushButton * registerButton = new QPushButton(tr("Register Account"));
+   QPushButton * settingsButton = new QPushButton(tr("Settings"));
+   logInButton->setStyleSheet(" QPushButton { height: 80%; } ");
+   registerButton->setStyleSheet(" QPushButton { height: 80%; } ");
+   settingsButton->setStyleSheet(" QPushButton { height: 80%; } ");
+   buttonsLayout->addWidget(new QWidget,    2); /* spacing */
+   buttonsLayout->addWidget(logInButton,    2);
+   buttonsLayout->addWidget(new QWidget,    1); /* spacing */
+   buttonsLayout->addWidget(registerButton, 2);
+   buttonsLayout->addWidget(new QWidget,    1); /* spacing */
+   buttonsLayout->addWidget(settingsButton, 2);
+   buttonsLayout->addWidget(new QWidget,    2); /* spacing */
+   buttonsBox->setLayout(buttonsLayout);
 
-   QWidget * bottomFiller = new QWidget;
-   bottomFiller->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-   QProgressBar * progressBar = new QProgressBar;
-   progressBar->setRange(0, 100);
-   progressBar->setValue(0);
-   progressBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-   progressBar->setAlignment(Qt::AlignCenter);
-
-   QSlider * slider = new QSlider;
-   slider->setOrientation(Qt::Horizontal);
-   slider->setRange(0, 100);
-   slider->setValue(50);
-   slider->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-   QObject::connect(slider, SIGNAL(valueChanged(int)),
-                    progressBar, SLOT(setValue(int)));
-
+   /* Apply it all to the page layout */
    QVBoxLayout * layout = new QVBoxLayout;
-   layout->setMargin(5);
-   layout->addWidget(topFiller);
-   layout->addWidget(slider);
-   layout->addWidget(this->InfoLabel);
-   layout->addWidget(progressBar);
-   layout->addWidget(bottomFiller);
+   layout->addWidget(logoBox,    4);
+   layout->addWidget(buttonsBox, 2);
    widget->setLayout(layout);
 
-   this->createActions();
-   this->createMenus();
 
-#ifndef QT_NO_CONTEXTMENU
-   QString const message = tr("A context menu is available by right-clicking");
-   this->statusBar()->showMessage(message);
-#endif
+   // QWidget * widget = new QWidget;
+   // this->setCentralWidget(widget);
 
-   this->setWindowTitle(tr("Menus"));
-   this->setMinimumSize(640, 480);
-   this->setWindowState(Qt::WindowMaximized);
+   // QWidget * topMargin = new QWidget;
+   // topFiller->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+   // QString const label = tr("Choose a menu option, or right-click to invoke a context menu");
+   // this->InfoLabel = new QLabel(label);
+   // this->InfoLabel->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
+   // this->InfoLabel->setAlignment(Qt::AlignCenter);
+   // QFont roboto = QFont("Roboto", 20, 10);
+   // InfoLabel->setFont(roboto);
+
+   // QWidget * bottomFiller = new QWidget;
+   // bottomFiller->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+   // QProgressBar * progressBar = new QProgressBar;
+   // progressBar->setRange(0, 100);
+   // progressBar->setValue(50);
+   // progressBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+   // progressBar->setAlignment(Qt::AlignCenter);
+
+   // QSlider * slider = new QSlider;
+   // slider->setOrientation(Qt::Horizontal);
+   // slider->setRange(0, 100);
+   // slider->setValue(50);
+   // slider->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+   // QObject::connect(slider, SIGNAL(valueChanged(int)),
+   //                  progressBar, SLOT(setValue(int)));
+
+   // QVBoxLayout * layout = new QVBoxLayout;
+   // layout->setMargin(5);
+   // layout->addWidget(topFiller);
+   // layout->addWidget(slider);
+   // layout->addWidget(this->InfoLabel);
+   // layout->addWidget(progressBar);
+   // layout->addWidget(bottomFiller);
+   // widget->setLayout(layout);
+
+   this->setWindowTitle(tr("Title Screen"));
 }
 
 void GameWindow::closeEvent(QCloseEvent * event) {

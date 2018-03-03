@@ -9,11 +9,14 @@ class QAction;
 class QLabel;
 class QCloseEvent;
 
+class GameEngine;
+
 class GameWindow : public QMainWindow {
   Q_OBJECT
 
 public:
    explicit GameWindow();
+   ~GameWindow();
 
 protected:
 #ifndef QT_NO_CONTEXTMENU
@@ -25,6 +28,11 @@ private:
    void createActions();
    void createMenus();
    bool shouldExit();
+
+   void loadTitleScreen();
+   void loadLoginScreen();
+   void loadRegisterScreen();
+   void looadSettingsScreen();
 
    QMenu * FileMenu;
    QMenu * EditMenu;
@@ -42,6 +50,8 @@ private:
    QAction * AboutAction;
    QAction * AboutQtAction;
    QLabel * InfoLabel;
+
+   GameEngine * engine;
 
 private slots:
    void NewFile();

@@ -14,7 +14,7 @@ HEADERS += \
            # Game objects
            inc/Captain.h \
            inc/Die.h \
-           inc/Game.h \
+           inc/GameEngine.h \
            inc/Hierophant.h \
            inc/Parameters.h \
            inc/Player.h \
@@ -26,13 +26,14 @@ HEADERS += \
            # libPF parameter reading
            lib/libpf/PF.h \
            # QT Objects
-           inc/GameWindow.h
+           inc/GameWindow.h \
+           inc/Dialog.h
 SOURCES += \
            # Game Objects
            src/main.cpp \
            src/Captain.cpp \
            src/Die.cpp \
-           src/Game.cpp \
+           src/GameEngine.cpp \
            src/Hierophant.cpp \
            src/Parameters.cpp \
            src/Player.cpp \
@@ -48,7 +49,8 @@ SOURCES += \
            lib/libpf/PF_RPF_ReadArray.c \
            lib/libpf/PF_WriteParameters.c \
            # QT Objects
-           src/GameWindow.cpp
+           src/GameWindow.cpp \
+           src/Dialog.cpp
 
 DISTFILES += \
              resources/fonts/Roboto.ttf \

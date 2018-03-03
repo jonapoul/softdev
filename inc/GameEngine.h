@@ -4,11 +4,10 @@
 class Parameters;
 class Die;
 
-class Game {
+class GameEngine {
 public:
-   Game();
-   ~Game();
-   bool run();
+   GameEngine();
+   ~GameEngine();
 
 private:
    Die * die;
