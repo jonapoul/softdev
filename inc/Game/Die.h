@@ -1,5 +1,5 @@
-#ifndef __DIE_H__
-#define __DIE_H__
+#ifndef DIE_H
+#define DIE_H
 
 class Die {
 public:

@@ -1,13 +1,13 @@
 #include <iostream>
 #include <cstring>
 
-#include "Parameters.h"
+#include "Game/GameParameters.h"
 
 extern "C" {
 #include "PF.h"
 }
 
-Parameters::Parameters(char const * const Filename) {
+GameParameters::GameParameters(char const * const Filename) {
    /* Defaults */
    this->MinRoll       =   0;
    this->MaxRoll       = 100;
@@ -85,14 +85,14 @@ Parameters::Parameters(char const * const Filename) {
    fclose(ParamFile);
 }
 
-Parameters::~Parameters() {
+GameParameters::~GameParameters() {
    delete[] this->EncryptionKey;
 }
 
 /* Copied PF_WriteParameters(), but writing to file instead of terminal */
-int Parameters::writeToFile(PF_ParameterEntry * const ParameterEntries,
-                            size_t const NParameterEntries,
-                            char const * const Filename) {
+int GameParameters::writeToFile(PF_ParameterEntry * const ParameterEntries,
+                                size_t const NParameterEntries,
+                                char const * const Filename) {
 
    FILE * OutputFile = fopen(Filename, "w");
    for (size_t i = 0; i < NParameterEntries; i++) {

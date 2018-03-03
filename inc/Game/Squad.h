@@ -1,5 +1,5 @@
-#ifndef __SQUAD_H__
-#define __SQUAD_H__
+#ifndef SQUAD_H
+#define SQUAD_H
 
 #include <vector>
 class Captain;

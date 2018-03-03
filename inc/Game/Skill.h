@@ -1,5 +1,5 @@
-#ifndef __SKILL_H__
-#define __SKILL_H__
+#ifndef SKILL_H
+#define SKILL_H
 
 #include <string>
 

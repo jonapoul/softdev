@@ -1,5 +1,5 @@
-#ifndef __HIEROPHANT_H__
-#define __HIEROPHANT_H__
+#ifndef HIEROPHANT_H
+#define HIEROPHANT_H
 
 #include "SquadMember.h"
 class SkillTree;

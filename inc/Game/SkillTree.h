@@ -1,5 +1,5 @@
-#ifndef __SKILLTREE_H__
-#define __SKILLTREE_H__
+#ifndef SKILLTREE_H
+#define SKILLTREE_H
 
 #include <vector>
 class Skill;

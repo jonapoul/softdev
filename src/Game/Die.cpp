@@ -3,7 +3,7 @@
 #include <vector>
 #include <numeric>
 
-#include "Die.h"
+#include "Game/Die.h"
 #include "functions.h"
 
 Die::Die(int const Min,

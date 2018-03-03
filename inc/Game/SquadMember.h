@@ -1,5 +1,5 @@
-#ifndef __SQUADMEMBER_H__
-#define __SQUADMEMBER_H__
+#ifndef SQUADMEMBER_H
+#define SQUADMEMBER_H
 
 #include <string>
 #include <vector>

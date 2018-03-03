@@ -1,7 +1,7 @@
-#ifndef __GAME_H__
-#define __GAME_H__
+#ifndef GAMEENGINE_H
+#define GAMEENGINE_H
 
-class Parameters;
+class GameParameters;
 class Die;
 
 class GameEngine {
@@ -11,7 +11,7 @@ public:
 
 private:
    Die * die;
-   Parameters * parameters;
+   GameParameters * parameters;
 };
 
 #endif

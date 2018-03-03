@@ -1,5 +1,5 @@
 #include <QtWidgets>
-#include "Dialog.h"
+#include "UI/Dialog.h"
 
 Dialog::Dialog() {
    createMenu();

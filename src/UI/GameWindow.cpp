@@ -1,9 +1,11 @@
 #include <iostream>
 #include <QtWidgets>
 
-#include "GameWindow.h"
+#include "Game/GameWindow.h"
+#include "Game/GameEngine.h"
+#include "functions.h"
 
-#include "GameEngine.h"
+#include "UI/TitleScreen.h"
 
 GameWindow::GameWindow() {
    /* Build the initial UI */
@@ -38,14 +40,17 @@ void GameWindow::loadTitleScreen() {
    /* Loading the game's logo front and centre */
    QGroupBox * logoBox = new QGroupBox;
    logoBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-   QHBoxLayout * logoLayout = new QHBoxLayout;
-   QImage logo;
-   logo.load(":/logo.jpg");
-   QPixmap pixmap = QPixmap::fromImage(logo);
+   QPixmap pixmap = QPixmap::fromImage( QImage(tr(":/logo.jpg")) );
    QLabel * logoLabel = new QLabel;
    logoLabel->setPixmap(pixmap);
+   float const factor_w = (float)pixmap.size().width()  / (float)logoBox->size().width();
+   float const factor_h = (float)pixmap.size().height() / (float)logoBox->size().height();
+   float const factor = MIN(factor_w, factor_h) * 1.6; /* 1.6 = fudge factor */
+   int const w = (int)((float)pixmap.size().width()  / factor); 
+   int const h = (int)((float)pixmap.size().height() / factor);
    logoLabel->setScaledContents(true);
-   logoLabel->setFixedSize(logoBox->size());
+   logoLabel->setFixedSize( QSize(w, h) );
+   QHBoxLayout * logoLayout = new QHBoxLayout;
    logoLayout->addWidget(logoLabel);
    logoBox->setLayout(logoLayout);
 
@@ -53,13 +58,13 @@ void GameWindow::loadTitleScreen() {
    QGroupBox * buttonsBox = new QGroupBox;
    buttonsBox->setAlignment(Qt::AlignHCenter);
    buttonsBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-   QHBoxLayout * buttonsLayout = new QHBoxLayout;
-   QPushButton * logInButton = new QPushButton(tr("Log In"));
+   QPushButton * logInButton    = new QPushButton(tr("Log In"));
    QPushButton * registerButton = new QPushButton(tr("Register Account"));
    QPushButton * settingsButton = new QPushButton(tr("Settings"));
    logInButton->setStyleSheet(" QPushButton { height: 80%; } ");
    registerButton->setStyleSheet(" QPushButton { height: 80%; } ");
    settingsButton->setStyleSheet(" QPushButton { height: 80%; } ");
+   QHBoxLayout * buttonsLayout = new QHBoxLayout;
    buttonsLayout->addWidget(new QWidget,    2); /* spacing */
    buttonsLayout->addWidget(logInButton,    2);
    buttonsLayout->addWidget(new QWidget,    1); /* spacing */

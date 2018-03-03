@@ -1,5 +1,5 @@
-#ifndef __CAPTAIN_H__
-#define __CAPTAIN_H__
+#ifndef CAPTAIN_H
+#define CAPTAIN_H
 
 #include "SquadMember.h"
 class SkillTree;

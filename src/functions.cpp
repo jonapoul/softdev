@@ -16,18 +16,6 @@ void assert_impl(bool const check,
    }
 }
 
-std::string time_since(std::chrono::time_point<std::chrono::high_resolution_clock> start) {
-   auto end = std::chrono::high_resolution_clock::now();
-   auto secs = std::chrono::duration_cast<std::chrono::seconds>( end - start );
-   int const TotalSeconds = static_cast<int>( secs.count() );
-   int const NumHours =  TotalSeconds / 60 / 60;
-   int const NumMins  = (TotalSeconds / 60) % 60;
-   int const NumSecs  =  TotalSeconds % 60;
-   std::stringstream ss;
-   ss << NumHours << "h " << NumMins << "m " << NumSecs << "s";
-   return ss.str();
-}
-
 std::string encrypt(std::string msg, 
                     std::string const& key) {
    if (key.empty()) return msg;

@@ -1,5 +1,5 @@
 #include <string>
-#include "Skill.h"
+#include "Game/Skill.h"
 
 Skill::Skill() {
 

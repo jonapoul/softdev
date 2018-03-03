@@ -1,9 +1,9 @@
-#include "GameEngine.h"
-#include "Parameters.h"
-#include "Die.h"
+#include "Game/GameEngine.h"
+#include "Game/GameParameters.h"
+#include "Game/Die.h"
 
 GameEngine::GameEngine() {
-   this->parameters = new Parameters("data/parameters.input"/*, GAME_PARAMETERS*/);
+   this->parameters = new GameParameters("data/parameters.input");
    this->die        = new Die(parameters->MinRoll, parameters->MaxRoll);
 }
 

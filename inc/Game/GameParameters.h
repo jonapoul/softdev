@@ -1,5 +1,5 @@
-#ifndef __PARAMETERS_H__
-#define __PARAMETERS_H__
+#ifndef GAME_PARAMETERS_H
+#define GAME_PARAMETERS_H
 
 #include <cstddef>
 #include <stdio.h>
@@ -24,17 +24,14 @@ enum {
    nParameters
 };
 
-class Parameters {
+class GameParameters {
 public:
-   Parameters(char const * const Filename);
-   ~Parameters();
+   GameParameters(char const * const Filename);
+   ~GameParameters();
+
    int writeToFile(PF_ParameterEntry * const ParameterEntries,
                    size_t const NParameterEntries,
                    char const * const Filename);
-
-   // size_t NumParameters;
-   // void ** DataPtrs;
-   // DataType * datatypes;
 
    int MinRoll;
    int MaxRoll;

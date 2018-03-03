@@ -1,6 +1,6 @@
 TEMPLATE     = app
 TARGET       = softdev
-DEPENDPATH  += . inc src lib/libpf
+DEPENDPATH  += . src lib/libpf
 INCLUDEPATH += . inc lib/libpf
 DESTDIR      = bin
 OBJECTS_DIR  = obj
@@ -11,37 +11,38 @@ QT          += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 HEADERS += \
-           # Game objects
-           inc/Captain.h \
-           inc/Die.h \
-           inc/GameEngine.h \
-           inc/Hierophant.h \
-           inc/Parameters.h \
-           inc/Player.h \
-           inc/Skill.h \
-           inc/SkillTree.h \
-           inc/Squad.h \
-           inc/SquadMember.h \
            inc/functions.h \
+           # Game objects
+           inc/Game/Captain.h \
+           inc/Game/Die.h \
+           inc/Game/GameEngine.h \
+           inc/Game/Hierophant.h \
+           inc/Game/GameParameters.h \
+           inc/Game/Player.h \
+           inc/Game/Skill.h \
+           inc/Game/SkillTree.h \
+           inc/Game/Squad.h \
+           inc/Game/SquadMember.h \
            # libPF parameter reading
            lib/libpf/PF.h \
            # QT Objects
-           inc/GameWindow.h \
-           inc/Dialog.h
+           inc/UI/GameWindow.h \
+           inc/UI/TitleScreen.h \
+           inc/UI/Dialog.h
 SOURCES += \
-           # Game Objects
            src/main.cpp \
-           src/Captain.cpp \
-           src/Die.cpp \
-           src/GameEngine.cpp \
-           src/Hierophant.cpp \
-           src/Parameters.cpp \
-           src/Player.cpp \
-           src/Skill.cpp \
-           src/SkillTree.cpp \
-           src/Squad.cpp \
-           src/SquadMember.cpp \
            src/functions.cpp \
+           # Game Objects
+           src/Game/Captain.cpp \
+           src/Game/Die.cpp \
+           src/Game/GameEngine.cpp \
+           src/Game/Hierophant.cpp \
+           src/Game/GameParameters.cpp \
+           src/Game/Player.cpp \
+           src/Game/Skill.cpp \
+           src/Game/SkillTree.cpp \
+           src/Game/Squad.cpp \
+           src/Game/SquadMember.cpp \
            # libPF parameter reading
            lib/libpf/PF_Format.c \
            lib/libpf/PF_ReadParameterFile.c \
@@ -49,9 +50,11 @@ SOURCES += \
            lib/libpf/PF_RPF_ReadArray.c \
            lib/libpf/PF_WriteParameters.c \
            # QT Objects
-           src/GameWindow.cpp \
-           src/Dialog.cpp
+           src/UI/GameWindow.cpp \
+           src/UI/TitleScreen.cpp \
+           src/UI/Dialog.cpp
 
 DISTFILES += \
+             # Fonts
              resources/fonts/Roboto.ttf \
              resources/fonts/KronaOne.ttf
