@@ -28,3 +28,20 @@ std::string decrypt(std::string const& msg,
                     std::string const& key) {
    return encrypt(msg, key);
 }
+
+void freeArrayOfCStrings(char ** array,
+                         size_t const nElements) {
+   for (size_t i = 0; i < nElements; i++) {
+      free(array[i]);
+   }
+   free(array);
+}
+
+void trim(std::string * str) {
+   while ( (*str)[0] == ' ' ) {
+      str->erase(str->begin() + 0);
+   }
+   while ( (*str)[str->length()-1] == ' ' ) {
+      str->erase(str->begin() + str->length() - 1);
+   }
+}

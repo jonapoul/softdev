@@ -3,12 +3,13 @@
 
 #include <cstddef>
 #include <stdio.h>
+#include <string>
 
 extern "C" {
 #include "PF.h"
 }
 
-#define ENCRYPTION_KEY_SIZE MAX_PARAMETER_NAME_LENGTH
+class GameEngine;
 
 enum {
    iMinRoll,
@@ -21,18 +22,26 @@ enum {
    iBaseHealth,
    iBaseCost,
    iEncryptionKey,
+   iStartingCredits,
+   iMaxCaptainItems,
+   iMaxCaptainWeapons,
+   iMaxHierophantItems,
+   iMaxHierophantWeapons,
    nGameParameters
 };
 
 class GameParameters {
 public:
-   GameParameters(char const * const Filename,
+   GameParameters(GameEngine * const e,
+                  char const * const Filename,
                   bool * const paramFileIsValid);
    ~GameParameters();
 
    int writeToFile(PF_ParameterEntry * const ParameterEntries,
                    size_t const NParameterEntries,
                    char const * const Filename);
+
+   GameEngine * engine;
 
    int MinRoll;
    int MaxRoll;
@@ -43,7 +52,12 @@ public:
    int BaseMorale;
    int BaseHealth;
    int BaseCost;
-   char* EncryptionKey;
+   std::string EncryptionKey;
+   int StartingCredits;
+   size_t MaxCaptainItems;
+   size_t MaxCaptainWeapons;
+   size_t MaxHierophantItems;
+   size_t MaxHierophantWeapons;
 };
 
 #endif

@@ -1,10 +1,21 @@
-MinRoll         0    # min number a die can roll
-MaxRoll       100    # max number a die can roll
-BaseMovement    1    # out of 10
-BaseStrength    1    # out of 10
-BaseShooting    1    # out of 10
-BaseArmour      1    # out of 10
-BaseMorale    100    # percent likelihood of a squaddie to keep fighting
-BaseHealth    100    # hitpoints for each squaddie, before any skills
-BaseCost       40    # base credits cost per squaddie
-EncryptionKey Scaramouche,Scaramouche,WillYouDoTheFandango? # For reading/writing save files
+MinRoll           0    # min number a die can roll
+MaxRoll         100    # max number a die can roll
+BaseMovement      1    # out of 10
+BaseStrength      1    # out of 10
+BaseShooting      1    # out of 10
+BaseArmour        1    # out of 10
+BaseMorale      100    # percent likelihood of a squaddie to keep fighting
+BaseHealth      100    # hitpoints for each squaddie, before any skills
+BaseCost         40    # base credits cost per squaddie
+
+EncryptionKey   Scaramouche, Scaramouche, Will You Do The Fandango?
+
+StartingCredits 500    # Amount of money given to a squad when first created
+
+# 'Items' means regular items plus weapons. So Hierophant can have 3 items + 1
+# weapon, or 4 items + 0 weapons. Captains can have up to 2 weapons + 4 items,
+# or 0 weapons and 6 items, or less if they like.
+MaxCaptainItems      6
+MaxCaptainWeapons    2
+MaxHierophantItems   4
+MaxHierophantWeapons 1

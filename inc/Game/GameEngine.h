@@ -4,6 +4,9 @@
 #include <vector>
 #include <string>
 
+/* For criticalMessage, warningMessage and informationMessage */
+#define MAX_MESSAGE_LENGTH 256
+
 class GameWindow;
 class GameParameters;
 class Player;
@@ -21,12 +24,13 @@ public:
    void readUserFiles();
    bool login(Player const * const player,
               std::string const& plaintextPassword);
-   void initialisePlayers();
+   void initialisePlayers(char const * const directory);
+
+   Die * die;
+   GameParameters * parameters;
 
 private:
    GameWindow * window;
-   Die * die;
-   GameParameters * parameters;
    std::vector<Player *> players;
 };
 

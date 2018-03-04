@@ -2,24 +2,33 @@
 #include <cstring>
 
 #include "Game/GameParameters.h"
+#include "Game/GameEngine.h"
 
 extern "C" {
 #include "PF.h"
 }
 
-GameParameters::GameParameters(char const * const Filename,
-                               bool * const paramFileIsValid) {
+GameParameters::GameParameters(GameEngine * const e,
+                               char const * const Filename,
+                               bool * const paramFileIsValid)
+      : engine(e) {
    /* Defaults */
-   this->MinRoll       =   0;
-   this->MaxRoll       = 100;
-   this->BaseMovement  =   1;
-   this->BaseStrength  =  20;
-   this->BaseShooting  =  50;
-   this->BaseArmour    =  20;
-   this->BaseMorale    = 100;
-   this->BaseHealth    = 100;
-   this->BaseCost      =  40;
-   this->EncryptionKey = new char[ENCRYPTION_KEY_SIZE];
+   this->MinRoll              =   0;
+   this->MaxRoll              = 100;
+   this->BaseMovement         =   1;
+   this->BaseStrength         =  20;
+   this->BaseShooting         =  50;
+   this->BaseArmour           =  20;
+   this->BaseMorale           = 100;
+   this->BaseHealth           = 100;
+   this->BaseCost             =  40;
+   this->EncryptionKey        = "nhaekanckjanckaw";
+   this->StartingCredits      = 500;
+   this->MaxCaptainItems      = 6;
+   this->MaxCaptainWeapons    = 2;
+   this->MaxHierophantItems   = 4;
+   this->MaxHierophantWeapons = 1;
+   char EncryptionKeyTemp[MAX_LINE_LENGTH];
 
    /* Allocate memory */
    PF_ParameterEntry * ParamEntries = new PF_ParameterEntry[nGameParameters];
@@ -33,42 +42,48 @@ GameParameters::GameParameters(char const * const Filename,
    strncpy(ParamEntries[iMinRoll].Parameter, "MinRoll", MAX_PARAMETER_NAME_LENGTH);
    ParamEntries[iMinRoll].Type    = INTEGER;
    ParamEntries[iMinRoll].Pointer = &(this->MinRoll);
-
    strncpy(ParamEntries[iMaxRoll].Parameter, "MaxRoll", MAX_PARAMETER_NAME_LENGTH);
    ParamEntries[iMaxRoll].Type    = INTEGER;
    ParamEntries[iMaxRoll].Pointer = &(this->MaxRoll);
-
    strncpy(ParamEntries[iBaseMovement].Parameter, "BaseMovement", MAX_PARAMETER_NAME_LENGTH);
    ParamEntries[iBaseMovement].Type    = FLOAT;
    ParamEntries[iBaseMovement].Pointer = &(this->BaseMovement);
-
    strncpy(ParamEntries[iBaseStrength].Parameter, "BaseStrength", MAX_PARAMETER_NAME_LENGTH);
    ParamEntries[iBaseStrength].Type    = INTEGER;
    ParamEntries[iBaseStrength].Pointer = &(this->BaseStrength);
-
    strncpy(ParamEntries[iBaseShooting].Parameter, "BaseShooting", MAX_PARAMETER_NAME_LENGTH);
    ParamEntries[iBaseShooting].Type    = INTEGER;
    ParamEntries[iBaseShooting].Pointer = &(this->BaseShooting);
-
    strncpy(ParamEntries[iBaseArmour].Parameter, "BaseArmour", MAX_PARAMETER_NAME_LENGTH);
    ParamEntries[iBaseArmour].Type    = INTEGER;
    ParamEntries[iBaseArmour].Pointer = &(this->BaseArmour);
-
    strncpy(ParamEntries[iBaseMorale].Parameter, "BaseMorale", MAX_PARAMETER_NAME_LENGTH);
    ParamEntries[iBaseMorale].Type    = INTEGER;
    ParamEntries[iBaseMorale].Pointer = &(this->BaseMorale);
-
    strncpy(ParamEntries[iBaseHealth].Parameter, "BaseHealth", MAX_PARAMETER_NAME_LENGTH);
    ParamEntries[iBaseHealth].Type    = INTEGER;
    ParamEntries[iBaseHealth].Pointer = &(this->BaseHealth);
-
    strncpy(ParamEntries[iBaseCost].Parameter, "BaseCost", MAX_PARAMETER_NAME_LENGTH);
    ParamEntries[iBaseCost].Type    = INTEGER;
    ParamEntries[iBaseCost].Pointer = &(this->BaseCost);
-
    strncpy(ParamEntries[iEncryptionKey].Parameter, "EncryptionKey", MAX_PARAMETER_NAME_LENGTH);
    ParamEntries[iEncryptionKey].Type    = STRING;
-   ParamEntries[iEncryptionKey].Pointer = this->EncryptionKey;
+   ParamEntries[iEncryptionKey].Pointer = EncryptionKeyTemp;
+   strncpy(ParamEntries[iStartingCredits].Parameter, "StartingCredits", MAX_PARAMETER_NAME_LENGTH);
+   ParamEntries[iStartingCredits].Type    = INTEGER;
+   ParamEntries[iStartingCredits].Pointer = &(this->StartingCredits);
+   strncpy(ParamEntries[iMaxCaptainItems].Parameter, "MaxCaptainItems", MAX_PARAMETER_NAME_LENGTH);
+   ParamEntries[iMaxCaptainItems].Type    = UNSIGNED_LONG_INTEGER;
+   ParamEntries[iMaxCaptainItems].Pointer = &(this->MaxCaptainItems);
+   strncpy(ParamEntries[iMaxCaptainWeapons].Parameter, "MaxCaptainWeapons", MAX_PARAMETER_NAME_LENGTH);
+   ParamEntries[iMaxCaptainWeapons].Type    = UNSIGNED_LONG_INTEGER;
+   ParamEntries[iMaxCaptainWeapons].Pointer = &(this->MaxCaptainWeapons);
+   strncpy(ParamEntries[iMaxHierophantItems].Parameter, "MaxHierophantItems", MAX_PARAMETER_NAME_LENGTH);
+   ParamEntries[iMaxHierophantItems].Type    = UNSIGNED_LONG_INTEGER;
+   ParamEntries[iMaxHierophantItems].Pointer = &(this->MaxHierophantItems);
+   strncpy(ParamEntries[iMaxHierophantWeapons].Parameter, "MaxHierophantWeapons", MAX_PARAMETER_NAME_LENGTH);
+   ParamEntries[iMaxHierophantWeapons].Type    = UNSIGNED_LONG_INTEGER;
+   ParamEntries[iMaxHierophantWeapons].Pointer = &(this->MaxHierophantWeapons);
 
    /* Open Parameters file for reading */
    FILE * ParamFile;
@@ -83,19 +98,21 @@ GameParameters::GameParameters(char const * const Filename,
       *paramFileIsValid = false;
    }
 
+   this->EncryptionKey = std::string(EncryptionKeyTemp);
+
    /* Clean up */
    delete[] ParamEntries;
    fclose(ParamFile);
 }
 
-GameParameters::~GameParameters() {
-   delete[] this->EncryptionKey;
-}
+GameParameters::~GameParameters() { }
 
 /* Copied PF_WriteParameters(), but writing to file instead of terminal */
 int GameParameters::writeToFile(PF_ParameterEntry * const ParameterEntries,
                                 size_t const NParameterEntries,
                                 char const * const Filename) {
+
+   engine->criticalMessage("Need to redo GameParameters::writeToFile(). Change to output streams rather than fprintf");
 
    FILE * OutputFile = fopen(Filename, "w");
    for (size_t i = 0; i < NParameterEntries; i++) {

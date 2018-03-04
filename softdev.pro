@@ -9,8 +9,11 @@ RCC_DIR      = generated
 RESOURCES   += resources/resources.qrc
 QT          += core gui
 LIBS        += -lstdc++fs
-QMAKE_CXXFLAGS += -g
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+# valgrind memchecking
+QMAKE_CXXFLAGS += -g
+QMAKE_CFLAGS += -g
 
 HEADERS += \
            inc/functions.h \

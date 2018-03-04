@@ -21,13 +21,13 @@ int main(int argc, char **argv) {
 
    QFontDatabase::addApplicationFont("qrc:///fonts/Roboto.ttf");
    QFontDatabase::addApplicationFont("qrc:///fonts/KronaOne.ttf");
-# if 1
+#if 1
    GameWindow * window = new GameWindow;
    window->show();
-# else
+#else
    Dialog * dialog = new Dialog;
    dialog->show();
-# endif
+#endif
 
    return app.exec();
 #else

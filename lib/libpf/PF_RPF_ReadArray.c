@@ -110,7 +110,7 @@ int PF_RPF_ReadArray(FILE * const File,
     break;
 
    case STRING:
-    sscanf(StrippedLine, Format, StringPointer[iArrayIndex]);
+    strncpy(StringPointer[iArrayIndex], StrippedLine, MAX_LINE_LENGTH);
     break;
 
    default:

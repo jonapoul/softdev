@@ -1,4 +1,5 @@
-User       jonapoul
+Username   jonapoul
+SquadName  Super Wicked Squad 1
 IsPublic   false
 Credits    350
 
@@ -38,12 +39,12 @@ HierophantStatBoosts 5
    1
    0
 
+NumNormalSquadMembers 9
 SquadWeapons 4
    Sword
    Sword
    FryingPan
    MachineGun
-   Railgun
 SquadItems 2
    HealthPotion
    HealthPotion

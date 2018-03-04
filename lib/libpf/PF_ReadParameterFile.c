@@ -77,7 +77,11 @@ int PF_ReadParameterFile(FILE * const File,
                  __FILE__,__LINE__,ParameterEntry->Type);
           return EXIT_FAILURE;
          }
-         sscanf(EndOfParameterNamePoint, Format, ParameterEntry->Pointer);
+         if (ParameterEntry->Type == STRING) {
+          strncpy(ParameterEntry->Pointer, EndOfParameterNamePoint, MAX_LINE_LENGTH);
+         } else {
+          sscanf(EndOfParameterNamePoint, Format, ParameterEntry->Pointer);
+         }
         }
        }
       } /* End of if there was a match */

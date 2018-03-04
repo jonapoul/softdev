@@ -11,18 +11,17 @@ extern "C" {
 }
 
 Player::Player(GameEngine * const e,
-               std::string const& filename,
+               std::string const& file,
                bool * const playerFileIsValid) 
-      : engine(e), loginStatus(false) {
-   char buf[256];
-   snprintf(buf, 256, "Building player from file %s", filename.c_str());
+      : engine(e), loginStatus(false), filename(file) {
+   char buf[MAX_MESSAGE_LENGTH];
+   snprintf(buf, MAX_MESSAGE_LENGTH, "Building player from file '%s'",
+            filename.c_str());
    engine->informationMessage(buf);
 
    /* Defaults */
-   this->username = "";
-   this->password = "";
-   char tempUsername[MAX_PARAMETER_NAME_LENGTH];
-   char tempPassword[MAX_PARAMETER_NAME_LENGTH];
+   char tempUsername[MAX_LINE_LENGTH];
+   char tempPassword[MAX_LINE_LENGTH];
    size_t NumSquads;
    char ** SquadFiles = nullptr;
 
@@ -48,16 +47,18 @@ Player::Player(GameEngine * const e,
    /* Open Parameters file for reading */
    FILE * ParamFile;
    if ( (ParamFile = fopen(filename.c_str(), "r")) == NULL) {
-      char warningbuf[256];
-      snprintf(warningbuf, 256, "Failed to load player file '%s'", filename.c_str());
+      char warningbuf[MAX_MESSAGE_LENGTH];
+      snprintf(warningbuf, MAX_MESSAGE_LENGTH,
+               "Failed to load player file '%s'", filename.c_str());
       engine->warningMessage(warningbuf);
       *playerFileIsValid = false;
    }
 
    /* Read the Parameters */
    if (PF_ReadParameterFile(ParamFile, ParamEntries, nPlayerParameters) != EXIT_SUCCESS) {
-      char warningbuf[256];
-      snprintf(warningbuf, 256, "PF_ReadParameterFile() failed for player file '%s'",
+      char warningbuf[MAX_MESSAGE_LENGTH];
+      snprintf(warningbuf, MAX_MESSAGE_LENGTH,
+               "PF_ReadParameterFile() failed for player file '%s'",
                filename.c_str());
       engine->warningMessage(warningbuf);
       *playerFileIsValid = false;
@@ -83,16 +84,16 @@ Player::Player(GameEngine * const e,
       bool squadFileIsValid = true;
       squads[i] = new Squad(engine, this, SquadFiles[i], &squadFileIsValid);
       if ( !squadFileIsValid ) {
-         char warningbuf[256];
-         snprintf(warningbuf, 256, "Player '%s' has an invalid squad file at '%s'",
+         char warningbuf[MAX_MESSAGE_LENGTH];
+         snprintf(warningbuf, MAX_MESSAGE_LENGTH,
+                  "Player '%s' has an invalid squad file at '%s'",
                   username.c_str(), SquadFiles[i]);
          engine->warningMessage(warningbuf);
          delete squads[i];
          squads[i] = nullptr;
       }
-      free(SquadFiles[i]);
    }
-   free(SquadFiles);
+   freeArrayOfCStrings(SquadFiles, NumSquads);
    /* Remove any null pointers from the array */
    for (int i = (int)squads.size()-1; i >= 0; i--) {
       if (squads[i] == nullptr) {
@@ -109,8 +110,9 @@ Player::~Player() {
 
 void Player::deleteSquad(size_t const indexToDelete) {
    if (indexToDelete >= numSquads()) {
-      char warningbuf[256];
-      snprintf(warningbuf, 256, "User '%s' tried deleting squad index out of "
+      char warningbuf[MAX_MESSAGE_LENGTH];
+      snprintf(warningbuf, MAX_MESSAGE_LENGTH, 
+               "User '%s' tried deleting squad index out of "
                "range in %s: indexToDelete = %zu, nSquads = %zu",
                username.c_str(), __FILE__, indexToDelete, numSquads());
       engine->warningMessage(warningbuf);
@@ -118,7 +120,7 @@ void Player::deleteSquad(size_t const indexToDelete) {
    }
    /* clear the allocated memory */
    delete squads[indexToDelete];
-   /* remove the null pointer from the array */
+   /* remove the deleted pointer from the array */
    squads.erase(squads.begin() + indexToDelete);
 }
 
@@ -126,8 +128,9 @@ void Player::addSquad(Squad * const squad) {
    if (squad) {
       this->squads.push_back(squad);
    } else {
-      char warningbuf[256];
-      snprintf(warningbuf, 256, "Tried adding null Squad pointer to player '%s'",
+      char warningbuf[MAX_MESSAGE_LENGTH];
+      snprintf(warningbuf, MAX_MESSAGE_LENGTH,
+               "Tried adding null Squad pointer to player '%s'",
                this->username.c_str());
       engine->warningMessage(warningbuf);
    }

@@ -17,15 +17,18 @@ GameEngine::GameEngine(GameWindow * const gw)
    }
 
    bool paramFileIsValid = true;
-   this->parameters = new GameParameters("data/parameters.input", &paramFileIsValid);
+   this->parameters = new GameParameters(this,
+                                         "data/parameters.input",
+                                         &paramFileIsValid);
    if (!paramFileIsValid) {
       delete this->parameters;
       criticalMessage("Parameter file is invalid");
    }
 
-   this->die = new Die(parameters->MinRoll, parameters->MaxRoll);
+   this->die = new Die(parameters->MinRoll,
+                       parameters->MaxRoll);
    
-   initialisePlayers();
+   initialisePlayers("data/players");
 }
 
 GameEngine::~GameEngine() {
@@ -67,12 +70,15 @@ bool GameEngine::login(Player const * const player,
    return true;
 }
 
-void GameEngine::initialisePlayers() {
+void GameEngine::initialisePlayers(char const * const directory) {
    /* Find all player files in the directory */
-   fs::path playersDirectory = fs::path("data/players");
+   fs::path playersDirectory = fs::path(directory);
    std::vector<std::string> playerFiles;
    if (!fs::exists(playersDirectory)) {
-      criticalMessage("Directory './data/players' doesn't exist!");
+      char criticalbuf[MAX_MESSAGE_LENGTH];
+      snprintf(criticalbuf, MAX_MESSAGE_LENGTH,
+               "Directory '%s' doesn't exist!", directory);
+      criticalMessage(criticalbuf);
    } else {
       for (auto& itr : fs::directory_iterator(playersDirectory)) {
          if (fs::is_regular_file(itr) && itr.path().extension() == ".player") {
@@ -88,8 +94,9 @@ void GameEngine::initialisePlayers() {
       players[i] = new Player(this, playerFiles[i], &playerFileIsValid);
       /* If it's not valid for whatever reason, clear the memory and let the user know */
       if ( !playerFileIsValid ) {
-         char warningbuf[256];
-         snprintf(warningbuf, 256, "Player %zu has an invalid player file at '%s'",
+         char warningbuf[MAX_MESSAGE_LENGTH];
+         snprintf(warningbuf, MAX_MESSAGE_LENGTH,
+                  "Player %zu has an invalid player file at '%s'",
                   i, playerFiles[i].c_str());
          warningMessage(warningbuf);
          delete players[i];
