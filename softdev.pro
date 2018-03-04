@@ -9,6 +9,7 @@ RCC_DIR      = generated
 RESOURCES   += resources/resources.qrc
 QT          += core gui
 LIBS        += -lstdc++fs
+QMAKE_CXXFLAGS += -g
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 HEADERS += \

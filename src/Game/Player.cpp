@@ -24,7 +24,7 @@ Player::Player(GameEngine * const e,
    char tempUsername[MAX_PARAMETER_NAME_LENGTH];
    char tempPassword[MAX_PARAMETER_NAME_LENGTH];
    size_t NumSquads;
-   int * SquadFileNumbers = nullptr;
+   char ** SquadFiles = nullptr;
 
    /* Allocate memory for temporary parameter reading structs */
    PF_ParameterEntry * ParamEntries = new PF_ParameterEntry[nPlayerParameters];
@@ -40,8 +40,8 @@ Player::Player(GameEngine * const e,
    ParamEntries[iPassword].Type    = STRING;
    ParamEntries[iPassword].Pointer = tempPassword;
    strncpy(ParamEntries[iSquadFiles].Parameter, "SquadFiles", MAX_PARAMETER_NAME_LENGTH);
-   ParamEntries[iSquadFiles].Type           = INTEGER;
-   ParamEntries[iSquadFiles].Pointer        = squadFileIsValid; 
+   ParamEntries[iSquadFiles].Type           = STRING;
+   ParamEntries[iSquadFiles].Pointer        = SquadFiles;
    ParamEntries[iSquadFiles].IsArray        = 1;
    ParamEntries[iSquadFiles].NArrayElements = &NumSquads;
 
@@ -62,6 +62,8 @@ Player::Player(GameEngine * const e,
       engine->warningMessage(warningbuf);
       *playerFileIsValid = false;
    }
+
+   SquadFiles = (char**)(ParamEntries[iSquadFiles].Pointer);
 
    /* Clean up */
    delete[] ParamEntries;
@@ -88,7 +90,9 @@ Player::Player(GameEngine * const e,
          delete squads[i];
          squads[i] = nullptr;
       }
+      free(SquadFiles[i]);
    }
+   free(SquadFiles);
    /* Remove any null pointers from the array */
    for (int i = (int)squads.size()-1; i >= 0; i--) {
       if (squads[i] == nullptr) {
@@ -97,7 +101,11 @@ Player::Player(GameEngine * const e,
    }
 }
 
-Player::~Player() { }
+Player::~Player() {
+   for (auto& squad : this->squads) {
+      delete squad;
+   }
+}
 
 void Player::deleteSquad(size_t const indexToDelete) {
    if (indexToDelete >= numSquads()) {

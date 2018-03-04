@@ -21,6 +21,10 @@ char * PF_RPF_ExtractCommentlessLine(FILE * const File, char * const StrippedLin
   return NULL;
  }
 
+ for (size_t i = 0; i < strlen(Line); i++) {
+   if (Line[i] == '\n') Line[i] = '\0';
+ }
+
  /* Ignore everything after the first comment character */
  char *CommentPoint=strstr(Line,COMMENT_CHARACTER);
  if(CommentPoint!=NULL) {

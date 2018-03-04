@@ -18,6 +18,7 @@ int PF_RPF_ReadArray(FILE * const File,
  unsigned long int *UnsignedLongIntPointer = NULL;
  float             *FloatPointer           = NULL;
  double            *DoublePointer          = NULL;
+ char             **StringPointer          = NULL;
 
  /* malloc, which depends on the data type */
  switch(ParameterEntry->Type) {
@@ -44,6 +45,13 @@ int PF_RPF_ReadArray(FILE * const File,
 
   case DOUBLE:
    DoublePointer  =(double *)  malloc(sizeof(double)  * *(ParameterEntry->NArrayElements));
+   break;
+
+  case STRING:
+   StringPointer = (char **)malloc( sizeof(char *) * *(ParameterEntry->NArrayElements));
+   for (size_t i = 0; i < *(ParameterEntry->NArrayElements); i++) {
+      StringPointer[i] = (char *)malloc( sizeof(char) * MAX_LINE_LENGTH );
+   }
    break;
 
   default:
@@ -101,6 +109,10 @@ int PF_RPF_ReadArray(FILE * const File,
     sscanf(StrippedLine, Format, DoublePointer  + iArrayIndex );
     break;
 
+   case STRING:
+    sscanf(StrippedLine, Format, StringPointer[iArrayIndex]);
+    break;
+
    default:
     printf("%s: %i: ERROR: Unknown ParameterType %i\n",
            __FILE__,__LINE__,ParameterEntry->Type);
@@ -134,6 +146,10 @@ int PF_RPF_ReadArray(FILE * const File,
 
   case DOUBLE:
    *((double **)ParameterEntry->Pointer)   = DoublePointer;
+   break;
+
+  case STRING:
+   ParameterEntry->Pointer = StringPointer;
    break;
 
   default:

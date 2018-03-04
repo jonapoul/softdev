@@ -5,6 +5,8 @@
 #include "Game/Hierophant.h"
 #include "Game/SquadMember.h"
 
+#include "functions.h"
+
 Squad::Squad(GameEngine * const e,
              Player * const p,
              char const * const filename,
