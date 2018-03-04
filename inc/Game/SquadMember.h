@@ -5,20 +5,23 @@
 #include <vector>
 
 class Squad;
-class GameParameters;
+class GameEngine;
+class Player;
 
 class SquadMember {
 public:
-   SquadMember();
+   SquadMember(GameEngine * const e,
+               Player * const p,
+               Squad * const s);
 
 protected:
+   GameEngine * engine;
+   Player * player;
    Squad * squad;
    bool isCaptain;
    bool isHierophant;
 
-   /* MAYBE USE THIS OR JUST LIST ALL PARAMS LIKE BELOW? */
-   GameParameters * parameters;
-   
+   /* MAYBE GET RID OF THESE AND JUST USE engine->parameters? */
    unsigned movement; /* max movement distance in inches */
    int strength;      /* roll under this number in attacking/defending (+/-) */
    int shooting;      /* roll under this number in shooting */

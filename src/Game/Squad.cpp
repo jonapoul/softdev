@@ -201,12 +201,23 @@ Squad::Squad(GameEngine * const e,
    delete[] ParamEntries;
    fclose(ParamFile);
 
-   if ( *squadFileIsValid == false ) {
-      return;
+   /* If everything's ok so far, pass the string arrays to be converted into
+      squad members, captain and hierophant */
+   if ( *squadFileIsValid == true ) {
+      this->isPublic = (std::string(isPublicStr) == "true") ? true : false;
+      this->squadMembers.resize(NumNormalSquadMembers, new SquadMember(engine,
+                                                                       player,
+                                                                       this) );
+      this->captain = new Captain(engine, player, this,
+                                  CaptainSkills,  NumCaptainSkills,
+                                  CaptainItems,   NumCaptainItems,
+                                  CaptainWeapons, NumCaptainWeapons);
+      this->hierophant = new Hierophant(engine, player, this,
+                                        HierophantSkills,  NumHierophantSkills,
+                                        HierophantItems,   NumHierophantItems,
+                                        HierophantWeapons, NumHierophantWeapons);
    }
-
-   this->isPublic = (std::string(isPublicStr) == "true") ? true : false;
-
+   /* Deallocate all the various arrays */
    freeArrayOfCStrings(CaptainSkills,     NumCaptainSkills);
    freeArrayOfCStrings(CaptainItems,      NumCaptainItems);
    freeArrayOfCStrings(CaptainWeapons,    NumCaptainWeapons);
@@ -217,4 +228,13 @@ Squad::Squad(GameEngine * const e,
    freeArrayOfCStrings(SquadWeapons,      NumSquadWeapons);
    free(CaptainStatBoosts);
    free(HierophantStatBoosts);
+}
+
+Squad::~Squad() {
+   /* TODO: write to file here? Prompt for save? */
+   for (auto& member : this->squadMembers) {
+      delete member;
+   }
+   delete captain;
+   delete hierophant;
 }

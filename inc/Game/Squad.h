@@ -48,6 +48,8 @@ public:
          char const * const filename,
          bool * const squadFileIsValid);
 
+   ~Squad();
+
 private:
    GameEngine * engine;
    Player * player;
