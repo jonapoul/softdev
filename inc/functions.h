@@ -2,8 +2,9 @@
 #define FUNCTIONS_H
 
 #include <string>
+#include <iostream>
 
-#define PRINT(x) printf("%s: %03i: %s = %e\n",__FILE__,__LINE__,#x,(double)x);
+#define PRINT(x) std::cout<<__FILE__<<": "<<__LINE__<<": "<<#x<<" = "<<x<<std::endl;
 #define ASSERT(check) assert_impl(check, #check, __FILE__, __LINE__);
 #define MIN(x,y) ((x<y)?x:y)
 #define MAX(x,y) ((x>y)?x:y)

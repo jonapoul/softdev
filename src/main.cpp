@@ -1,8 +1,11 @@
 #include <QApplication>
 #include <QFile>
 #include <QFontDatabase>
-#include "GameWindow.h"
-#include "Dialog.h"
+
+#include "UI/GameWindow.h"
+#include "UI/Dialog.h"
+
+#include "Game/GameEngine.h"
 
 int main(int argc, char **argv) {
   QApplication app (argc, argv);
@@ -16,6 +19,10 @@ int main(int argc, char **argv) {
 
   QFontDatabase::addApplicationFont("qrc:///fonts/Roboto.ttf");
   QFontDatabase::addApplicationFont("qrc:///fonts/KronaOne.ttf");
+
+  GameEngine * engine = new GameEngine(nullptr);
+  delete engine;
+  return 0;
 
 #if 1
   GameWindow * window = new GameWindow;

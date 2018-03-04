@@ -5,8 +5,8 @@ class Die {
 public:
    Die(int const minValue, int const maxValue);
    int roll() const;
-   int max() const;
-   int min() const;
+   int maxRoll() const;
+   int minRoll() const;
    void testRandomness() const;
 
 private:

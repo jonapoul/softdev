@@ -1,5 +1,3 @@
-#include <vector>
-
 #include "Game/Captain.h"
 
 #include "Game/SkillTree.h"

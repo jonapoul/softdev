@@ -21,12 +21,13 @@ enum {
    iBaseHealth,
    iBaseCost,
    iEncryptionKey,
-   nParameters
+   nGameParameters
 };
 
 class GameParameters {
 public:
-   GameParameters(char const * const Filename);
+   GameParameters(char const * const Filename,
+                  bool * const paramFileIsValid);
    ~GameParameters();
 
    int writeToFile(PF_ParameterEntry * const ParameterEntries,

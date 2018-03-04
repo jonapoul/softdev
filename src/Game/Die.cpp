@@ -22,26 +22,26 @@ int Die::roll() const {
    if (!hasBeenSeeded) {
       std::random_device device;
       generator = std::mt19937(device());
-      distribution = std::uniform_int_distribution<>(min(), max());
+      distribution = std::uniform_int_distribution<>(minRoll(), maxRoll());
       hasBeenSeeded = true;
    }
    return distribution(generator);
 }
 
-int Die::min() const {
+int Die::minRoll() const {
    return this->minValue;
 }
 
-int Die::max() const {
+int Die::maxRoll() const {
    return this->maxValue;
 }
 
 /* Generate a load of numbers and test their distribution */
 void Die::testRandomness() const {
    size_t const NumGenerated = 1000000;
-   size_t const NumBins = max() - min();
-   std::cout << "Testing die for uniform randomness between " << min()
-             << " and " << max() << " over " << NumGenerated << " rolls:\n";
+   size_t const NumBins = maxRoll() - minRoll();
+   std::cout << "Testing die for uniform randomness between " << minRoll()
+             << " and " << maxRoll() << " over " << NumGenerated << " rolls:\n";
 
    /* Generate the numbers */
    std::vector<size_t> Frequencies(NumBins, 0);

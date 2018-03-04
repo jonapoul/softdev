@@ -1,85 +1,56 @@
 #include <iostream>
 #include <QtWidgets>
 
-#include "Game/GameWindow.h"
+#include "UI/GameWindow.h"
+#include "UI/TitleScreen.h"
+
 #include "Game/GameEngine.h"
 #include "functions.h"
 
-#include "UI/TitleScreen.h"
-
 GameWindow::GameWindow() {
-   /* Build the initial UI */
-   this->createActions();
-   this->createMenus();
+   /* Build and display the title screen UI */
+   createActions();
+   createMenus();
+   loadFonts();
 #ifndef QT_NO_CONTEXTMENU
    QString initMessage = tr("A context menu is available by right-clicking");
-   this->statusBar()->showMessage(initMessage);
+   statusBar()->showMessage(initMessage);
 #endif
-   this->loadTitleScreen();
+   this->titleScreen = new TitleScreen(this);
+   this->titleScreen->load();
+   setCentralWidget(this->titleScreen);
 
-   /* Limit the size, so we don't have to worry about responsive UI design or
-      any of that silliness */
-   this->setMinimumSize(1152, 648);
-   this->setMaximumSize(1152, 648);
-   //this->setWindowState(Qt::WindowMaximized);
+   /* Limit the size, so we don't have to worry about responsive UI design */
+   QSize const ScreenSize(1152, 648);
+   setMinimumSize(ScreenSize);
+   setMaximumSize(ScreenSize);
 
-   /* Set up the game engine, load paramater files etc */
-   this->engine = new GameEngine();
+   /* Set up the backend game engine, load parameter files etc */
+   this->engine = new GameEngine(this);
 }
 
 GameWindow::~GameWindow() {
    delete this->engine;
 }
 
-void GameWindow::loadTitleScreen() {
-   /* We'll hook everything to this central widget, so it'll get autodeleted
-      when we change to another screen */
-   QWidget * widget = new QWidget;
-   this->setCentralWidget(widget);
+void GameWindow::criticalMessage(char const * const message) {
+   QMessageBox::critical(this,
+                         tr("Game Engine Critical Message"),
+                         tr(message));
+   QCoreApplication::quit();
+}
 
-   /* Loading the game's logo front and centre */
-   QGroupBox * logoBox = new QGroupBox;
-   logoBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-   QPixmap pixmap = QPixmap::fromImage( QImage(tr(":/logo.jpg")) );
-   QLabel * logoLabel = new QLabel;
-   logoLabel->setPixmap(pixmap);
-   float const factor_w = (float)pixmap.size().width()  / (float)logoBox->size().width();
-   float const factor_h = (float)pixmap.size().height() / (float)logoBox->size().height();
-   float const factor = MIN(factor_w, factor_h) * 1.6; /* 1.6 = fudge factor */
-   int const w = (int)((float)pixmap.size().width()  / factor); 
-   int const h = (int)((float)pixmap.size().height() / factor);
-   logoLabel->setScaledContents(true);
-   logoLabel->setFixedSize( QSize(w, h) );
-   QHBoxLayout * logoLayout = new QHBoxLayout;
-   logoLayout->addWidget(logoLabel);
-   logoBox->setLayout(logoLayout);
+void GameWindow::warningMessage(char const * const message) {
+   QMessageBox::warning(this,
+                        tr("Game Engine Warning Message"),
+                        tr(message));
+}
 
-   /* Three buttons to start with */
-   QGroupBox * buttonsBox = new QGroupBox;
-   buttonsBox->setAlignment(Qt::AlignHCenter);
-   buttonsBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-   QPushButton * logInButton    = new QPushButton(tr("Log In"));
-   QPushButton * registerButton = new QPushButton(tr("Register Account"));
-   QPushButton * settingsButton = new QPushButton(tr("Settings"));
-   logInButton->setStyleSheet(" QPushButton { height: 80%; } ");
-   registerButton->setStyleSheet(" QPushButton { height: 80%; } ");
-   settingsButton->setStyleSheet(" QPushButton { height: 80%; } ");
-   QHBoxLayout * buttonsLayout = new QHBoxLayout;
-   buttonsLayout->addWidget(new QWidget,    2); /* spacing */
-   buttonsLayout->addWidget(logInButton,    2);
-   buttonsLayout->addWidget(new QWidget,    1); /* spacing */
-   buttonsLayout->addWidget(registerButton, 2);
-   buttonsLayout->addWidget(new QWidget,    1); /* spacing */
-   buttonsLayout->addWidget(settingsButton, 2);
-   buttonsLayout->addWidget(new QWidget,    2); /* spacing */
-   buttonsBox->setLayout(buttonsLayout);
-
-   /* Apply it all to the page layout */
-   QVBoxLayout * layout = new QVBoxLayout;
-   layout->addWidget(logoBox,    4);
-   layout->addWidget(buttonsBox, 2);
-   widget->setLayout(layout);
-
+void GameWindow::informationMessage(char const * const message) {
+   QMessageBox::information(this,
+                            tr("Game Engine Information Message"),
+                            tr(message));
+}
 
    // QWidget * widget = new QWidget;
    // this->setCentralWidget(widget);
@@ -119,9 +90,6 @@ void GameWindow::loadTitleScreen() {
    // layout->addWidget(progressBar);
    // layout->addWidget(bottomFiller);
    // widget->setLayout(layout);
-
-   this->setWindowTitle(tr("Title Screen"));
-}
 
 void GameWindow::closeEvent(QCloseEvent * event) {
    if ( this->shouldExit() ) {
@@ -277,4 +245,9 @@ void GameWindow::createMenus() {
    this->HelpMenu = menuBar()->addMenu(tr("&Help"));
    this->HelpMenu->addAction(AboutAction);
    this->HelpMenu->addAction(AboutQtAction);
+}
+
+void GameWindow::loadFonts() {
+   this->robotoFont = QFont("Roboto",   15, 40);
+   this->kronaFont  = QFont("KronaOne", 20, 10);
 }

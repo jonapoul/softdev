@@ -7,7 +7,8 @@ extern "C" {
 #include "PF.h"
 }
 
-GameParameters::GameParameters(char const * const Filename) {
+GameParameters::GameParameters(char const * const Filename,
+                               bool * const paramFileIsValid) {
    /* Defaults */
    this->MinRoll       =   0;
    this->MaxRoll       = 100;
@@ -21,10 +22,10 @@ GameParameters::GameParameters(char const * const Filename) {
    this->EncryptionKey = new char[ENCRYPTION_KEY_SIZE];
 
    /* Allocate memory */
-   PF_ParameterEntry * ParamEntries = new PF_ParameterEntry[nParameters];
+   PF_ParameterEntry * ParamEntries = new PF_ParameterEntry[nGameParameters];
 
    /* Build ParamEntries array */
-   for (size_t i = 0; i < nParameters; i++) {
+   for (size_t i = 0; i < nGameParameters; i++) {
       ParamEntries[i].IsBoolean = 0;
       ParamEntries[i].IsArray   = 0;
    }
@@ -73,11 +74,13 @@ GameParameters::GameParameters(char const * const Filename) {
    FILE * ParamFile;
    if ( (ParamFile = fopen(Filename, "r")) == NULL) {
       std::cerr << "ERROR: failed to load file " << ParamFile << std::endl;
+      *paramFileIsValid = false;
    }
 
    /* Read the Parameters */
-   if (PF_ReadParameterFile(ParamFile, ParamEntries, nParameters) != EXIT_SUCCESS) {
+   if (PF_ReadParameterFile(ParamFile, ParamEntries, nGameParameters) != EXIT_SUCCESS) {
       std::cerr << "ERROR: PF_ReadParameterFile failed" << std::endl;
+      *paramFileIsValid = false;
    }
 
    /* Clean up */

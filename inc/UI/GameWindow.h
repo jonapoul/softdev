@@ -8,6 +8,7 @@ class QActionGroup;
 class QAction;
 class QLabel;
 class QCloseEvent;
+class TitleScreen;
 
 class GameEngine;
 
@@ -18,6 +19,13 @@ public:
    explicit GameWindow();
    ~GameWindow();
 
+   void criticalMessage(char const * const message);
+   void warningMessage(char const * const message);
+   void informationMessage(char const * const message);
+
+   QFont robotoFont;
+   QFont kronaFont;
+
 protected:
 #ifndef QT_NO_CONTEXTMENU
    void contextMenuEvent(QContextMenuEvent * event) override;
@@ -27,12 +35,10 @@ protected:
 private:
    void createActions();
    void createMenus();
+   void loadFonts();
    bool shouldExit();
 
-   void loadTitleScreen();
-   void loadLoginScreen();
-   void loadRegisterScreen();
-   void looadSettingsScreen();
+   TitleScreen * titleScreen;
 
    QMenu * FileMenu;
    QMenu * EditMenu;

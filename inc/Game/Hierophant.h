@@ -1,17 +1,19 @@
 #ifndef HIEROPHANT_H
 #define HIEROPHANT_H
 
+#include <vector>
 #include "SquadMember.h"
+
 class SkillTree;
 class Skill;
 
-enum HierophantSpecialism {
+typedef enum {
    SpeakerHS, /* +morale,   +movement */
    PriestHS,  /* +health,   +morale */
    MedicHS,   /* +health,   +strength */
    SupportHS, /* +shooting, +armour */
-   CountHS
-};
+   NumHierophantSpecialisms
+} HierophantSpecialism;
 
 class Hierophant : public SquadMember {
 public:
@@ -20,8 +22,8 @@ public:
 private:
    int experience;
    HierophantSpecialism specialism;
-   SkillTree * skill_tree;
-   std::vector<Skill> skills;
+   SkillTree * skillTree;
+   std::vector<Skill *> skills;
 };
 
 #endif

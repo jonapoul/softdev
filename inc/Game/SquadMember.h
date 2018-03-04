@@ -3,7 +3,9 @@
 
 #include <string>
 #include <vector>
+
 class Squad;
+class GameParameters;
 
 class SquadMember {
 public:
@@ -11,10 +13,12 @@ public:
 
 protected:
    Squad * squad;
-   
    bool isCaptain;
    bool isHierophant;
 
+   /* MAYBE USE THIS OR JUST LIST ALL PARAMS LIKE BELOW? */
+   GameParameters * parameters;
+   
    unsigned movement; /* max movement distance in inches */
    int strength;      /* roll under this number in attacking/defending (+/-) */
    int shooting;      /* roll under this number in shooting */

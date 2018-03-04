@@ -8,6 +8,7 @@ MOC_DIR      = generated
 RCC_DIR      = generated
 RESOURCES   += resources/resources.qrc
 QT          += core gui
+LIBS        += -lstdc++fs
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 HEADERS += \
