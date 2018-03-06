@@ -5,8 +5,8 @@
 
 Skill::Skill(GameEngine * const e,
              SquadMember * const s) 
-      : GameObject(), engine(e), squadmember(s) {
-   this->setType(SKILL);
+      : GameObject(SKILL), engine(e), squadmember(s) {
+
 }
 
 void Skill::checkValidity() const {

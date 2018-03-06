@@ -4,8 +4,8 @@
 size_t GameObject::id_running_counter = 0;
 std::vector<GameObject*> GameObject::all_objects = {};
 
-GameObject::GameObject() 
-      : id_(GameObject::id_running_counter), type_(NO_TYPE) {
+GameObject::GameObject(ObjectType const t)
+      : id_(GameObject::id_running_counter), type_(t) {
    GameObject::id_running_counter++;
    GameObject::all_objects.push_back(this);
 }
@@ -24,6 +24,17 @@ ObjectType GameObject::type() const {
 
 void GameObject::setType(ObjectType const t) {
    this->type_ = t;
+}
+
+void GameObject::deallocate() {
+   for (size_t i = 0; i < GameObject::all_objects.size(); i++) {
+      if (GameObject::all_objects[i]->ID() == this->ID()) {
+         auto start = GameObject::all_objects.begin();
+         GameObject::all_objects.erase(start + i);
+         break;
+      }
+   }
+   delete this; // NEPHEW
 }
 
 void GameObject::checkValidity() const {

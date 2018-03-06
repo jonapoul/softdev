@@ -13,8 +13,7 @@ extern "C" {
 Player::Player(GameEngine * const e,
                std::string const& file,
                bool * const playerFileIsValid) 
-      : GameObject(), engine(e), loginStatus(false), filename(file) {
-   this->setType(PLAYER);
+      : GameObject(PLAYER), engine(e), loginStatus(false), filename(file) {
 
    /* Defaults */
    char tempUsername[MAX_LINE_LENGTH];
@@ -37,7 +36,7 @@ Player::Player(GameEngine * const e,
    ParamEntries[iPassword].Pointer = tempPassword;
    strncpy(ParamEntries[iSquadFiles].Parameter, "SquadFiles", MAX_PARAMETER_NAME_LENGTH);
    ParamEntries[iSquadFiles].Type           = STRING;
-   ParamEntries[iSquadFiles].Pointer        = SquadFiles;
+   ParamEntries[iSquadFiles].Pointer        = &SquadFiles;
    ParamEntries[iSquadFiles].IsArray        = 1;
    ParamEntries[iSquadFiles].NArrayElements = &NumSquads;
 
@@ -60,8 +59,6 @@ Player::Player(GameEngine * const e,
       engine->warningMessage(warningbuf);
       *playerFileIsValid = false;
    }
-
-   SquadFiles = (char**)(ParamEntries[iSquadFiles].Pointer);
 
    /* Clean up */
    delete[] ParamEntries;
@@ -86,7 +83,8 @@ Player::Player(GameEngine * const e,
                   "Player '%s' has an invalid squad file at '%s'",
                   username.c_str(), SquadFiles[i]);
          engine->warningMessage(warningbuf);
-         delete squads[i];
+         squads[i]->deallocate();
+         /* Mark it as to-be-removed */
          squads[i] = nullptr;
       }
    }
@@ -100,8 +98,8 @@ Player::Player(GameEngine * const e,
 }
 
 Player::~Player() {
-   for (auto& squad : this->squads) {
-      delete squad;
+   for (auto squad : this->squads) {
+      squad->deallocate();
    }
 }
 
@@ -116,7 +114,7 @@ void Player::deleteSquad(size_t const indexToDelete) {
       return;
    }
    /* clear the allocated memory */
-   delete squads[indexToDelete];
+   squads[indexToDelete]->deallocate();
    /* remove the deleted pointer from the array */
    squads.erase(squads.begin() + indexToDelete);
 }

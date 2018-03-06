@@ -11,8 +11,7 @@ namespace fs = std::experimental::filesystem;
 #include "functions.h"
 
 GameEngine::GameEngine(GameWindow * const gw)
-      : GameObject(), window(gw) {
-   this->setType(GAMEENGINE);
+      : GameObject(GAMEENGINE), window(gw) {
    if (!gw) {
       informationMessage("GameEngine->window is a nullptr, using std::cout for output");
    }
@@ -22,7 +21,7 @@ GameEngine::GameEngine(GameWindow * const gw)
                                          "data/parameters.input",
                                          &paramFileIsValid);
    if (!paramFileIsValid) {
-      delete this->parameters;
+      this->parameters->deallocate();
       criticalMessage("Parameter file is invalid");
    }
 
@@ -31,10 +30,10 @@ GameEngine::GameEngine(GameWindow * const gw)
 }
 
 GameEngine::~GameEngine() {
-   delete this->parameters;
-   delete this->die;
+   parameters->deallocate();
+   die->deallocate();
    for (auto player : this->players) {
-      delete player;
+      player->deallocate();
    }
 }
 

@@ -32,7 +32,8 @@ int main(int argc, char **argv) {
    return app.exec();
 #else
    GameEngine * engine = new GameEngine(nullptr);
-   delete engine;
+   engine->deallocate();
+
    return 0;
 #endif
 }

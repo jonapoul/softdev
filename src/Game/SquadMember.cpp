@@ -7,8 +7,7 @@
 SquadMember::SquadMember(GameEngine * const e,
                          Player * const p,
                          Squad * const s)
-      : GameObject(), engine(e), player(p), squad(s) {
-   this->setType(SQUADMEMBER);
+      : GameObject(SQUADMEMBER), engine(e), player(p), squad(s) {
    /* TODO: Something*/
 }
 

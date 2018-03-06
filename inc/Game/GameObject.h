@@ -32,11 +32,12 @@ public:
       almost certainly a better solution */
    static std::vector<GameObject*> all_objects;
 
-   GameObject();
+   GameObject(ObjectType const t);
    virtual ~GameObject();
 
    size_t ID() const;
    ObjectType type() const;
+   void deallocate();
    void setType(ObjectType const t);
    virtual void checkValidity() const;
 

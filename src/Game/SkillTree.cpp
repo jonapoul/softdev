@@ -3,8 +3,7 @@
 
 SkillTree::SkillTree(GameEngine * const e,
                      SquadMember * const s)
-      : GameObject(), engine(e), squadmember(s) {
-   this->setType(SKILLTREE);
+      : GameObject(SKILLTREE), engine(e), squadmember(s) {
 
 }
 

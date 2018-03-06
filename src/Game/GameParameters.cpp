@@ -11,8 +11,7 @@ extern "C" {
 GameParameters::GameParameters(GameEngine * const e,
                                char const * const Filename,
                                bool * const paramFileIsValid)
-      : GameObject(), engine(e) {
-   this->setType(GAMEPARAMETERS);
+      : GameObject(GAMEPARAMETERS), engine(e) {
 
    /* Defaults */
    this->MinRoll              =   0;

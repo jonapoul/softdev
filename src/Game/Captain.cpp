@@ -9,8 +9,8 @@ Captain::Captain(GameEngine * const e,
                  Player * const p,
                  Squad * const s)
       : SquadMember(e, p, s), specialism(NoCaptainSpecialism) {
-   this->setType(CAPTAIN);
    /* TODO: something */
+   this->setType(CAPTAIN);
 }
 
 Captain::~Captain() {

@@ -16,8 +16,7 @@ extern "C" {
 
 Squad::Squad(GameEngine * const e,
              Player * const p)
-      : engine(e), player(p) {
-   this->setType(SQUAD);
+      : GameObject(SQUAD), engine(e), player(p) {
    /* TODO: Create blank squad based on engine->parameters */
 }
 
@@ -25,8 +24,7 @@ Squad::Squad(GameEngine * const e,
              Player * const p,
              char const * const file,
              bool * const squadFileIsValid)
-      : engine(e), player(p), filename(file) {
-
+      : GameObject(SQUAD), engine(e), player(p), filename(file) {
    /* trim leading/trailing whitespace, then add the expected directory
       structure before the filename */
    trim(&filename);
@@ -101,15 +99,15 @@ Squad::Squad(GameEngine * const e,
    ParamEntries[iCaptainSpecialism].Pointer = CaptainSpecialism;
    strncpy(ParamEntries[iCaptainSkills].Parameter, "CaptainSkills", MAX_PARAMETER_NAME_LENGTH);
    ParamEntries[iCaptainSkills].Type           = STRING;
-   ParamEntries[iCaptainSkills].Pointer        = CaptainSkills;
+   ParamEntries[iCaptainSkills].Pointer        = &CaptainSkills;
    ParamEntries[iCaptainSkills].NArrayElements = &NumCaptainSkills;
    strncpy(ParamEntries[iCaptainItems].Parameter, "CaptainItems", MAX_PARAMETER_NAME_LENGTH);
    ParamEntries[iCaptainItems].Type           = STRING;
-   ParamEntries[iCaptainItems].Pointer        = CaptainItems;
+   ParamEntries[iCaptainItems].Pointer        = &CaptainItems;
    ParamEntries[iCaptainItems].NArrayElements = &NumCaptainItems;
    strncpy(ParamEntries[iCaptainWeapons].Parameter, "CaptainWeapons", MAX_PARAMETER_NAME_LENGTH);
    ParamEntries[iCaptainWeapons].Type           = STRING;
-   ParamEntries[iCaptainWeapons].Pointer        = CaptainWeapons;
+   ParamEntries[iCaptainWeapons].Pointer        = &CaptainWeapons;
    ParamEntries[iCaptainWeapons].NArrayElements = &NumCaptainWeapons;
    strncpy(ParamEntries[iCaptainStatBoosts].Parameter, "CaptainStatBoosts", MAX_PARAMETER_NAME_LENGTH);
    ParamEntries[iCaptainStatBoosts].Type           = INTEGER;
@@ -126,15 +124,15 @@ Squad::Squad(GameEngine * const e,
    ParamEntries[iHierophantSpecialism].Pointer = HierophantSpecialism;
    strncpy(ParamEntries[iHierophantSkills].Parameter, "HierophantSkills", MAX_PARAMETER_NAME_LENGTH);
    ParamEntries[iHierophantSkills].Type           = STRING;
-   ParamEntries[iHierophantSkills].Pointer        = HierophantSkills;
+   ParamEntries[iHierophantSkills].Pointer        = &HierophantSkills;
    ParamEntries[iHierophantSkills].NArrayElements = &NumHierophantSkills;
    strncpy(ParamEntries[iHierophantItems].Parameter, "HierophantItems", MAX_PARAMETER_NAME_LENGTH);
    ParamEntries[iHierophantItems].Type           = STRING;
-   ParamEntries[iHierophantItems].Pointer        = HierophantItems;
+   ParamEntries[iHierophantItems].Pointer        = &HierophantItems;
    ParamEntries[iHierophantItems].NArrayElements = &NumHierophantItems;
    strncpy(ParamEntries[iHierophantWeapons].Parameter, "HierophantWeapons", MAX_PARAMETER_NAME_LENGTH);
    ParamEntries[iHierophantWeapons].Type           = STRING;
-   ParamEntries[iHierophantWeapons].Pointer        = HierophantWeapons;
+   ParamEntries[iHierophantWeapons].Pointer        = &HierophantWeapons;
    ParamEntries[iHierophantWeapons].NArrayElements = &NumHierophantWeapons;
    strncpy(ParamEntries[iHierophantStatBoosts].Parameter, "HierophantStatBoosts", MAX_PARAMETER_NAME_LENGTH);
    ParamEntries[iHierophantStatBoosts].Type           = INTEGER;
@@ -147,11 +145,11 @@ Squad::Squad(GameEngine * const e,
    ParamEntries[iNumNormalSquadMembers].Pointer = &NumNormalSquadMembers;
    strncpy(ParamEntries[iSquadWeapons].Parameter, "SquadWeapons", MAX_PARAMETER_NAME_LENGTH);
    ParamEntries[iSquadWeapons].Type           = STRING;
-   ParamEntries[iSquadWeapons].Pointer        = SquadWeapons;
+   ParamEntries[iSquadWeapons].Pointer        = &SquadWeapons;
    ParamEntries[iSquadWeapons].NArrayElements = &NumSquadWeapons;
    strncpy(ParamEntries[iSquadItems].Parameter, "SquadItems", MAX_PARAMETER_NAME_LENGTH);
    ParamEntries[iSquadItems].Type           = STRING;
-   ParamEntries[iSquadItems].Pointer        = SquadItems;
+   ParamEntries[iSquadItems].Pointer        = &SquadItems;
    ParamEntries[iSquadItems].NArrayElements = &NumSquadItems;
 
    /* Open Parameters file for reading */
@@ -187,16 +185,6 @@ Squad::Squad(GameEngine * const e,
       engine->warningMessage(warningbuf);
       *squadFileIsValid = false;
    }
-
-   /* Recast some of the pointers so we can use them as arrays of strings */
-   CaptainSkills     = (char**)(ParamEntries[iCaptainSkills].Pointer);
-   CaptainItems      = (char**)(ParamEntries[iCaptainItems].Pointer);
-   CaptainWeapons    = (char**)(ParamEntries[iCaptainWeapons].Pointer);
-   HierophantSkills  = (char**)(ParamEntries[iHierophantSkills].Pointer);
-   HierophantItems   = (char**)(ParamEntries[iHierophantItems].Pointer);
-   HierophantWeapons = (char**)(ParamEntries[iHierophantWeapons].Pointer);
-   SquadWeapons      = (char**)(ParamEntries[iSquadWeapons].Pointer);
-   SquadItems        = (char**)(ParamEntries[iSquadItems].Pointer);
 
    /* Clean up parameter-reading objects */
    delete[] ParamEntries;
@@ -237,11 +225,11 @@ Squad::Squad(GameEngine * const e,
 
 Squad::~Squad() {
    /* TODO: write to file here? Prompt for save? */
-   for (auto& member : this->squadMembers) {
-      delete member;
+   for (auto member : this->squadMembers) {
+      member->deallocate();
    }
-   delete captain;
-   delete hierophant;
+   captain->deallocate();
+   hierophant->deallocate();
 }
 
 void Squad::checkValidity() const {

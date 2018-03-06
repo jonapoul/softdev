@@ -1,5 +1,4 @@
 #include <iostream>
-#include <random>
 #include <vector>
 #include <numeric>
 
@@ -11,25 +10,21 @@
 Die::Die(int const Min,
          int const Max,
          GameEngine * const e)
-      : GameObject(), engine(e), maxValue(Max), minValue(Min) { 
-   this->setType(DIE);
-   /* initialise the mersenne-twister generator in roll() */
-   int seed = roll();
+      : GameObject(DIE), engine(e), maxValue(Max), minValue(Min) {
+   /* initialise the mersenne-twister int generator */
+   this->device       = new std::random_device;
+   this->generator    = new std::mt19937( (*device)() );
+   this->distribution = new std::uniform_int_distribution<>(minRoll(), maxRoll());
 }
 
-/* Seeds the generator on the first roll, then returns a value within the 
-   specified range */
+Die::~Die() {
+   delete device;
+   delete generator;
+   delete distribution;
+}
+
 int Die::roll() const {
-   static std::mt19937 generator;
-   static std::uniform_int_distribution<> distribution;
-   static bool hasBeenSeeded = false;
-   if (!hasBeenSeeded) {
-      std::random_device device;
-      generator = std::mt19937(device());
-      distribution = std::uniform_int_distribution<>(minRoll(), maxRoll());
-      hasBeenSeeded = true;
-   }
-   return distribution(generator);
+   return (*distribution)(*generator);
 }
 
 int Die::minRoll() const {

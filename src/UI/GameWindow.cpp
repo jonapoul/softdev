@@ -30,7 +30,7 @@ GameWindow::GameWindow() {
 }
 
 GameWindow::~GameWindow() {
-   delete this->engine;
+   this->engine->deallocate();
 }
 
 void GameWindow::criticalMessage(char const * const message) {
