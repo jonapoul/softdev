@@ -5,17 +5,26 @@
 
 Hierophant::Hierophant(GameEngine * const e,
                        Player * const p,
-                       Squad * const s,
-                       char ** skillsStr,
-                       size_t const Nskills,
-                       char ** itemsStr,
-                       size_t const Nitems,
-                       char ** weaponsStr,
-                       size_t const NWeapons)
+                       Squad * const s)
       : SquadMember(e, p, s) {
    /* TODO: Something */
 }
 
 Hierophant::~Hierophant() {
    /* Delete skills? */
+}
+
+void Hierophant::initSkills(char ** skillsStr,
+                            size_t const Nskills) {
+   /* something */
+}
+
+void Hierophant::initItems(char ** itemsStr,
+                           size_t const Nitems) {
+   /* something */
+}
+
+void Hierophant::initWeapons(char ** weaponsStr,
+                             size_t const NWeapons) {
+   /* something */
 }

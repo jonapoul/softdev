@@ -14,10 +14,6 @@ Player::Player(GameEngine * const e,
                std::string const& file,
                bool * const playerFileIsValid) 
       : engine(e), loginStatus(false), filename(file) {
-   char buf[MAX_MESSAGE_LENGTH];
-   snprintf(buf, MAX_MESSAGE_LENGTH, "Building player from file '%s'",
-            filename.c_str());
-   engine->informationMessage(buf);
 
    /* Defaults */
    char tempUsername[MAX_LINE_LENGTH];

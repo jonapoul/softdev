@@ -7,18 +7,26 @@
 
 Captain::Captain(GameEngine * const e,
                  Player * const p,
-                 Squad * const s,
-                 char ** skillsStr,
-                 size_t const Nskills,
-                 char ** itemsStr,
-                 size_t const Nitems,
-                 char ** weaponsStr,
-                 size_t const NWeapons)
+                 Squad * const s)
       : SquadMember(e, p, s) {
-
    /* TODO: something */
 }
 
 Captain::~Captain() {
    /* Delete skills? */
+}
+
+void Captain::initSkills(char ** skillsStr,
+                         size_t const Nskills) {
+   /* something */
+}
+
+void Captain::initItems(char ** itemsStr,
+                        size_t const Nitems) {
+   /* something */
+}
+
+void Captain::initWeapons(char ** weaponsStr,
+                          size_t const NWeapons) {
+   /* something */
 }

@@ -26,15 +26,11 @@ Squad::Squad(GameEngine * const e,
              char const * const file,
              bool * const squadFileIsValid)
       : engine(e), player(p), filename(file) {
-   /* trim leading/trailing whitespace */
-   trim(&filename);
 
-   /* Add the expected directory structure before the filename */
+   /* trim leading/trailing whitespace, then add the expected directory
+      structure before the filename */
+   trim(&filename);
    filename = "data/squads/" + filename;
-   char infobuf[MAX_MESSAGE_LENGTH];
-   snprintf(infobuf, MAX_MESSAGE_LENGTH, "Building squad from '%s'",
-            filename.c_str());
-   e->informationMessage(infobuf);
 
    /* Defaults */
    this->isPublic = true;
@@ -184,6 +180,11 @@ Squad::Squad(GameEngine * const e,
        || NumCaptainWeapons                         > params->MaxCaptainWeapons
        || NumHierophantItems + NumHierophantWeapons > params->MaxHierophantItems
        || NumHierophantWeapons                      > params->MaxHierophantWeapons) {
+      char warningbuf[MAX_MESSAGE_LENGTH];
+      snprintf(warningbuf, MAX_MESSAGE_LENGTH,
+               "Too many weapons/items on Hierophant/Captain for squad file '%s'",
+               filename.c_str());
+      engine->warningMessage(warningbuf);
       *squadFileIsValid = false;
    }
 
@@ -197,7 +198,7 @@ Squad::Squad(GameEngine * const e,
    SquadWeapons      = (char**)(ParamEntries[iSquadWeapons].Pointer);
    SquadItems        = (char**)(ParamEntries[iSquadItems].Pointer);
 
-   /* Clean up */
+   /* Clean up parameter-reading objects */
    delete[] ParamEntries;
    fclose(ParamFile);
 
@@ -205,18 +206,22 @@ Squad::Squad(GameEngine * const e,
       squad members, captain and hierophant */
    if ( *squadFileIsValid == true ) {
       this->isPublic = (std::string(isPublicStr) == "true") ? true : false;
-      this->squadMembers.resize(NumNormalSquadMembers, new SquadMember(engine,
-                                                                       player,
-                                                                       this) );
-      this->captain = new Captain(engine, player, this,
-                                  CaptainSkills,  NumCaptainSkills,
-                                  CaptainItems,   NumCaptainItems,
-                                  CaptainWeapons, NumCaptainWeapons);
-      this->hierophant = new Hierophant(engine, player, this,
-                                        HierophantSkills,  NumHierophantSkills,
-                                        HierophantItems,   NumHierophantItems,
-                                        HierophantWeapons, NumHierophantWeapons);
+      this->squadMembers.resize(NumNormalSquadMembers, nullptr);
+      for (auto& member : squadMembers) {
+         member = new SquadMember(engine, player, this);
+      }
+
+      this->captain = new Captain(engine, player, this);
+      this->captain->initSkills (CaptainSkills,  NumCaptainSkills);
+      this->captain->initItems  (CaptainItems,   NumCaptainItems);
+      this->captain->initWeapons(CaptainWeapons, NumCaptainWeapons);
+
+      this->hierophant = new Hierophant(engine, player, this);
+      this->hierophant->initSkills (HierophantSkills,  NumHierophantSkills);
+      this->hierophant->initItems  (HierophantItems,   NumHierophantItems);
+      this->hierophant->initWeapons(HierophantWeapons, NumHierophantWeapons);
    }
+
    /* Deallocate all the various arrays */
    freeArrayOfCStrings(CaptainSkills,     NumCaptainSkills);
    freeArrayOfCStrings(CaptainItems,      NumCaptainItems);
