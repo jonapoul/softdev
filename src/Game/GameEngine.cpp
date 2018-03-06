@@ -11,7 +11,8 @@ namespace fs = std::experimental::filesystem;
 #include "functions.h"
 
 GameEngine::GameEngine(GameWindow * const gw)
-      : window(gw) {
+      : GameObject(), window(gw) {
+   this->setType(GAMEENGINE);
    if (!gw) {
       informationMessage("GameEngine->window is a nullptr, using std::cout for output");
    }
@@ -25,9 +26,7 @@ GameEngine::GameEngine(GameWindow * const gw)
       criticalMessage("Parameter file is invalid");
    }
 
-   this->die = new Die(parameters->MinRoll,
-                       parameters->MaxRoll);
-   
+   this->die = new Die(parameters->MinRoll, parameters->MaxRoll, this);
    initialisePlayers("data/players");
 }
 
@@ -39,7 +38,7 @@ GameEngine::~GameEngine() {
    }
 }
 
-void GameEngine::criticalMessage(char const * const message) {
+void GameEngine::criticalMessage(char const * const message) const {
    if (window) {
       window->criticalMessage(message);
    } else {
@@ -48,7 +47,7 @@ void GameEngine::criticalMessage(char const * const message) {
    }
 }
 
-void GameEngine::warningMessage(char const * const message) {
+void GameEngine::warningMessage(char const * const message) const {
    if (window) {
       window->warningMessage(message);
    } else {
@@ -56,7 +55,7 @@ void GameEngine::warningMessage(char const * const message) {
    }
 }
 
-void GameEngine::informationMessage(char const * const message) {
+void GameEngine::informationMessage(char const * const message) const {
    if (window) {
       window->informationMessage(message);
    } else {
@@ -109,4 +108,8 @@ void GameEngine::initialisePlayers(char const * const directory) {
          players.erase(players.begin() + i);
       }
    }
+}
+
+void GameEngine::checkValidity() const {
+   CHECK(window != nullptr, this);
 }

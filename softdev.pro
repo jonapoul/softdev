@@ -1,7 +1,7 @@
 TEMPLATE     = app
 TARGET       = softdev
-DEPENDPATH  += . src lib/libpf
-INCLUDEPATH += . inc lib/libpf
+DEPENDPATH  += . src lib/libPF
+INCLUDEPATH += . inc lib/libPF
 DESTDIR      = bin
 OBJECTS_DIR  = obj
 MOC_DIR      = generated
@@ -18,6 +18,7 @@ QMAKE_CFLAGS += -g
 HEADERS += \
            inc/functions.h \
            # Game objects
+           inc/Game/GameObject.h \
            inc/Game/Captain.h \
            inc/Game/Die.h \
            inc/Game/GameEngine.h \
@@ -29,7 +30,7 @@ HEADERS += \
            inc/Game/Squad.h \
            inc/Game/SquadMember.h \
            # libPF parameter reading
-           lib/libpf/PF.h \
+           lib/libPF/PF.h \
            # QT Objects
            inc/UI/GameWindow.h \
            inc/UI/TitleScreen.h \
@@ -38,6 +39,7 @@ SOURCES += \
            src/main.cpp \
            src/functions.cpp \
            # Game Objects
+           src/Game/GameObject.cpp \
            src/Game/Captain.cpp \
            src/Game/Die.cpp \
            src/Game/GameEngine.cpp \
@@ -49,11 +51,12 @@ SOURCES += \
            src/Game/Squad.cpp \
            src/Game/SquadMember.cpp \
            # libPF parameter reading
-           lib/libpf/PF_Format.c \
-           lib/libpf/PF_ReadParameterFile.c \
-           lib/libpf/PF_RPF_ExtractCommentlessLine.c \
-           lib/libpf/PF_RPF_ReadArray.c \
-           lib/libpf/PF_WriteParameters.c \
+           lib/libPF/PF_Format.c \
+           lib/libPF/PF_ReadParameterFile.c \
+           lib/libPF/PF_RPF_ExtractCommentlessLine.c \
+           lib/libPF/PF_RPF_ReadArray.c \
+           lib/libPF/PF_WriteParameters.c \
+           lib/libPF/PF_FreeStringArray.c \
            # QT Objects
            src/UI/GameWindow.cpp \
            src/UI/TitleScreen.cpp \

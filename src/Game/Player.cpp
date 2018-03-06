@@ -13,7 +13,8 @@ extern "C" {
 Player::Player(GameEngine * const e,
                std::string const& file,
                bool * const playerFileIsValid) 
-      : engine(e), loginStatus(false), filename(file) {
+      : GameObject(), engine(e), loginStatus(false), filename(file) {
+   this->setType(PLAYER);
 
    /* Defaults */
    char tempUsername[MAX_LINE_LENGTH];
@@ -89,7 +90,7 @@ Player::Player(GameEngine * const e,
          squads[i] = nullptr;
       }
    }
-   freeArrayOfCStrings(SquadFiles, NumSquads);
+   PF_FreeStringArray(SquadFiles, NumSquads);
    /* Remove any null pointers from the array */
    for (int i = (int)squads.size()-1; i >= 0; i--) {
       if (squads[i] == nullptr) {
@@ -134,4 +135,10 @@ void Player::addSquad(Squad * const squad) {
 
 size_t Player::numSquads() const {
    return this->squads.size();
+}
+
+void Player::checkValidity() const {
+   CHECK(username.length() > 0, engine);
+   CHECK(password.length() > 0, engine);
+   CHECK(loginStatus == true, engine);
 }

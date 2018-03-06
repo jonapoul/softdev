@@ -17,7 +17,7 @@ extern "C" {
 Squad::Squad(GameEngine * const e,
              Player * const p)
       : engine(e), player(p) {
-
+   this->setType(SQUAD);
    /* TODO: Create blank squad based on engine->parameters */
 }
 
@@ -223,14 +223,14 @@ Squad::Squad(GameEngine * const e,
    }
 
    /* Deallocate all the various arrays */
-   freeArrayOfCStrings(CaptainSkills,     NumCaptainSkills);
-   freeArrayOfCStrings(CaptainItems,      NumCaptainItems);
-   freeArrayOfCStrings(CaptainWeapons,    NumCaptainWeapons);
-   freeArrayOfCStrings(HierophantSkills,  NumHierophantSkills);
-   freeArrayOfCStrings(HierophantItems,   NumHierophantItems);
-   freeArrayOfCStrings(HierophantWeapons, NumHierophantWeapons);
-   freeArrayOfCStrings(SquadItems,        NumSquadItems);
-   freeArrayOfCStrings(SquadWeapons,      NumSquadWeapons);
+   PF_FreeStringArray(CaptainSkills,     NumCaptainSkills);
+   PF_FreeStringArray(CaptainItems,      NumCaptainItems);
+   PF_FreeStringArray(CaptainWeapons,    NumCaptainWeapons);
+   PF_FreeStringArray(HierophantSkills,  NumHierophantSkills);
+   PF_FreeStringArray(HierophantItems,   NumHierophantItems);
+   PF_FreeStringArray(HierophantWeapons, NumHierophantWeapons);
+   PF_FreeStringArray(SquadItems,        NumSquadItems);
+   PF_FreeStringArray(SquadWeapons,      NumSquadWeapons);
    free(CaptainStatBoosts);
    free(HierophantStatBoosts);
 }
@@ -242,4 +242,11 @@ Squad::~Squad() {
    }
    delete captain;
    delete hierophant;
+}
+
+void Squad::checkValidity() const {
+   for (SquadMember* member : squadMembers) {
+      CHECK(member->type() == SQUADMEMBER, engine);
+   }
+   CHECK(credits >= 0, engine);
 }

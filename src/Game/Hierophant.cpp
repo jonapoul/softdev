@@ -6,7 +6,8 @@
 Hierophant::Hierophant(GameEngine * const e,
                        Player * const p,
                        Squad * const s)
-      : SquadMember(e, p, s) {
+      : SquadMember(e, p, s), specialism(NoHierophantSpecialism) {
+   this->setType(HIEROPHANT);
    /* TODO: Something */
 }
 
@@ -27,4 +28,10 @@ void Hierophant::initItems(char ** itemsStr,
 void Hierophant::initWeapons(char ** weaponsStr,
                              size_t const NWeapons) {
    /* something */
+}
+
+void Hierophant::checkValidity() const {
+   CHECK(experience >= 0, engine);
+   CHECK(specialism != NoHierophantSpecialism, engine);
+   /* Something with skills? */
 }

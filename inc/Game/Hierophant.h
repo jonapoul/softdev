@@ -2,7 +2,8 @@
 #define HIEROPHANT_H
 
 #include <vector>
-#include "SquadMember.h"
+#include "Game/SquadMember.h"
+#include "Game/GameObject.h"
 
 class GameEngine;
 class Player;
@@ -11,6 +12,7 @@ class SkillTree;
 class Skill;
 
 typedef enum {
+   NoHierophantSpecialism,
    SpeakerHS, /* +morale,   +movement */
    PriestHS,  /* +health,   +morale */
    MedicHS,   /* +health,   +strength */
@@ -31,6 +33,8 @@ public:
                   size_t const Nitems);
    void initWeapons(char ** weaponsStr,
                     size_t const NWeapons);
+
+   virtual void checkValidity() const;
 
 private:
    int experience;

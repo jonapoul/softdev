@@ -1,15 +1,24 @@
 #ifndef DIE_H
 #define DIE_H
 
-class Die {
+#include "Game/GameObject.h"
+
+class GameEngine;
+
+class Die : public GameObject {
 public:
-   Die(int const minValue, int const maxValue);
+   Die(int const minValue,
+       int const maxValue,
+       GameEngine * const e);
    int roll() const;
    int maxRoll() const;
    int minRoll() const;
-   void testRandomness() const;
+   virtual void checkValidity() const;
+
+   void testRandomness() const; /* debugging */
 
 private:
+   GameEngine * engine;
    int maxValue;
    int minValue;
 };

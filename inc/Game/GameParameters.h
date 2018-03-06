@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <string>
 
+#include "Game/GameObject.h"
+
 extern "C" {
 #include "PF.h"
 }
@@ -30,18 +32,17 @@ enum {
    nGameParameters
 };
 
-class GameParameters {
+class GameParameters : public GameObject {
 public:
    GameParameters(GameEngine * const e,
                   char const * const Filename,
                   bool * const paramFileIsValid);
-   ~GameParameters();
 
    int writeToFile(PF_ParameterEntry * const ParameterEntries,
                    size_t const NParameterEntries,
                    char const * const Filename);
 
-   GameEngine * engine;
+   virtual void checkValidity() const;
 
    int MinRoll;
    int MaxRoll;
@@ -58,6 +59,9 @@ public:
    size_t MaxCaptainWeapons;
    size_t MaxHierophantItems;
    size_t MaxHierophantWeapons;
+   
+private:
+   GameEngine * engine;
 };
 
 #endif

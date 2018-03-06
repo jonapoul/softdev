@@ -11,7 +11,9 @@ extern "C" {
 GameParameters::GameParameters(GameEngine * const e,
                                char const * const Filename,
                                bool * const paramFileIsValid)
-      : engine(e) {
+      : GameObject(), engine(e) {
+   this->setType(GAMEPARAMETERS);
+
    /* Defaults */
    this->MinRoll              =   0;
    this->MaxRoll              = 100;
@@ -105,14 +107,13 @@ GameParameters::GameParameters(GameEngine * const e,
    fclose(ParamFile);
 }
 
-GameParameters::~GameParameters() { }
-
 /* Copied PF_WriteParameters(), but writing to file instead of terminal */
 int GameParameters::writeToFile(PF_ParameterEntry * const ParameterEntries,
                                 size_t const NParameterEntries,
                                 char const * const Filename) {
 
    engine->criticalMessage("Need to redo GameParameters::writeToFile(). Change to output streams rather than fprintf");
+   return EXIT_FAILURE;
 
    FILE * OutputFile = fopen(Filename, "w");
    for (size_t i = 0; i < NParameterEntries; i++) {
@@ -217,4 +218,8 @@ int GameParameters::writeToFile(PF_ParameterEntry * const ParameterEntries,
    } /* End of loop over all parameters */
    fclose(OutputFile);
    return EXIT_SUCCESS;
+}
+
+void GameParameters::checkValidity() const {
+
 }

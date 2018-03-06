@@ -3,6 +3,8 @@
 
 #include <vector>
 
+#include "Game/GameObject.h"
+
 class GameEngine;
 class Player;
 class Captain;
@@ -36,7 +38,7 @@ enum {
    nSquadParameters
 };
 
-class Squad {
+class Squad : public GameObject {
 public:
    /* New squad initialisation */
    Squad(GameEngine * const e,
@@ -49,6 +51,8 @@ public:
          bool * const squadFileIsValid);
 
    ~Squad();
+
+   virtual void checkValidity() const;
 
 private:
    GameEngine * engine;

@@ -20,9 +20,6 @@ std::string encrypt(std::string msg,
 std::string decrypt(std::string const& msg,
                     std::string const& key);
 
-void freeArrayOfCStrings(char ** array,
-                         size_t const nElements);
-
 void trim(std::string * str);
 
 #endif

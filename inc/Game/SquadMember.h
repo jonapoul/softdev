@@ -3,23 +3,24 @@
 
 #include <string>
 #include <vector>
+#include "Game/GameObject.h"
 
 class Squad;
 class GameEngine;
 class Player;
 
-class SquadMember {
+class SquadMember : public GameObject {
 public:
    SquadMember(GameEngine * const e,
                Player * const p,
                Squad * const s);
 
+   virtual void checkValidity() const;
+
 protected:
    GameEngine * engine;
    Player * player;
    Squad * squad;
-   bool isCaptain;
-   bool isHierophant;
 
    /* MAYBE GET RID OF THESE AND JUST USE engine->parameters? */
    unsigned movement; /* max movement distance in inches */

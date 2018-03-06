@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include "Game/GameObject.h"
+
 class Squad;
 class GameEngine;
 
@@ -14,7 +16,7 @@ enum {
    nPlayerParameters
 };
 
-class Player {
+class Player : public GameObject {
 public:
    Player(GameEngine * const e,
           std::string const& filename,
@@ -24,6 +26,8 @@ public:
    void deleteSquad(size_t const indexToDelete);
    void addSquad(Squad * const squad);
    size_t numSquads() const;
+
+   virtual void checkValidity() const;
 
 private:
    GameEngine * engine;

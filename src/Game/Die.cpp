@@ -4,13 +4,17 @@
 #include <numeric>
 
 #include "Game/Die.h"
+#include "Game/GameEngine.h"
+#include "Game/GameObject.h"
 #include "functions.h"
 
 Die::Die(int const Min,
-         int const Max) {
-   this->minValue = Min;
-   this->maxValue = Max;
-   ASSERT( Max > Min );
+         int const Max,
+         GameEngine * const e)
+      : GameObject(), engine(e), maxValue(Max), minValue(Min) { 
+   this->setType(DIE);
+   /* initialise the mersenne-twister generator in roll() */
+   int seed = roll();
 }
 
 /* Seeds the generator on the first roll, then returns a value within the 
@@ -34,6 +38,10 @@ int Die::minRoll() const {
 
 int Die::maxRoll() const {
    return this->maxValue;
+}
+
+void Die::checkValidity() const {
+   CHECK(minValue < maxValue, engine);
 }
 
 /* Generate a load of numbers and test their distribution */
