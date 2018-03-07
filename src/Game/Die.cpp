@@ -5,7 +5,6 @@
 #include "Game/Die.h"
 #include "Game/GameEngine.h"
 #include "Game/GameObject.h"
-#include "functions.h"
 
 Die::Die(int const Min,
          int const Max,

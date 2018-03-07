@@ -17,11 +17,15 @@ typedef enum {
    GAMEOBJECT,
    GAMEPARAMETERS,
    HIEROPHANT,
+   ITEM,
    PLAYER,
    SKILL,
    SKILLTREE,
+   SPECIALISEDSQUADMEMBER,
    SQUAD,
    SQUADMEMBER,
+   STATBOOST,
+   WEAPON,
    NObjectTypes
 } ObjectType;
 
@@ -29,7 +33,7 @@ class GameObject {
 
 public:
    /* Only public so that the static functions can access it. There's
-      almost certainly a better solution */
+      almost certainly a better solution but this'll do */
    static std::vector<GameObject*> all_objects;
 
    GameObject(ObjectType const t);

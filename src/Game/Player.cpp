@@ -4,7 +4,7 @@
 #include "Game/Player.h"
 #include "Game/GameEngine.h"
 #include "Game/Squad.h"
-#include "functions.h"
+#include "Global.h"
 
 extern "C" {
 #include "PF.h"
@@ -45,7 +45,8 @@ Player::Player(GameEngine * const e,
    if ( (ParamFile = fopen(filename.c_str(), "r")) == NULL) {
       char warningbuf[MAX_MESSAGE_LENGTH];
       snprintf(warningbuf, MAX_MESSAGE_LENGTH,
-               "Failed to load player file '%s'", filename.c_str());
+               "%s: Failed to load player file '%s'",
+               __FUNCTION__, filename.c_str());
       engine->warningMessage(warningbuf);
       *playerFileIsValid = false;
    }
@@ -54,8 +55,8 @@ Player::Player(GameEngine * const e,
    if (PF_ReadParameterFile(ParamFile, ParamEntries, nPlayerParameters) != EXIT_SUCCESS) {
       char warningbuf[MAX_MESSAGE_LENGTH];
       snprintf(warningbuf, MAX_MESSAGE_LENGTH,
-               "PF_ReadParameterFile() failed for player file '%s'",
-               filename.c_str());
+               "%s: PF_ReadParameterFile() failed for player file '%s'",
+               __FUNCTION__, filename.c_str());
       engine->warningMessage(warningbuf);
       *playerFileIsValid = false;
    }
@@ -80,8 +81,8 @@ Player::Player(GameEngine * const e,
       if ( !squadFileIsValid ) {
          char warningbuf[MAX_MESSAGE_LENGTH];
          snprintf(warningbuf, MAX_MESSAGE_LENGTH,
-                  "Player '%s' has an invalid squad file at '%s'",
-                  username.c_str(), SquadFiles[i]);
+                  "%s: Player '%s' has an invalid squad file at '%s'",
+                  __FUNCTION__, username.c_str(), SquadFiles[i]);
          engine->warningMessage(warningbuf);
          squads[i]->deallocate();
          /* Mark it as to-be-removed */
@@ -107,9 +108,9 @@ void Player::deleteSquad(size_t const indexToDelete) {
    if (indexToDelete >= numSquads()) {
       char warningbuf[MAX_MESSAGE_LENGTH];
       snprintf(warningbuf, MAX_MESSAGE_LENGTH, 
-               "User '%s' tried deleting squad index out of "
-               "range in %s: indexToDelete = %zu, nSquads = %zu",
-               username.c_str(), __FILE__, indexToDelete, numSquads());
+               "%s: User '%s' tried deleting squad index out of range. "
+               "[indexToDelete = %zu, nSquads = %zu]",
+               __FUNCTION__, username.c_str(), indexToDelete, numSquads());
       engine->warningMessage(warningbuf);
       return;
    }
@@ -125,8 +126,8 @@ void Player::addSquad(Squad * const squad) {
    } else {
       char warningbuf[MAX_MESSAGE_LENGTH];
       snprintf(warningbuf, MAX_MESSAGE_LENGTH,
-               "Tried adding null Squad pointer to player '%s'",
-               this->username.c_str());
+               "%s: Tried adding null Squad pointer to player '%s'",
+               __FUNCTION__, username.c_str());
       engine->warningMessage(warningbuf);
    }
 }

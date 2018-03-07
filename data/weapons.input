@@ -1,0 +1,8 @@
+AllWeapons 7
+ SniperRifle +4 Shooting
+ MachineGun  +3 Shooting
+ Revolver    +2 Shooting
+ Crossbow    +1 Shooting
+ Battleaxe   +3 Strength
+ Sword       +2 Strength
+ FryingPan   +1 Strength

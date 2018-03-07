@@ -16,19 +16,23 @@ QMAKE_CXXFLAGS += -g
 QMAKE_CFLAGS += -g
 
 HEADERS += \
-           inc/functions.h \
+           inc/Global.h \
            # Game objects
            inc/Game/GameObject.h \
            inc/Game/Captain.h \
            inc/Game/Die.h \
            inc/Game/GameEngine.h \
            inc/Game/Hierophant.h \
+           inc/Game/Item.h \
            inc/Game/GameParameters.h \
            inc/Game/Player.h \
            inc/Game/Skill.h \
            inc/Game/SkillTree.h \
+           inc/Game/SpecialisedSquadMember.h \
            inc/Game/Squad.h \
            inc/Game/SquadMember.h \
+           inc/Game/StatBoost.h \
+           inc/Game/Weapon.h \
            # libPF parameter reading
            lib/libPF/PF.h \
            # QT Objects
@@ -37,19 +41,23 @@ HEADERS += \
            inc/UI/Dialog.h
 SOURCES += \
            src/main.cpp \
-           src/functions.cpp \
+           src/Global.cpp \
            # Game Objects
            src/Game/GameObject.cpp \
            src/Game/Captain.cpp \
            src/Game/Die.cpp \
            src/Game/GameEngine.cpp \
            src/Game/Hierophant.cpp \
+           src/Game/Item.cpp \
            src/Game/GameParameters.cpp \
            src/Game/Player.cpp \
            src/Game/Skill.cpp \
            src/Game/SkillTree.cpp \
+           src/Game/SpecialisedSquadMember.cpp \
            src/Game/Squad.cpp \
            src/Game/SquadMember.cpp \
+           src/Game/StatBoost.cpp \
+           src/Game/Weapon.cpp \
            # libPF parameter reading
            lib/libPF/PF_Format.c \
            lib/libPF/PF_ReadParameterFile.c \

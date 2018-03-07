@@ -7,8 +7,10 @@
 #include "Game/Captain.h"
 #include "Game/Hierophant.h"
 #include "Game/SquadMember.h"
+#include "Game/Item.h"
+#include "Game/Weapon.h"
 
-#include "functions.h"
+#include "Global.h"
 
 extern "C" {
 #include "PF.h"
@@ -27,7 +29,7 @@ Squad::Squad(GameEngine * const e,
       : GameObject(SQUAD), engine(e), player(p), filename(file) {
    /* trim leading/trailing whitespace, then add the expected directory
       structure before the filename */
-   trim(&filename);
+   Global::trim(&filename);
    filename = "data/squads/" + filename;
 
    /* Defaults */
@@ -157,7 +159,8 @@ Squad::Squad(GameEngine * const e,
    if ( (ParamFile = fopen(filename.c_str(), "r")) == NULL) {
       char warningbuf[MAX_MESSAGE_LENGTH];
       snprintf(warningbuf, MAX_MESSAGE_LENGTH,
-               "Failed to load squad file '%s'", filename.c_str());
+               "%s: Failed to load squad file '%s'",
+               __FUNCTION__, filename.c_str());
       engine->warningMessage(warningbuf);
       *squadFileIsValid = false;
    }
@@ -166,8 +169,8 @@ Squad::Squad(GameEngine * const e,
    if (PF_ReadParameterFile(ParamFile, ParamEntries, nSquadParameters) != EXIT_SUCCESS) {
       char warningbuf[MAX_MESSAGE_LENGTH];
       snprintf(warningbuf, MAX_MESSAGE_LENGTH,
-               "PF_ReadParameterFile() failed for squad file '%s'",
-               filename.c_str());
+               "%s: PF_ReadParameterFile() failed for squad file '%s'",
+               __FUNCTION__, filename.c_str());
       engine->warningMessage(warningbuf);
       *squadFileIsValid = false;
    }
@@ -180,8 +183,8 @@ Squad::Squad(GameEngine * const e,
        || NumHierophantWeapons                      > params->MaxHierophantWeapons) {
       char warningbuf[MAX_MESSAGE_LENGTH];
       snprintf(warningbuf, MAX_MESSAGE_LENGTH,
-               "Too many weapons/items on Hierophant/Captain for squad file '%s'",
-               filename.c_str());
+               "%s: Too many weapons/items on Hierophant/Captain for squad file '%s'",
+               __FUNCTION__, filename.c_str());
       engine->warningMessage(warningbuf);
       *squadFileIsValid = false;
    }
@@ -196,18 +199,21 @@ Squad::Squad(GameEngine * const e,
       this->isPublic = (std::string(isPublicStr) == "true") ? true : false;
       this->squadMembers.resize(NumNormalSquadMembers, nullptr);
       for (auto& member : squadMembers) {
-         member = new SquadMember(engine, player, this);
+         member = new SquadMember(this);
       }
 
-      this->captain = new Captain(engine, player, this);
+      this->captain = new Captain(this);
       this->captain->initSkills (CaptainSkills,  NumCaptainSkills);
       this->captain->initItems  (CaptainItems,   NumCaptainItems);
       this->captain->initWeapons(CaptainWeapons, NumCaptainWeapons);
 
-      this->hierophant = new Hierophant(engine, player, this);
+      this->hierophant = new Hierophant(this);
       this->hierophant->initSkills (HierophantSkills,  NumHierophantSkills);
       this->hierophant->initItems  (HierophantItems,   NumHierophantItems);
       this->hierophant->initWeapons(HierophantWeapons, NumHierophantWeapons);
+
+      this->initItems  (SquadItems,   NumSquadItems);
+      this->initWeapons(SquadWeapons, NumSquadWeapons);
    }
 
    /* Deallocate all the various arrays */
@@ -231,6 +237,41 @@ Squad::~Squad() {
    captain->deallocate();
    hierophant->deallocate();
 }
+
+void Squad::initItems(char ** itemsStr,
+                      size_t const nItems) {
+   for (size_t iItem = 0; iItem < nItems; iItem++) {
+      bool isValid = true;
+      Item * item = new Item(this, engine, itemsStr[iItem], &isValid);
+      if (!isValid) {
+         item->deallocate();
+         char warningbuf[MAX_MESSAGE_LENGTH];
+         snprintf(warningbuf, MAX_MESSAGE_LENGTH,
+                  "%s: Invalid item string '%s'",
+                  __FUNCTION__, itemsStr[iItem]);
+         engine->warningMessage(warningbuf);
+      } else {
+         this->items.push_back(item);
+      }
+   }
+}
+
+void Squad::initWeapons(char ** weaponsStr,
+                        size_t const nWeapons) {
+   for (size_t iWeapon = 0; iWeapon < nWeapons; iWeapon++) {
+      bool isValid = true;
+      Weapon * weapon = new Weapon(this, engine, weaponsStr[iWeapon], &isValid);
+      if (!isValid) {
+         weapon->deallocate();
+         char warningbuf[MAX_MESSAGE_LENGTH];
+         snprintf(warningbuf, MAX_MESSAGE_LENGTH,
+                  "%s: Invalid weapon string '%s'",
+                  __FUNCTION__, weaponsStr[iWeapon]);
+         engine->warningMessage(warningbuf);
+      } else {
+         this->weapons.push_back(weapon);
+      }
+   }}
 
 void Squad::checkValidity() const {
    for (SquadMember* member : squadMembers) {

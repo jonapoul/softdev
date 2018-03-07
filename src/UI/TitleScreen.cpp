@@ -2,7 +2,7 @@
 
 #include "UI/TitleScreen.h"
 #include "UI/GameWindow.h"
-#include "functions.h"
+#include "Global.h"
 
 TitleScreen::TitleScreen(GameWindow * p = Q_NULLPTR)
       : parent(p) { }

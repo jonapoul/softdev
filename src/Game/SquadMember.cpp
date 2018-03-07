@@ -4,10 +4,8 @@
 #include "Game/Player.h"
 #include "Game/Squad.h"
 
-SquadMember::SquadMember(GameEngine * const e,
-                         Player * const p,
-                         Squad * const s)
-      : GameObject(SQUADMEMBER), engine(e), player(p), squad(s) {
+SquadMember::SquadMember(Squad * const s)
+      : GameObject(SQUADMEMBER), squad(s), engine(s->engine), player(s->player) {
    /* TODO: Something*/
 }
 

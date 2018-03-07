@@ -11,16 +11,14 @@ class Player;
 
 class SquadMember : public GameObject {
 public:
-   SquadMember(GameEngine * const e,
-               Player * const p,
-               Squad * const s);
+   SquadMember(Squad * const s);
 
    virtual void checkValidity() const;
 
 protected:
+   Squad * squad;
    GameEngine * engine;
    Player * player;
-   Squad * squad;
 
    /* MAYBE GET RID OF THESE AND JUST USE engine->parameters? */
    unsigned movement; /* max movement distance in inches */

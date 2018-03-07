@@ -110,8 +110,11 @@ GameParameters::GameParameters(GameEngine * const e,
 int GameParameters::writeToFile(PF_ParameterEntry * const ParameterEntries,
                                 size_t const NParameterEntries,
                                 char const * const Filename) {
-
-   engine->criticalMessage("Need to redo GameParameters::writeToFile(). Change to output streams rather than fprintf");
+   char criticalbuf[MAX_LINE_LENGTH];
+   snprintf(criticalbuf, MAX_LINE_LENGTH,
+            "%s: Need to redo function with streams rather than fprintf",
+            __FUNCTION__);
+   engine->criticalMessage(criticalbuf);
    return EXIT_FAILURE;
 
    FILE * OutputFile = fopen(Filename, "w");

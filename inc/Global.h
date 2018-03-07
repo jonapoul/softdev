@@ -5,9 +5,12 @@
 #include <iostream>
 
 #define PRINT(x) std::cout<<__FILE__<<": "<<__LINE__<<": "<<#x<<" = "<<x<<std::endl;
-#define ASSERT(check) assert_impl(check, #check, __FILE__, __LINE__);
+#define ASSERT(check) Global::assert_impl(check, #check, __FILE__, __LINE__);
 #define MIN(x,y) ((x<y)?x:y)
 #define MAX(x,y) ((x>y)?x:y)
+#define TO_STRING(x) std::string(#x)
+
+namespace Global {
 
 void assert_impl(bool const check,
                  char const * const call,
@@ -21,5 +24,9 @@ std::string decrypt(std::string const& msg,
                     std::string const& key);
 
 void trim(std::string * str);
+
+size_t wordCount(char const * const str);
+   
+}
 
 #endif

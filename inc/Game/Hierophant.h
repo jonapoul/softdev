@@ -2,14 +2,10 @@
 #define HIEROPHANT_H
 
 #include <vector>
-#include "Game/SquadMember.h"
+#include "Game/SpecialisedSquadMember.h"
 #include "Game/GameObject.h"
 
-class GameEngine;
-class Player;
 class Squad;
-class SkillTree;
-class Skill;
 
 typedef enum {
    NoHierophantSpecialism,
@@ -20,27 +16,15 @@ typedef enum {
    NumHierophantSpecialisms
 } HierophantSpecialism;
 
-class Hierophant : public SquadMember {
+class Hierophant : public SpecialisedSquadMember {
 public:
-   Hierophant(GameEngine * const e,
-              Player * const p,
-              Squad * const s);
+   Hierophant(Squad * const s);
    ~Hierophant();
-
-   void initSkills(char ** skillsStr,
-                   size_t const Nskills);
-   void initItems(char ** itemsStr,
-                  size_t const Nitems);
-   void initWeapons(char ** weaponsStr,
-                    size_t const NWeapons);
 
    virtual void checkValidity() const;
 
 private:
-   int experience;
    HierophantSpecialism specialism;
-   SkillTree * skillTree;
-   std::vector<Skill *> skills;
 };
 
 #endif

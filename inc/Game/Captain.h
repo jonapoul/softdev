@@ -3,13 +3,9 @@
 
 #include <vector>
 #include "Game/GameObject.h"
-#include "Game/SquadMember.h"
+#include "Game/SpecialisedSquadMember.h"
 
-class GameEngine;
-class Player;
 class Squad;
-class SkillTree;
-class Skill;
 
 typedef enum {
    NoCaptainSpecialism,
@@ -22,27 +18,15 @@ typedef enum {
    NumCaptainSpecialisms
 } CaptainSpecialism;
 
-class Captain : public SquadMember {
+class Captain : public SpecialisedSquadMember {
 public:
-   Captain(GameEngine * const e,
-           Player * const p,
-           Squad * const s);
+   Captain(Squad * const s);
    ~Captain();
-
-   void initSkills(char ** skillsStr,
-                   size_t const Nskills);
-   void initItems(char ** itemsStr,
-                  size_t const Nitems);
-   void initWeapons(char ** weaponsStr,
-                    size_t const NWeapons);
 
    virtual void checkValidity() const;
 
 private:
-   int experience;
    CaptainSpecialism specialism;
-   SkillTree * skillTree;
-   std::vector<Skill *> skills;
 };
 
 #endif

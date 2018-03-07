@@ -5,7 +5,7 @@
 #include "UI/TitleScreen.h"
 
 #include "Game/GameEngine.h"
-#include "functions.h"
+#include "Global.h"
 
 GameWindow::GameWindow() {
    /* Build and display the title screen UI */

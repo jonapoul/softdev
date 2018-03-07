@@ -10,6 +10,8 @@ class Player;
 class Captain;
 class Hierophant;
 class SquadMember;
+class Item;
+class Weapon;
 
 enum {
    iSquadUsername,
@@ -52,14 +54,23 @@ public:
 
    ~Squad();
 
+   void initItems(char ** itemsStr,
+                  size_t const Nitems);
+   void initWeapons(char ** weaponsStr,
+                    size_t const NWeapons);
+
    virtual void checkValidity() const;
 
-private:
+   /* parent pointers */
    GameEngine * engine;
    Player * player;
+
+private:
    Captain * captain;
    Hierophant * hierophant;
    std::vector<SquadMember *> squadMembers;
+   std::vector<Item *> items;
+   std::vector<Weapon *> weapons;
    bool isPublic;
    int credits;
    std::string filename;
