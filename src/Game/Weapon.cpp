@@ -42,6 +42,7 @@ Weapon::Weapon(GameObject * const o,
       /* For all other instances. Reads a single word string and compares that to the
          GameEngine::all_valid_weapons array to grab the relevant StatBoost. */
       case MatchWeapon:
+         this->name = std::string(weaponString);
          if (Global::wordCount(weaponString) != 1) {
             *isValid = false;
             return;
@@ -65,10 +66,15 @@ Weapon::~Weapon() {
    boost->deallocate();
 }
 
+StatBoost * Weapon::getBoost() const {
+   return this->boost;
+}
+
 void Weapon::setOwner(GameObject * const object) {
    this->owner = object;
 }
 
 void Weapon::checkValidity() const {
+   CHECK(type() == WEAPON, engine);
    CHECK(name.length() > 0, engine);
 }

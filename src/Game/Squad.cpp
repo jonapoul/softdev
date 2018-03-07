@@ -43,6 +43,7 @@ Squad::Squad(GameEngine * const e,
    char isPublicStr[MAX_LINE_LENGTH];
    int     CaptainExperience    = 0;
    char    CaptainSpecialism[MAX_LINE_LENGTH];
+   strncpy(CaptainSpecialism, "Unknown", MAX_LINE_LENGTH);
    char ** CaptainSkills        = nullptr;
    size_t  NumCaptainSkills     = 0;
    char ** CaptainItems         = nullptr;
@@ -53,6 +54,7 @@ Squad::Squad(GameEngine * const e,
    size_t  NumCaptainStatBoosts = 0;
    int     HierophantExperience    = 0;
    char    HierophantSpecialism[MAX_LINE_LENGTH];
+   strncpy(HierophantSpecialism, "Unknown", MAX_LINE_LENGTH);
    char ** HierophantSkills        = nullptr;
    size_t  NumHierophantSkills     = 0;
    char ** HierophantItems         = nullptr;
@@ -203,14 +205,16 @@ Squad::Squad(GameEngine * const e,
       }
 
       this->captain = new Captain(this);
-      this->captain->initSkills (CaptainSkills,  NumCaptainSkills);
+      this->captain->initSkills (CaptainSkills,  NumCaptainSkills, CaptainSpecialism);
       this->captain->initItems  (CaptainItems,   NumCaptainItems);
       this->captain->initWeapons(CaptainWeapons, NumCaptainWeapons);
+      this->captain->updateStats();
 
       this->hierophant = new Hierophant(this);
-      this->hierophant->initSkills (HierophantSkills,  NumHierophantSkills);
+      this->hierophant->initSkills (HierophantSkills,  NumHierophantSkills, HierophantSpecialism);
       this->hierophant->initItems  (HierophantItems,   NumHierophantItems);
       this->hierophant->initWeapons(HierophantWeapons, NumHierophantWeapons);
+      this->hierophant->updateStats();
 
       this->initItems  (SquadItems,   NumSquadItems);
       this->initWeapons(SquadWeapons, NumSquadWeapons);
@@ -236,6 +240,12 @@ Squad::~Squad() {
    }
    captain->deallocate();
    hierophant->deallocate();
+   for (auto item : this->items) {
+      item->deallocate();
+   }
+   for (auto weapon : this->weapons) {
+      weapon->deallocate();
+   }
 }
 
 void Squad::initItems(char ** itemsStr,
@@ -274,8 +284,6 @@ void Squad::initWeapons(char ** weaponsStr,
    }}
 
 void Squad::checkValidity() const {
-   for (SquadMember* member : squadMembers) {
-      CHECK(member->type() == SQUADMEMBER, engine);
-   }
+   CHECK(type() == SQUAD, engine);
    CHECK(credits >= 0, engine);
 }

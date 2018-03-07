@@ -42,6 +42,7 @@ Item::Item(GameObject * const o,
       /* For all other instances. Reads a single word string and compares that to the
          GameEngine::all_valid_items array to grab the relevant StatBoost. */
       case MatchItem:
+         this->name = std::string(itemString);
          if (Global::wordCount(itemString) != 1) {
             *isValid = false;
             return;
@@ -65,10 +66,15 @@ Item::~Item() {
    boost->deallocate();
 }
 
+StatBoost * Item::getBoost() const {
+   return this->boost;
+}
+
 void Item::setOwner(GameObject * const object) {
    this->owner = object;
 }
 
 void Item::checkValidity() const {
+   CHECK(type() == ITEM, engine);
    CHECK(name.length() > 0, engine);
 }

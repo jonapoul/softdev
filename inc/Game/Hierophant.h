@@ -2,6 +2,8 @@
 #define HIEROPHANT_H
 
 #include <vector>
+#include <string>
+
 #include "Game/SpecialisedSquadMember.h"
 #include "Game/GameObject.h"
 
@@ -21,6 +23,8 @@ public:
    Hierophant(Squad * const s);
    ~Hierophant();
 
+   int stringToSpecialism(char const * const str) const override;
+   static std::string specialismToString(int const spec);
    virtual void checkValidity() const;
 
 private:

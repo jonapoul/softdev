@@ -2,6 +2,8 @@
 #define CAPTAIN_H
 
 #include <vector>
+#include <string>
+
 #include "Game/GameObject.h"
 #include "Game/SpecialisedSquadMember.h"
 
@@ -23,7 +25,9 @@ public:
    Captain(Squad * const s);
    ~Captain();
 
+   int stringToSpecialism(char const * const str) const override;
    virtual void checkValidity() const;
+   static std::string specialismToString(int const spec);
 
 private:
    CaptainSpecialism specialism;

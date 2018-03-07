@@ -4,7 +4,7 @@
 #include <string>
 #include <iostream>
 
-#define PRINT(x) std::cout<<__FILE__<<": "<<__LINE__<<": "<<#x<<" = "<<x<<std::endl;
+#define PRINT(x) std::cout<<__FILE__<<": "<<__LINE__<<": "<<#x<<" = '"<<x<<"'"<<std::endl;
 #define ASSERT(check) Global::assert_impl(check, #check, __FILE__, __LINE__);
 #define MIN(x,y) ((x<y)?x:y)
 #define MAX(x,y) ((x>y)?x:y)

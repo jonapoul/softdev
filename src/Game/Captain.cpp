@@ -17,5 +17,29 @@ Captain::~Captain() {
 }
 
 void Captain::checkValidity() const {
-   CHECK(specialism != NoCaptainSpecialism, engine);
+   CHECK(type() == CAPTAIN, engine);
+   CHECK(specialism == NoCaptainSpecialism, engine);
+}
+
+int Captain::stringToSpecialism(char const * const str) const {
+   std::string const string(str);
+   if      (string == "Demoman") return DemomanCS;
+   else if (string == "Scout")   return ScoutCS;
+   else if (string == "Soldier") return SoldierCS;
+   else if (string == "Leader")  return LeaderCS;
+   else if (string == "Heavy")   return HeavyCS;
+   else if (string == "Elite")   return EliteCS;
+   else                          return NoCaptainSpecialism;
+}
+
+std::string Captain::specialismToString(int const spec) {
+   switch (spec) {
+      case DemomanCS: return "Demoman";
+      case ScoutCS:   return "Scout";
+      case SoldierCS: return "Soldier";
+      case LeaderCS:  return "Leader";
+      case HeavyCS:   return "Heavy";
+      case EliteCS:   return "Elite";
+      default:        return "Unknown";
+   }
 }

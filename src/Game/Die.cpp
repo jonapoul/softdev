@@ -35,6 +35,7 @@ int Die::maxRoll() const {
 }
 
 void Die::checkValidity() const {
+   CHECK(type() == DIE, engine);
    CHECK(minValue < maxValue, engine);
 }
 

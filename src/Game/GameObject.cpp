@@ -42,30 +42,34 @@ void GameObject::checkValidity() const {
 }
 
 void GameObject::printAllObjects() {
-   printf("%s\n", std::string(55, '-').c_str());
-   printf("%15s %10s %15s %6s\n", "Address", "ID", "Type", "Size");
-   printf("%s\n", std::string(55, '-').c_str());
+   printf("%s\n", std::string(50, '-').c_str());
+   printf("%15s %10s %15s\n", "Address", "ID", "Type");
+   printf("%s\n", std::string(50, '-').c_str());
    for (GameObject* o : GameObject::all_objects) {
-      printf("%15p %10zu %15s %6zu\n", o, o->ID(), o->typeToString().c_str(), sizeof(*o));
+      printf("%15p %10zu %15s\n", o, o->ID(), o->typeToString().c_str());
    }
-   printf("%s\n", std::string(55, '-').c_str());
+   printf("%s\n", std::string(50, '-').c_str());
 }
 
 std::string GameObject::typeToString() const {
    switch (this->type()) {
-      case NO_TYPE:        return "NO_TYPE";
-      case CAPTAIN:        return "CAPTAIN";
-      case DIE:            return "DIE";
-      case GAMEENGINE:     return "GAMEENGINE";
-      case GAMEOBJECT:     return "GAMEOBJECT";
-      case GAMEPARAMETERS: return "GAMEPARAMETERS";
-      case HIEROPHANT:     return "HIEROPHANT";
-      case PLAYER:         return "PLAYER";
-      case SKILL:          return "SKILL";
-      case SKILLTREE:      return "SKILLTREE";
-      case SQUAD:          return "SQUAD";
-      case SQUADMEMBER:    return "SQUADMEMBER";
-      default:             return "UNKNOWN";
+      case NO_TYPE:                return "NO_TYPE";
+      case CAPTAIN:                return "CAPTAIN";
+      case DIE:                    return "DIE";
+      case GAMEENGINE:             return "GAMEENGINE";
+      case GAMEOBJECT:             return "GAMEOBJECT";
+      case GAMEPARAMETERS:         return "GAMEPARAMETERS";
+      case HIEROPHANT:             return "HIEROPHANT";
+      case ITEM:                   return "ITEM";
+      case PLAYER:                 return "PLAYER";
+      case SKILL:                  return "SKILL";
+      case SKILLTREE:              return "SKILLTREE";
+      case SPECIALISEDSQUADMEMBER: return "SPECIALISEDSQUADMEMBER";
+      case SQUAD:                  return "SQUAD";
+      case SQUADMEMBER:            return "SQUADMEMBER";
+      case STATBOOST:              return "STATBOOST";
+      case WEAPON:                 return "WEAPON";
+      default:                     return "UNKNOWN";
    }
 }
 

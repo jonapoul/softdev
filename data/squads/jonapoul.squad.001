@@ -6,8 +6,8 @@ Credits    350
 CaptainExperience 20
 CaptainSpecialism Demoman
 CaptainSkills 2
-   DemomanSkill0
-   DemomanSkill1
+   0
+   01
 CaptainItems 2
    HealthPotion
    HealthPotion
@@ -24,8 +24,8 @@ CaptainStatBoosts 5
 HierophantExperience 30
 HierophantSpecialism Priest
 HierophantSkills 2
-   PriestSkill0
-   PriestSkill1
+   1
+   11
 HierophantItems 3
    HealthPotion
    HealthPotion

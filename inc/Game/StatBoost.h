@@ -8,12 +8,18 @@ class GameEngine;
 
 class StatBoost : public GameObject {
 public:
+   StatBoost(GameEngine * const e);
    StatBoost(GameEngine * const e,
              std::string const& stat,
              std::string const& modifier,
              bool * const isValid);
    StatBoost(StatBoost const * const other);
    ~StatBoost();
+
+   void add(StatBoost const * const other);
+   bool add(std::string const& stat,
+            std::string const& modifier);
+   void reset();
 
    virtual void checkValidity() const;
 

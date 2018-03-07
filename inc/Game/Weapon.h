@@ -22,6 +22,7 @@ public:
           WeaponConstructor const test = MatchWeapon);
    ~Weapon();
 
+   StatBoost * getBoost() const;
    void setOwner(GameObject * const object);
    virtual void checkValidity() const;
 

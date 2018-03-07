@@ -7,8 +7,9 @@
 #include "Game/GameObject.h"
 
 class GameEngine;
-class SquadMember;
+class SpecialisedSquadMember;
 class Skill;
+class StatBoost;
 
 typedef enum {
    NoSkillTreeClass,
@@ -20,18 +21,25 @@ typedef enum {
 class SkillTree : public GameObject {
 public:
    SkillTree(GameEngine * const e,
-             SquadMember * const s);
+             SpecialisedSquadMember * const s);
+   SkillTree(GameEngine * const e,
+             ObjectType const t,
+             int const specialism,
+             char ** modiferStrings,
+             bool * const isValid);
+   ~SkillTree();
 
+   void setSpecialism(char const * const specialismStr);
    virtual void checkValidity() const;
 
 private:
    GameEngine * engine;
-   SquadMember * squadmember;
-
+   SpecialisedSquadMember * owner;
    std::string name;
    SkillTreeClass skillTreeClass;
    int specialism; /* Either HierophantSpecialism or CaptainSpecialism enum */
-   std::vector<Skill *> skills;
+   Skill ** child;
+   StatBoost ** boost;
 };
 
 #endif

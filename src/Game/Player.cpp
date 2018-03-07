@@ -137,6 +137,7 @@ size_t Player::numSquads() const {
 }
 
 void Player::checkValidity() const {
+   CHECK(type() == PLAYER, engine);
    CHECK(username.length() > 0, engine);
    CHECK(password.length() > 0, engine);
    CHECK(loginStatus == true, engine);

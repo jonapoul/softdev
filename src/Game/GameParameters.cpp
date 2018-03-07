@@ -106,6 +106,10 @@ GameParameters::GameParameters(GameEngine * const e,
    fclose(ParamFile);
 }
 
+GameParameters::~GameParameters() {
+   /* blank */
+}
+
 /* Copied PF_WriteParameters(), but writing to file instead of terminal */
 int GameParameters::writeToFile(PF_ParameterEntry * const ParameterEntries,
                                 size_t const NParameterEntries,
@@ -223,5 +227,7 @@ int GameParameters::writeToFile(PF_ParameterEntry * const ParameterEntries,
 }
 
 void GameParameters::checkValidity() const {
-
+   CHECK(type() == GAMEPARAMETERS, engine);
+   CHECK(MinRoll < MaxRoll, engine);
+   CHECK(EncryptionKey.length() > 0, engine);
 }

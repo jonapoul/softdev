@@ -4,6 +4,11 @@
 #include "Game/GameEngine.h"
 #include "Global.h"
 
+StatBoost::StatBoost(GameEngine * const e) 
+      : GameObject(STATBOOST), engine(e) {
+   /* blank, all defaults */
+}
+
 StatBoost::StatBoost(GameEngine * const e,
                      std::string const& stat,
                      std::string const& modifier,
@@ -29,6 +34,7 @@ StatBoost::StatBoost(GameEngine * const e,
    else                         *isValid = false;
 }
 
+/* Copying another */
 StatBoost::StatBoost(StatBoost const * const that)
       : GameObject(that->type()) {
    this->engine       = that->engine;
@@ -42,9 +48,44 @@ StatBoost::StatBoost(StatBoost const * const that)
 }
 
 StatBoost::~StatBoost() {
+   /* blank? */
+}
 
+void StatBoost::add(StatBoost const * const extraBoost) {
+   this->addMovement  += extraBoost->addMovement;
+   this->addShooting  += extraBoost->addShooting;
+   this->addStrength  += extraBoost->addStrength;
+   this->addArmour    += extraBoost->addArmour;
+   this->addMorale    += extraBoost->addMorale;
+   this->addHealth    += extraBoost->addHealth;
+   this->multiplyCost *= extraBoost->multiplyCost;
+}
+
+bool StatBoost::add(std::string const& stat,
+                    std::string const& modifier) {
+   bool isValid = true;
+   StatBoost * extraBoost = new StatBoost(engine, stat, modifier, &isValid);
+   if (isValid) {
+      this->add(extraBoost);
+   }
+   extraBoost->deallocate();
+   return isValid;
+}
+
+void StatBoost::reset() {
+   this->addMovement  = 0.0;
+   this->addStrength  = 0;
+   this->addShooting  = 0;
+   this->addArmour    = 0;
+   this->addMorale    = 0;
+   this->addHealth    = 0;
+   this->multiplyCost = 1.0;
 }
 
 void StatBoost::checkValidity() const {
+   CHECK(type() == STATBOOST, engine);
+   CHECK(multiplyCost >= 0.0, engine);
+   CHECK(multiplyCost <= 1.0, engine);
+
    /* blank? */
 }

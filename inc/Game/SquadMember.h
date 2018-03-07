@@ -12,23 +12,22 @@ class Player;
 class SquadMember : public GameObject {
 public:
    SquadMember(Squad * const s);
+   ~SquadMember();
 
    virtual void checkValidity() const;
+
+   virtual float movement() const;
+   virtual int strength() const;
+   virtual int shooting() const;
+   virtual int armour() const;
+   virtual int morale() const;
+   virtual int health() const;
+   virtual int cost() const;
 
 protected:
    Squad * squad;
    GameEngine * engine;
    Player * player;
-
-   /* MAYBE GET RID OF THESE AND JUST USE engine->parameters? */
-   unsigned movement; /* max movement distance in inches */
-   int strength;      /* roll under this number in attacking/defending (+/-) */
-   int shooting;      /* roll under this number in shooting */
-   unsigned armour;   /* value a weapon must exceed to recieve damage */
-   unsigned morale;   /* percentage likelihood to keep fighting */
-   unsigned health;   /* amount of health left */
-   unsigned cost;     /* value, in credits */
-   std::vector<std::string> notes; /* additional info, characteristics/equipment */
 };
 
 #endif

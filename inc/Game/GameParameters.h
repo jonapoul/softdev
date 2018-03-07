@@ -37,6 +37,7 @@ public:
    GameParameters(GameEngine * const e,
                   char const * const Filename,
                   bool * const paramFileIsValid);
+   ~GameParameters();
 
    int writeToFile(PF_ParameterEntry * const ParameterEntries,
                    size_t const NParameterEntries,

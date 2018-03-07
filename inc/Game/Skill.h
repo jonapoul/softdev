@@ -6,20 +6,23 @@
 #include "Game/GameObject.h"
 
 class GameEngine;
-class SquadMember;
+class SkillTree;
 
 class Skill : public GameObject {
 public:
    Skill(GameEngine * const e,
-         SquadMember * const s);
+         SkillTree * const st,
+         Skill * const parent,
+         std::string const& index);
+   ~Skill();
 
    virtual void checkValidity() const;
 
 private:
    GameEngine * engine;
-   SquadMember * squadmember;
+   SkillTree * tree;
+   //Skill ** child;
    std::string name;
-   std::string description;
 };
 
 #endif

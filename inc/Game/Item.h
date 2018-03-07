@@ -22,6 +22,7 @@ public:
         ItemConstructor const test = MatchItem);
    ~Item();
 
+   StatBoost * getBoost() const;
    void setOwner(GameObject * const object);
    virtual void checkValidity() const;
 

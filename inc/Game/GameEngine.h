@@ -15,6 +15,7 @@ class Player;
 class Die;
 class Item;
 class Weapon;
+class SkillTree;
 
 class GameEngine : public GameObject {
 public:
@@ -23,6 +24,7 @@ public:
 
    std::vector<Item *> allItems() const;
    std::vector<Weapon *> allWeapons() const;
+   std::vector<SkillTree *> allSkillTrees() const;
 
    void criticalMessage(char const * const message) const;
    void warningMessage(char const * const message) const;
@@ -35,6 +37,7 @@ public:
    void initDie();
    void initItems(char const * const filename);
    void initWeapons(char const * const filename);
+   void initSkillTrees(char const * const directory);
    void initPlayers(char const * const directory);
 
    virtual void checkValidity() const;
@@ -43,10 +46,14 @@ public:
    GameParameters * parameters;
 
 private:
+   void readCaptainSkillTreeFile(char const * const filename);
+   void readHierophantSkillTreeFile(char const * const filename);
+
    GameWindow * window;
    std::vector<Player *> players;
    std::vector<Item *> all_valid_items;
    std::vector<Weapon *> all_valid_weapons;
+   std::vector<SkillTree *> all_valid_skilltrees;
 };
 
 #endif

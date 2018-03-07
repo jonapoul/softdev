@@ -33,7 +33,7 @@ int main(int argc, char **argv) {
 #else
    GameEngine * engine = new GameEngine(nullptr);
    engine->deallocate();
-
+   printf("Success!\n");
    return 0;
 #endif
 }
