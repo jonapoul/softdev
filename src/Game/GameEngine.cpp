@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <cstring>
 #include <experimental/filesystem>
 namespace fs = std::experimental::filesystem;
 
@@ -10,26 +11,27 @@ namespace fs = std::experimental::filesystem;
 #include "Game/Item.h"
 #include "Game/Weapon.h"
 #include "Game/SkillTree.h"
-#include "UI/GameWindow.h"
 #include "Global.h"
+
+#ifdef ENABLE_QT_UI
+# include "UI/GameWindow.h"
+#endif
 
 extern "C" {
 #include "PF.h"
 }
 
+#ifdef ENABLE_QT_UI
 GameEngine::GameEngine(GameWindow * const gw)
       : GameObject(GAMEENGINE), window(gw) {
-   if (!gw) {
+   if (gw == nullptr) {
       informationMessage("GameWindow is a nullptr, using std::cout for output");
    }
-
-   initGameParameters("data/parameters.input");
-   initDie();
-   initItems("data/items.input");
-   initWeapons("data/weapons.input");
-   initSkillTrees("data/skilltrees/");
-   initPlayers("data/players/");
 }
+#else
+GameEngine::GameEngine()
+      : GameObject(GAMEENGINE) { }
+#endif
 
 GameEngine::~GameEngine() {
    die->deallocate();
@@ -48,6 +50,15 @@ GameEngine::~GameEngine() {
    }
 }
 
+void GameEngine::init() {
+   initGameParameters("data/parameters.input");
+   initDie();
+   initItems("data/items.input");
+   initWeapons("data/weapons.input");
+   initSkillTrees("data/skilltrees/");
+   initPlayers("data/players/");
+}
+
 std::vector<Item *> GameEngine::allItems() const {
    return this->all_valid_items;
 }
@@ -62,28 +73,41 @@ std::vector<SkillTree *> GameEngine::allSkillTrees() const {
 
 
 void GameEngine::criticalMessage(char const * const message) const {
+#ifdef ENABLE_QT_UI
    if (window) {
       window->criticalMessage(message);
    } else {
       std::cout << "CRITICAL:    " << message << std::endl;
       exit(EXIT_FAILURE);
    }
+#else
+   std::cout << "CRITICAL:    " << message << std::endl;
+   exit(EXIT_FAILURE);
+#endif
 }
 
 void GameEngine::warningMessage(char const * const message) const {
+#ifdef ENABLE_QT_UI
    if (window) {
       window->warningMessage(message);
    } else {
       std::cout << "WARNING:     " << message << std::endl;
    }
+#else
+   std::cout << "WARNING:     " << message << std::endl;
+#endif
 }
 
 void GameEngine::informationMessage(char const * const message) const {
+#ifdef ENABLE_QT_UI
    if (window) {
       window->informationMessage(message);
    } else {
       std::cout << "INFORMATION: " << message << std::endl;
    }
+#else
+   std::cout << "INFORMATION: " << message << std::endl;
+#endif
 }
 
 bool GameEngine::login(Player const * const player,

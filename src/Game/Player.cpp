@@ -72,21 +72,20 @@ Player::Player(GameEngine * const e,
 
    this->username = std::string(tempUsername);
    this->password = std::string(password);
-   this->squads.resize(NumSquads, nullptr);
 
    /* Create the Squad objects and check for validity */
    for (size_t i = 0; i < NumSquads; i++) {
       bool squadFileIsValid = true;
-      squads[i] = new Squad(engine, this, SquadFiles[i], &squadFileIsValid);
+      Squad * tempSquad = new Squad(engine, this, SquadFiles[i], &squadFileIsValid);
       if ( !squadFileIsValid ) {
          char warningbuf[MAX_MESSAGE_LENGTH];
          snprintf(warningbuf, MAX_MESSAGE_LENGTH,
                   "%s: Player '%s' has an invalid squad file at '%s'",
                   __FUNCTION__, username.c_str(), SquadFiles[i]);
          engine->warningMessage(warningbuf);
-         squads[i]->deallocate();
-         /* Mark it as to-be-removed */
-         squads[i] = nullptr;
+         tempSquad->deallocate();
+      } else {
+         this->squads.push_back(tempSquad);
       }
    }
    PF_FreeStringArray(SquadFiles, NumSquads);

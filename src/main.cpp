@@ -1,15 +1,19 @@
-#include <QApplication>
-#include <QFile>
-#include <QFontDatabase>
+#include "config.h"
 
-#include "UI/GameWindow.h"
-#include "UI/Dialog.h"
+#ifdef ENABLE_QT_UI
+# include <QApplication>
+# include <QFile>
+# include <QFontDatabase>
+# include "UI/GameWindow.h"
+#endif
 
+#include "Game/GameObject.h"
 #include "Game/GameEngine.h"
 
-int main(int argc, char **argv) {
+int main() {
 
-#if 0
+#ifdef ENABLE_QT_UI
+
    QApplication app (argc, argv);
    QCoreApplication::setApplicationName("softdev");
    QCoreApplication::setApplicationVersion(QT_VERSION_STR);
@@ -21,19 +25,23 @@ int main(int argc, char **argv) {
 
    QFontDatabase::addApplicationFont("qrc:///fonts/Roboto.ttf");
    QFontDatabase::addApplicationFont("qrc:///fonts/KronaOne.ttf");
-#if 1
+
    GameWindow * window = new GameWindow;
+   GameEngine * engine = new GameEngine(window);
    window->show();
-#else
-   Dialog * dialog = new Dialog;
-   dialog->show();
-#endif
 
    return app.exec();
-#else
-   GameEngine * engine = new GameEngine(nullptr);
+
+#else // ENABLE_QT_UI
+
+   GameEngine * engine = new GameEngine();
+   engine->init();
    engine->deallocate();
-   printf("Success!\n");
+   printf("Exited game successfully!\n\n");
+   printf("Printing all GameObjects that currently exist:\n");
+   GameObject::printAllObjects();
+
    return 0;
-#endif
+
+#endif // ENABLE_QT_UI
 }

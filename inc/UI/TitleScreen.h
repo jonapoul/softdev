@@ -1,6 +1,10 @@
 #ifndef TITLESCREEN_H
 #define TITLESCREEN_H
 
+#include "config.h"
+
+#ifdef ENABLE_QT_UI
+
 #include <QWidget>
 class GameWindow;
 class QPushButton;
@@ -26,4 +30,6 @@ private:
    QPushButton * settingsButton;
 };
 
-#endif
+#endif // ENABLE_QT_UI
+
+#endif // TITLESCREEN_H

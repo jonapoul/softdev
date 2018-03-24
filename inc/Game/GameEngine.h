@@ -4,12 +4,15 @@
 #include <vector>
 #include <string>
 
+#include "config.h"
 #include "Game/GameObject.h"
 
 /* For criticalMessage, warningMessage and informationMessage */
 #define MAX_MESSAGE_LENGTH 256
 
+#ifdef ENABLE_QT_UI
 class GameWindow;
+#endif
 class GameParameters;
 class Player;
 class Die;
@@ -19,8 +22,15 @@ class SkillTree;
 
 class GameEngine : public GameObject {
 public:
-   GameEngine(GameWindow * const gw = nullptr);
+
+#ifdef ENABLE_QT_UI
+   GameEngine(GameWindow * const gw);
+#else
+   GameEngine();
+#endif
    ~GameEngine();
+
+   void init();
 
    std::vector<Item *> allItems() const;
    std::vector<Weapon *> allWeapons() const;
@@ -33,12 +43,6 @@ public:
    bool login(Player const * const player,
               std::string const& plaintextPassword);
    
-   void initGameParameters(char const * const filename);
-   void initDie();
-   void initItems(char const * const filename);
-   void initWeapons(char const * const filename);
-   void initSkillTrees(char const * const directory);
-   void initPlayers(char const * const directory);
 
    virtual void checkValidity() const;
 
@@ -48,8 +52,16 @@ public:
 private:
    void readCaptainSkillTreeFile(char const * const filename);
    void readHierophantSkillTreeFile(char const * const filename);
+   void initGameParameters(char const * const filename);
+   void initDie();
+   void initItems(char const * const filename);
+   void initWeapons(char const * const filename);
+   void initSkillTrees(char const * const directory);
+   void initPlayers(char const * const directory);
 
+#ifdef ENABLE_QT_UI
    GameWindow * window;
+#endif
    std::vector<Player *> players;
    std::vector<Item *> all_valid_items;
    std::vector<Weapon *> all_valid_weapons;

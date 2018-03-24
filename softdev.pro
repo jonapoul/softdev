@@ -16,6 +16,7 @@ QMAKE_CXXFLAGS += -g
 QMAKE_CFLAGS += -g
 
 HEADERS += \
+           config.h \
            inc/Global.h \
            # Game objects
            inc/Game/GameObject.h \

@@ -1,6 +1,10 @@
 #ifndef GAMEWINDOW_H
 #define GAMEWINDOW_H
 
+#include "config.h"
+
+#ifdef ENABLE_QT_UI
+
 #include <QMainWindow>
 
 class QMenu;
@@ -71,5 +75,7 @@ private slots:
    void AboutQt();
 
 };
+
+#endif // ENABLE_QT_UI
 
 #endif // GAMEWINDOW_H

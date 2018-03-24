@@ -109,13 +109,13 @@ void GameObject::checkEverythingIsValid() {
 }
 
 void GameObject::check(bool const statement,
-                       char const * const string,
-                       char const * const Class,
+                       char const * const statementString,
+                       char const * const className,
                        GameEngine const * const engine) {
    if (!statement) {
-      char checkbuf[MAX_MESSAGE_LENGTH];
-      snprintf(checkbuf, MAX_MESSAGE_LENGTH,
-               "Failed check '%s' in class '%s'", string, Class);
-      engine->warningMessage(checkbuf);
+      char warningbuf[MAX_MESSAGE_LENGTH];
+      snprintf(warningbuf, MAX_MESSAGE_LENGTH,
+               "Failed check '%s' in class '%s'", statementString, className);
+      engine->warningMessage(warningbuf);
    }
 }

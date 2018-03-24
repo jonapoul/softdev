@@ -1,3 +1,7 @@
+#include "config.h"
+
+#ifdef ENABLE_QT_UI
+
 #include <iostream>
 #include <QtWidgets>
 
@@ -27,6 +31,7 @@ GameWindow::GameWindow() {
 
    /* Set up the backend game engine, load parameter files etc */
    this->engine = new GameEngine(this);
+   engine->init();
 }
 
 GameWindow::~GameWindow() {
@@ -251,3 +256,5 @@ void GameWindow::loadFonts() {
    this->robotoFont = QFont("Roboto",   15, 40);
    this->kronaFont  = QFont("KronaOne", 20, 10);
 }
+
+#endif // ENABLE_QT_UI

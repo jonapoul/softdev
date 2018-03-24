@@ -1,3 +1,7 @@
+#include "config.h"
+
+#ifdef ENABLE_QT_UI
+
 #include <QtWidgets>
 
 #include "UI/TitleScreen.h"
@@ -74,3 +78,5 @@ void TitleScreen::loadRegisterDialog() {
 void TitleScreen::loadSettingsDialog() {
    QMessageBox::information(this, tr("SETTINGS"), tr("SETTINGS"));
 }
+
+#endif // ENABLE_QT_UI

@@ -23,7 +23,7 @@ SkillTree::SkillTree(GameEngine * const e,
 SkillTree::SkillTree(GameEngine * const e,
                      ObjectType const t,
                      int const specialism,
-                     char ** str,
+                     char ** skillString,
                      bool * const isValid)
       : GameObject(SKILLTREE), engine(e), owner(nullptr) {
 
@@ -49,11 +49,11 @@ SkillTree::SkillTree(GameEngine * const e,
    }
 
    for (size_t i = 0; i < 2; i++) {
-      if (Global::wordCount(str[i]) != 2) {
+      if (Global::wordCount(skillString[i]) != 2) {
          *isValid = false;
          return;
       }
-      std::stringstream ss(str[i]);
+      std::stringstream ss(skillString[i]);
       std::string modifier, modifiedStat;
       ss >> modifier >> modifiedStat;
       bool boostIsValid = true;
