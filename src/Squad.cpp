@@ -254,7 +254,6 @@ Squad::~Squad() {
 void Squad::initItems(char ** itemsStr,
                       size_t const nItems) {
    for (size_t iItem = 0; iItem < nItems; iItem++) {
-      bool isValid = true;
       Item * item = new Item(this, engine);
       bool const itemIsValid = item->init(itemsStr[iItem]);
       if (!itemIsValid) {

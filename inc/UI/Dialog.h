@@ -1,6 +1,10 @@
 #ifndef DIALOG_H
 #define DIALOG_H
 
+#include "config.h"
+
+#ifdef ENABLE_QT_UI
+
 #include <QDialog>
 
 class QAction;
@@ -41,5 +45,7 @@ private:
    QMenu * fileMenu;
    QAction * exitAction;
 };
+
+#endif // ENABLE_QT_UI
 
 #endif // DIALOG_H

@@ -1,14 +1,15 @@
-TEMPLATE     = app
-TARGET       = softdev
-DEPENDPATH  += . src lib/libPF
-INCLUDEPATH += . inc lib/libPF
-DESTDIR      = bin
-OBJECTS_DIR  = obj
-MOC_DIR      = generated
-RCC_DIR      = generated
-RESOURCES   += resources/resources.qrc
-QT          += core gui
-LIBS        += -lstdc++fs
+TEMPLATE       = app
+TARGET         = softdev_qt
+DEPENDPATH    += . src lib/libpf
+INCLUDEPATH   += . inc lib/libpf
+DESTDIR        = bin
+OBJECTS_DIR    = obj
+MOC_DIR        = generated
+RCC_DIR        = generated
+RESOURCES     += resources/resources.qrc
+QT            += core gui
+LIBS          += -lstdc++fs
+QMAKE_MAKEFILE = Qt_Makefile
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 # valgrind memchecking
@@ -34,8 +35,8 @@ HEADERS += \
            inc/Game/SquadMember.h \
            inc/Game/StatBoost.h \
            inc/Game/Weapon.h \
-           # libPF parameter reading
-           lib/libPF/PF.h \
+           # libpf parameter reading
+           lib/libpf/PF.h \
            # QT Objects
            inc/UI/GameWindow.h \
            inc/UI/TitleScreen.h \
@@ -44,32 +45,32 @@ SOURCES += \
            src/main.cpp \
            src/Global.cpp \
            # Game Objects
-           src/Game/GameObject.cpp \
-           src/Game/Captain.cpp \
-           src/Game/Die.cpp \
-           src/Game/GameEngine.cpp \
-           src/Game/Hierophant.cpp \
-           src/Game/Item.cpp \
-           src/Game/GameParameters.cpp \
-           src/Game/Player.cpp \
-           src/Game/Skill.cpp \
-           src/Game/SkillTree.cpp \
-           src/Game/SpecialisedSquadMember.cpp \
-           src/Game/Squad.cpp \
-           src/Game/SquadMember.cpp \
-           src/Game/StatBoost.cpp \
-           src/Game/Weapon.cpp \
-           # libPF parameter reading
-           lib/libPF/PF_Format.c \
-           lib/libPF/PF_ReadParameterFile.c \
-           lib/libPF/PF_RPF_ExtractCommentlessLine.c \
-           lib/libPF/PF_RPF_ReadArray.c \
-           lib/libPF/PF_WriteParameters.c \
-           lib/libPF/PF_FreeStringArray.c \
+           src/GameObject.cpp \
+           src/Captain.cpp \
+           src/Die.cpp \
+           src/GameEngine.cpp \
+           src/Hierophant.cpp \
+           src/Item.cpp \
+           src/GameParameters.cpp \
+           src/Player.cpp \
+           src/Skill.cpp \
+           src/SkillTree.cpp \
+           src/SpecialisedSquadMember.cpp \
+           src/Squad.cpp \
+           src/SquadMember.cpp \
+           src/StatBoost.cpp \
+           src/Weapon.cpp \
+           # libpf parameter reading
+           lib/libpf/PF_Format.c \
+           lib/libpf/PF_ReadParameterFile.c \
+           lib/libpf/PF_RPF_ExtractCommentlessLine.c \
+           lib/libpf/PF_RPF_ReadArray.c \
+           lib/libpf/PF_WriteParameters.c \
+           lib/libpf/PF_FreeStringArray.c \
            # QT Objects
-           src/UI/GameWindow.cpp \
-           src/UI/TitleScreen.cpp \
-           src/UI/Dialog.cpp
+           src/GameWindow.cpp \
+           src/TitleScreen.cpp \
+           src/Dialog.cpp
 
 DISTFILES += \
              # Fonts

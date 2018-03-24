@@ -4,6 +4,5 @@ lib
 generated
 notes
 *.sublime-*
-Makefile
 .qmake.stash
 TODO

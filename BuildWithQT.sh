@@ -19,4 +19,4 @@ else
 fi
 
 qmake
-make
+make Qt_Makefile

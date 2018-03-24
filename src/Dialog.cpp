@@ -1,3 +1,7 @@
+#include "config.h"
+
+#ifdef ENABLE_QT_UI
+
 #include <QtWidgets>
 #include "UI/Dialog.h"
 
@@ -76,3 +80,5 @@ void Dialog::createFormGroupBox() {
    layout->addRow(new QLabel(tr("Line 3:")), new QSpinBox);
    this->formGroupBox->setLayout(layout);
 }
+
+#endif // ENABLE_QT_UI
