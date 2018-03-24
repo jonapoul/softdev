@@ -6,3 +6,6 @@ notes
 *.sublime-*
 .qmake.stash
 TODO
+Dialog.*
+valgrind.sh
+Qt_Makefile

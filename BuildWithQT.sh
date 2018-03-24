@@ -2,21 +2,18 @@
 if [ ! -d "lib" ]; then
    mkdir -p lib
 fi
-if [ ! -d "lib/libPF" ]; then
+if [ ! -d "lib/libpf" ]; then
    cd lib
    git clone git@bitbucket.org:eric_tittley/libpf.git
-   mv libpf libPF
-   cd libPF
-   rm -rf test
-   rm -f Makefile
+   cd libpf
    cd ../..
 else
-   echo "Updating libPF ..."
-   cd lib/libPF
+   echo "Updating libpf ..."
+   cd lib/libpf
    git pull
    cd ../..
    echo "done!"
 fi
 
 qmake
-make Qt_Makefile
+make -f Qt_Makefile

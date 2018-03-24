@@ -10,37 +10,44 @@
 #include "Game/GameObject.h"
 #include "Game/GameEngine.h"
 
-int main() {
-
 #ifdef ENABLE_QT_UI
-
+int main(int argc, char ** argv) {
+   /* Initialise the Qt application */
    QApplication app (argc, argv);
    QCoreApplication::setApplicationName("softdev");
    QCoreApplication::setApplicationVersion(QT_VERSION_STR);
 
+   /* Load the style sheet */
    QFile styleSheetFile("resources/stylesheet.qss");
    styleSheetFile.open(QFile::ReadOnly);
    QString styleSheetString = QLatin1String(styleSheetFile.readAll());
    app.setStyleSheet(styleSheetString);
 
+   /* Plus a couple of fonts */
    QFontDatabase::addApplicationFont("qrc:///fonts/Roboto.ttf");
    QFontDatabase::addApplicationFont("qrc:///fonts/KronaOne.ttf");
 
+   /* Launch the window and quit when it's closed*/
    GameWindow * window = new GameWindow;
    window->show();
-
    return app.exec();
-
+}
 #else // ENABLE_QT_UI
-
+int main() {
+   /* Build the game's backend */
    GameEngine * engine = new GameEngine();
    engine->init();
+
+   /* Run through some common actions and print to terminal */
+   // engine->test();
+   GameObject::printAllObjects();
+
+   /* Delete all game objects */
    engine->deallocate();
    printf("Exited game successfully!\n\n");
-   printf("Printing all GameObjects that currently exist:\n");
+   printf("Printing all GameObjects that currently exist (should be none):\n");
    GameObject::printAllObjects();
 
    return 0;
-
-#endif // ENABLE_QT_UI
 }
+#endif // ENABLE_QT_UI
