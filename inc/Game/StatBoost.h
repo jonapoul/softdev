@@ -9,19 +9,20 @@ class GameEngine;
 class StatBoost : public GameObject {
 public:
    StatBoost(GameEngine * const e);
-   StatBoost(GameEngine * const e,
-             std::string const& stat,
-             std::string const& modifier,
-             bool * const isValid);
    StatBoost(StatBoost const * const other);
    ~StatBoost();
 
+   bool init(std::string const& stat,
+             std::string const& modifier);
+   
+   void copy(StatBoost const * const other);
    void add(StatBoost const * const other);
    bool add(std::string const& stat,
             std::string const& modifier);
    void reset();
+   bool isBlank() const;
 
-   virtual void checkValidity() const;
+   virtual void ensureValidity() const;
 
    float addMovement  = 0.0;
    int   addStrength  = 0;

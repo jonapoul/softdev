@@ -8,62 +8,54 @@
 #include "Global.h"
 
 Weapon::Weapon(GameObject * const o,
-               GameEngine * const e,
-               char const * const weaponString,
-               bool * const isValid,
-               WeaponConstructor const test)
-      : GameObject(WEAPON), owner(o), engine(e), boost(nullptr), name("") {
-
-   switch (test) {
-      /* For GameEngine::initWeapons(), reading a 3-word string to find:
-            1) Weapon name,    e.g. "Battleaxe"
-            2) Modifier,       e.g. "+3"
-            3) Stat to modify, e.g. "Strength"
-         and then apply that modifier to a StatBoost object */
-      case InitialiseWeapon: {
-         if (Global::wordCount(weaponString) != 3) {
-            *isValid = false;
-            return;
-         }
-         std::stringstream ss(weaponString);
-         std::string modifier, modifiedStat;
-         ss >> this->name >> modifier >> modifiedStat;
-
-         bool boostIsValid = true;
-         this->boost = new StatBoost(engine, modifiedStat, modifier, &boostIsValid);
-         if (!boostIsValid) {
-            boost->deallocate();
-            *isValid = false;
-            return;
-         }
-         return;
-      }
-
-      /* For all other instances. Reads a single word string and compares that to the
-         GameEngine::all_valid_weapons array to grab the relevant StatBoost. */
-      case MatchWeapon:
-         this->name = std::string(weaponString);
-         if (Global::wordCount(weaponString) != 1) {
-            *isValid = false;
-            return;
-         }
-         for (Weapon * weapon : engine->allWeapons()) {
-            if (weapon->name == this->name) {
-               this->boost = new StatBoost(weapon->boost);
-               return;
-            }
-         }
-         *isValid = false; /* no match? invalid */
-         return;
-
-      default:
-         *isValid = false;
-         return;
-   } /* end switch */
-}
+               GameEngine * const e)
+      : GameObject(WEAPON), owner(o), engine(e), boost(nullptr), name("") { }
 
 Weapon::~Weapon() {
    boost->deallocate();
+}
+
+/* Expecting a single word string to represent the name of the weapon.
+   Then we go through all the preinitialised weapons in the GameEngine array of
+   available weapons and check whether this is in that array. */
+bool Weapon::init(char const * const weaponString) {
+   this->name = std::string(weaponString);
+   if (Global::wordCount(weaponString) != 1) {
+      return false;
+   }
+   for (Weapon * w : engine->allWeapons()) {
+      if (w->name == this->name) {
+         this->boost = new StatBoost(w->boost);
+         return true;
+      }
+   }
+   return false; /* no match? invalid */
+}
+
+/* Expecting a 3-word string in the format:
+      1) Weapon name,      e.g. "HealthPotion"
+      2) Modifier,       e.g. "+50"
+      3) Stat to modify, e.g. "Health"
+   and then apply that modifier to a StatBoost object
+   This is only called from GameEngine when populating the list of all available
+   weapons.
+*/
+bool Weapon::initFromEngine(char const * const weaponString) {
+   if (Global::wordCount(weaponString) != 3) {
+      return false;
+   }
+   std::stringstream ss(weaponString);
+   std::string modifier, modifiedStat;
+   ss >> this->name >> modifier >> modifiedStat;
+
+   this->boost = new StatBoost(engine);
+   bool const boostIsValid = boost->init(modifiedStat, modifier);
+   if (!boostIsValid) {
+      boost->deallocate();
+      return false;
+   } else {
+      return true;
+   }
 }
 
 StatBoost * Weapon::getBoost() const {
@@ -74,7 +66,7 @@ void Weapon::setOwner(GameObject * const object) {
    this->owner = object;
 }
 
-void Weapon::checkValidity() const {
-   CHECK(type() == WEAPON, engine);
-   CHECK(name.length() > 0, engine);
+void Weapon::ensureValidity() const {
+   ENSURE(type() == WEAPON, engine);
+   ENSURE(name.length() > 0, engine);
 }

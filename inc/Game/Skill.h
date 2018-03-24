@@ -7,22 +7,36 @@
 
 class GameEngine;
 class SkillTree;
+class StatBoost;
 
 class Skill : public GameObject {
+
+   friend class SkillTree;
+
 public:
    Skill(GameEngine * const e,
          SkillTree * const st,
          Skill * const parent,
-         std::string const& index);
+         int const i);
    ~Skill();
 
-   virtual void checkValidity() const;
+   void activate();
+   bool isActive() const;
+   virtual void ensureValidity() const;
 
 private:
    GameEngine * engine;
    SkillTree * tree;
-   //Skill ** child;
    std::string name;
+   int index;
+   bool hasBeenActivated = false;
+
+   Skill * child0;
+   Skill * child1;
+
+   /* This pointer is shared with the SkillTree, so it doesn't get deallocated
+      in the ~Skill() destructor */
+   StatBoost * boost;
 };
 
 #endif

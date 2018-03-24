@@ -22,11 +22,12 @@ Squad::Squad(GameEngine * const e,
    /* TODO: Create blank squad based on engine->parameters */
 }
 
-Squad::Squad(GameEngine * const e,
-             Player * const p,
-             char const * const file,
-             bool * const squadFileIsValid)
-      : GameObject(SQUAD), engine(e), player(p), filename(file) {
+/* Build a squad and all its members, weapons/items, etc. by reading from a
+   text file. */
+bool Squad::init(char const * const file) {
+   this->filename = file;
+   bool squadFileIsValid = true;
+
    /* trim leading/trailing whitespace, then add the expected directory
       structure before the filename */
    Global::trim(&filename);
@@ -164,7 +165,7 @@ Squad::Squad(GameEngine * const e,
                "%s: Failed to load squad file '%s'",
                __FUNCTION__, filename.c_str());
       engine->warningMessage(warningbuf);
-      *squadFileIsValid = false;
+      squadFileIsValid = false;
    }
 
    /* Read the Parameters */
@@ -174,7 +175,7 @@ Squad::Squad(GameEngine * const e,
                "%s: PF_ReadParameterFile() failed for squad file '%s'",
                __FUNCTION__, filename.c_str());
       engine->warningMessage(warningbuf);
-      *squadFileIsValid = false;
+      squadFileIsValid = false;
    }
 
    /* Check that the numbers of items/weapons isn't too much */
@@ -188,7 +189,7 @@ Squad::Squad(GameEngine * const e,
                "%s: Too many weapons/items on Hierophant/Captain for squad file '%s'",
                __FUNCTION__, filename.c_str());
       engine->warningMessage(warningbuf);
-      *squadFileIsValid = false;
+      squadFileIsValid = false;
    }
 
    /* Clean up parameter-reading objects */
@@ -197,7 +198,7 @@ Squad::Squad(GameEngine * const e,
 
    /* If everything's ok so far, pass the string arrays to be converted into
       squad members, captain and hierophant */
-   if ( *squadFileIsValid == true ) {
+   if (squadFileIsValid) {
       this->isPublic = (std::string(isPublicStr) == "true") ? true : false;
       this->squadMembers.resize(NumNormalSquadMembers, nullptr);
       for (auto& member : squadMembers) {
@@ -231,10 +232,12 @@ Squad::Squad(GameEngine * const e,
    PF_FreeStringArray(SquadWeapons,      NumSquadWeapons);
    free(CaptainStatBoosts);
    free(HierophantStatBoosts);
+
+   return squadFileIsValid;
 }
 
 Squad::~Squad() {
-   /* TODO: write to file here? Prompt for save? */
+   /* TODO: Prompt the user to save to file? */
    for (auto member : this->squadMembers) {
       member->deallocate();
    }
@@ -252,8 +255,9 @@ void Squad::initItems(char ** itemsStr,
                       size_t const nItems) {
    for (size_t iItem = 0; iItem < nItems; iItem++) {
       bool isValid = true;
-      Item * item = new Item(this, engine, itemsStr[iItem], &isValid);
-      if (!isValid) {
+      Item * item = new Item(this, engine);
+      bool const itemIsValid = item->init(itemsStr[iItem]);
+      if (!itemIsValid) {
          item->deallocate();
          char warningbuf[MAX_MESSAGE_LENGTH];
          snprintf(warningbuf, MAX_MESSAGE_LENGTH,
@@ -269,9 +273,9 @@ void Squad::initItems(char ** itemsStr,
 void Squad::initWeapons(char ** weaponsStr,
                         size_t const nWeapons) {
    for (size_t iWeapon = 0; iWeapon < nWeapons; iWeapon++) {
-      bool isValid = true;
-      Weapon * weapon = new Weapon(this, engine, weaponsStr[iWeapon], &isValid);
-      if (!isValid) {
+      Weapon * weapon = new Weapon(this, engine);
+      bool const weaponIsValid = weapon->init(weaponsStr[iWeapon]);
+      if (!weaponIsValid) {
          weapon->deallocate();
          char warningbuf[MAX_MESSAGE_LENGTH];
          snprintf(warningbuf, MAX_MESSAGE_LENGTH,
@@ -283,7 +287,7 @@ void Squad::initWeapons(char ** weaponsStr,
       }
    }}
 
-void Squad::checkValidity() const {
-   CHECK(type() == SQUAD, engine);
-   CHECK(credits >= 0, engine);
+void Squad::ensureValidity() const {
+   ENSURE(type() == SQUAD, engine);
+   ENSURE(credits >= 0,    engine);
 }

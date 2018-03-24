@@ -171,17 +171,17 @@ void GameEngine::initItems(char const * const filename) {
 
    /* create our valid Item objects */
    for (size_t iItem = 0; iItem < NumItemStrings; iItem++) {
-      bool isValid = true;
-      Item * item = new Item(this, this, ItemStrings[iItem], &isValid, InitialiseItem);
-      if (isValid) {
-         this->all_valid_items.push_back(item);
-      } else {
+      Item * item = new Item(this, this);
+      bool const itemIsValid = item->initFromEngine(ItemStrings[iItem]);
+      if (!itemIsValid) {
          item->deallocate();
          char warningbuf[MAX_MESSAGE_LENGTH];
          snprintf(warningbuf, MAX_MESSAGE_LENGTH,
                   "%s: Invalid Item found in file '%s'",
                   __FUNCTION__, filename);
          warningMessage(warningbuf);
+      } else {
+         this->all_valid_items.push_back(item);
       }
    }
 
@@ -229,17 +229,17 @@ void GameEngine::initWeapons(char const * const filename) {
 
    /* create our valid Weapon objects */
    for (size_t iWeapon = 0; iWeapon < NumWeaponStrings; iWeapon++) {
-      bool isValid = true;
-      Weapon * weapon = new Weapon(this, this, WeaponStrings[iWeapon], &isValid, InitialiseWeapon);
-      if (isValid) {
-         this->all_valid_weapons.push_back(weapon);
-      } else {
+      Weapon * weapon = new Weapon(this, this);
+      bool const weaponIsValid = weapon->initFromEngine(WeaponStrings[iWeapon]);
+      if (!weaponIsValid) {
          weapon->deallocate();
          char warningbuf[MAX_MESSAGE_LENGTH];
          snprintf(warningbuf, MAX_MESSAGE_LENGTH,
                   "%s: Invalid Weapon found in file '%s'",
                   __FUNCTION__, filename);
          warningMessage(warningbuf);
+      } else {
+         this->all_valid_weapons.push_back(weapon);
       }
    }
 
@@ -277,10 +277,10 @@ void GameEngine::initPlayers(char const * const directory) {
    /* Allocate the space for each player's info */
    for (size_t i = 0; i < playerFiles.size(); i++) {
       /* Read the file in the Player() constructor */
-      bool isValid = true;
-      Player * p = new Player(this, playerFiles[i], &isValid);
-      /* If it's not valid for whatever reason, clear the memory and let the user know */
-      if ( !isValid ) {
+      Player * p = new Player(this);
+      bool const playerFileIsValid = p->init(playerFiles[i]);
+      /* If the file has something wrong, clear the memory and let the user know */
+      if ( !playerFileIsValid ) {
          char warningbuf[MAX_MESSAGE_LENGTH];
          snprintf(warningbuf, MAX_MESSAGE_LENGTH,
                   "%s: Player %zu has an invalid player file '%s'",
@@ -293,9 +293,9 @@ void GameEngine::initPlayers(char const * const directory) {
    }
 }
 
-void GameEngine::checkValidity() const {
-   CHECK(type() == GAMEENGINE, this);
-   CHECK(GameObject::numberOfType(GAMEENGINE) == 1, this);
+void GameEngine::ensureValidity() const {
+   ENSURE(type() == GAMEENGINE, this);
+   ENSURE(GameObject::numberOfType(GAMEENGINE) == 1, this);
 }
 
 void GameEngine::readCaptainSkillTreeFile(char const * const filename) {
@@ -365,11 +365,11 @@ void GameEngine::readCaptainSkillTreeFile(char const * const filename) {
    }
 
    for (size_t i = 0; i < nParameters; i++) {
-      bool isValid = true;
-      /* i+1 is translated to a SpecialisedSquadMember specialism enum */
-      SkillTree * tree = new SkillTree(this, CAPTAIN, i+1,
-                                       *((char***)ParamEntries[i].Pointer),
-                                       &isValid);
+      /* nullptr in the constructor means it's not attached to a squad member */
+      SkillTree * tree = new SkillTree(this, nullptr);
+      char ** skillStrings = *((char***)ParamEntries[i].Pointer);
+      int const specialism = i+1; /* see CaptainSpecialism enum to translate i+1 */
+      bool const isValid = tree->init(CAPTAIN, specialism, skillStrings);
       if (isValid) {
          this->all_valid_skilltrees.push_back(tree);
       } else {
@@ -447,11 +447,11 @@ void GameEngine::readHierophantSkillTreeFile(char const * const filename) {
    }
 
    for (size_t i = 0; i < nParameters; i++) {
-      bool isValid = true;
-      /* i+1 is translated to a SpecialisedSquadMember specialism enum */
-      SkillTree * tree = new SkillTree(this, HIEROPHANT, i+1,
-                                       *((char***)ParamEntries[i].Pointer),
-                                       &isValid);
+      /* nullptr in the constructor means it's not attached to a squad member */
+      SkillTree * tree = new SkillTree(this, nullptr);
+      char ** skillStrings = *((char***)ParamEntries[i].Pointer);
+      int const specialism = i+1; /* see HierohantSpecialism enum to translate i+1 */
+      bool const isValid = tree->init(HIEROPHANT, specialism, skillStrings);
       if (isValid) {
          this->all_valid_skilltrees.push_back(tree);
       } else {

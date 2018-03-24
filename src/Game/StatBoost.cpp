@@ -6,32 +6,7 @@
 
 StatBoost::StatBoost(GameEngine * const e) 
       : GameObject(STATBOOST), engine(e) {
-   /* blank, all defaults */
-}
-
-StatBoost::StatBoost(GameEngine * const e,
-                     std::string const& stat,
-                     std::string const& modifier,
-                     bool * const isValid)
-      : GameObject(STATBOOST), engine(e) {
-   int sign;
-   std::string valueStr;
-   if (!isdigit(modifier[0])) {
-      sign     = (modifier[0] == '-') ? -1 : 1;
-      valueStr = modifier.substr(1);
-   } else {
-      sign     = 1;
-      valueStr = modifier;
-   }
-
-   if      (stat == "Cost")     this->multiplyCost =        std::stof(valueStr);
-   else if (stat == "Movement") this->addMovement  = sign * std::stof(valueStr);
-   else if (stat == "Shooting") this->addShooting  = sign * std::stoi(valueStr);
-   else if (stat == "Strength") this->addShooting  = sign * std::stoi(valueStr);
-   else if (stat == "Armour")   this->addArmour    = sign * std::stoi(valueStr);
-   else if (stat == "Morale")   this->addMorale    = sign * std::stoi(valueStr);
-   else if (stat == "Health")   this->addHealth    = sign * std::stoi(valueStr);
-   else                         *isValid = false;
+   /* blank, all defaults as listed in StatBoost.h */
 }
 
 /* Copying another */
@@ -51,6 +26,41 @@ StatBoost::~StatBoost() {
    /* blank? */
 }
 
+bool StatBoost::init(std::string const& stat,
+                     std::string const& modifier) {
+   int sign;
+   std::string valueStr;
+   if (!isdigit(modifier[0])) {
+      sign     = (modifier[0] == '-') ? -1 : 1;
+      valueStr = modifier.substr(1);
+   } else {
+      sign     = 1;
+      valueStr = modifier;
+   }
+
+   if      (stat == "Cost")     this->multiplyCost =        std::stof(valueStr);
+   else if (stat == "Movement") this->addMovement  = sign * std::stof(valueStr);
+   else if (stat == "Shooting") this->addShooting  = sign * std::stoi(valueStr);
+   else if (stat == "Strength") this->addShooting  = sign * std::stoi(valueStr);
+   else if (stat == "Armour")   this->addArmour    = sign * std::stoi(valueStr);
+   else if (stat == "Morale")   this->addMorale    = sign * std::stoi(valueStr);
+   else if (stat == "Health")   this->addHealth    = sign * std::stoi(valueStr);
+   else                         return false;
+
+   return true;
+}
+
+void StatBoost::copy(StatBoost const * const other) {
+   this->engine       = other->engine;
+   this->addMovement  = other->addMovement;
+   this->addShooting  = other->addShooting;
+   this->addStrength  = other->addStrength;
+   this->addArmour    = other->addArmour;
+   this->addMorale    = other->addMorale;
+   this->addHealth    = other->addHealth;
+   this->multiplyCost = other->multiplyCost;
+}
+
 void StatBoost::add(StatBoost const * const extraBoost) {
    this->addMovement  += extraBoost->addMovement;
    this->addShooting  += extraBoost->addShooting;
@@ -63,8 +73,8 @@ void StatBoost::add(StatBoost const * const extraBoost) {
 
 bool StatBoost::add(std::string const& stat,
                     std::string const& modifier) {
-   bool isValid = true;
-   StatBoost * extraBoost = new StatBoost(engine, stat, modifier, &isValid);
+   StatBoost * extraBoost = new StatBoost(engine);
+   bool isValid = extraBoost->init(stat, modifier);
    if (isValid) {
       this->add(extraBoost);
    }
@@ -82,10 +92,24 @@ void StatBoost::reset() {
    this->multiplyCost = 1.0;
 }
 
-void StatBoost::checkValidity() const {
-   CHECK(type() == STATBOOST, engine);
-   CHECK(multiplyCost >= 0.0, engine);
-   CHECK(multiplyCost <= 1.0, engine);
+bool StatBoost::isBlank() const {
+   if (addMovement  > 0) return false;
+   if (addStrength != 0) return false;
+   if (addShooting != 0) return false;
+   if (addArmour   != 0) return false;
+   if (addMorale   != 0) return false;
+   if (addHealth   != 0) return false;
+   if (multiplyCost > 0) return false;
+   return true;
+}
 
-   /* blank? */
+void StatBoost::ensureValidity() const {
+   ENSURE(type() == STATBOOST, engine);
+   ENSURE(multiplyCost >= 0.0, engine);
+   ENSURE(multiplyCost <= 1.0, engine);
+   ENSURE(addStrength >= 0,    engine);
+   ENSURE(addShooting >= 0,    engine);
+   ENSURE(addArmour >= 0,      engine);
+   ENSURE(addMorale >= 0,      engine);
+   ENSURE(addHealth >= 0,      engine);
 }

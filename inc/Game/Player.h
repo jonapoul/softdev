@@ -18,16 +18,16 @@ enum {
 
 class Player : public GameObject {
 public:
-   Player(GameEngine * const e,
-          std::string const& filename,
-          bool * const playerFileIsValid);
+   Player(GameEngine * const e);
    ~Player();
+
+   bool init(std::string const& file);
 
    void deleteSquad(size_t const indexToDelete);
    void addSquad(Squad * const squad);
    size_t numSquads() const;
 
-   virtual void checkValidity() const;
+   virtual void ensureValidity() const;
 
 private:
    GameEngine * engine;

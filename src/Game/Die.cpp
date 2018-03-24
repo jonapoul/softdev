@@ -34,9 +34,9 @@ int Die::maxRoll() const {
    return this->maxValue;
 }
 
-void Die::checkValidity() const {
-   CHECK(type() == DIE, engine);
-   CHECK(minValue < maxValue, engine);
+void Die::ensureValidity() const {
+   ENSURE(type() == DIE, engine);
+   ENSURE(minValue < maxValue, engine);
 }
 
 /* Generate a load of numbers and test their distribution */

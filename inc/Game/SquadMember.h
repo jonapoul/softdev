@@ -14,7 +14,7 @@ public:
    SquadMember(Squad * const s);
    ~SquadMember();
 
-   virtual void checkValidity() const;
+   virtual void ensureValidity() const;
 
    virtual float movement() const;
    virtual int strength() const;

@@ -10,10 +10,13 @@ extern "C" {
 #include "PF.h"
 }
 
-Player::Player(GameEngine * const e,
-               std::string const& file,
-               bool * const playerFileIsValid) 
-      : GameObject(PLAYER), engine(e), loginStatus(false), filename(file) {
+Player::Player(GameEngine * const e)
+      : GameObject(PLAYER), engine(e), loginStatus(false) { }
+
+bool Player::init(std::string const& file) {
+
+   this->filename = file;
+   bool playerFileIsValid = true;
 
    /* Defaults */
    char tempUsername[MAX_LINE_LENGTH];
@@ -48,7 +51,7 @@ Player::Player(GameEngine * const e,
                "%s: Failed to load player file '%s'",
                __FUNCTION__, filename.c_str());
       engine->warningMessage(warningbuf);
-      *playerFileIsValid = false;
+      playerFileIsValid = false;
    }
 
    /* Read the Parameters */
@@ -58,7 +61,7 @@ Player::Player(GameEngine * const e,
                "%s: PF_ReadParameterFile() failed for player file '%s'",
                __FUNCTION__, filename.c_str());
       engine->warningMessage(warningbuf);
-      *playerFileIsValid = false;
+      playerFileIsValid = false;
    }
 
    /* Clean up */
@@ -66,35 +69,33 @@ Player::Player(GameEngine * const e,
    fclose(ParamFile);
 
    /* Back out if the file is invalid for whatever reason */
-   if ( *playerFileIsValid == false ) {
-      return;
+   if (!playerFileIsValid) {
+      return false;
    }
 
    this->username = std::string(tempUsername);
    this->password = std::string(password);
 
-   /* Create the Squad objects and check for validity */
+   /* Create the Squad objects based on the input files, then check that they're
+      legit before adding them to the squads array */
    for (size_t i = 0; i < NumSquads; i++) {
-      bool squadFileIsValid = true;
-      Squad * tempSquad = new Squad(engine, this, SquadFiles[i], &squadFileIsValid);
+      Squad * s = new Squad(engine, this);
+      bool const squadFileIsValid = s->init(SquadFiles[i]);
       if ( !squadFileIsValid ) {
          char warningbuf[MAX_MESSAGE_LENGTH];
          snprintf(warningbuf, MAX_MESSAGE_LENGTH,
                   "%s: Player '%s' has an invalid squad file at '%s'",
                   __FUNCTION__, username.c_str(), SquadFiles[i]);
          engine->warningMessage(warningbuf);
-         tempSquad->deallocate();
+         s->deallocate();
       } else {
-         this->squads.push_back(tempSquad);
+         this->squads.push_back(s);
       }
    }
+   /* Clear array of malloc'ed strings */
    PF_FreeStringArray(SquadFiles, NumSquads);
-   /* Remove any null pointers from the array */
-   for (int i = (int)squads.size()-1; i >= 0; i--) {
-      if (squads[i] == nullptr) {
-         squads.erase(squads.begin() + i);
-      }
-   }
+   /* Success! */
+   return true;
 }
 
 Player::~Player() {
@@ -135,9 +136,10 @@ size_t Player::numSquads() const {
    return this->squads.size();
 }
 
-void Player::checkValidity() const {
-   CHECK(type() == PLAYER, engine);
-   CHECK(username.length() > 0, engine);
-   CHECK(password.length() > 0, engine);
-   CHECK(loginStatus == true, engine);
+/* ENSURE() macro defined in GameObject.h */
+void Player::ensureValidity() const {
+   ENSURE(type() == PLAYER,      engine);
+   ENSURE(username.length() > 0, engine);
+   ENSURE(password.length() > 0, engine);
+   ENSURE(loginStatus == true,   engine);
 }

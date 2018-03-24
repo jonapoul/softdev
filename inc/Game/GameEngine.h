@@ -44,7 +44,7 @@ public:
               std::string const& plaintextPassword);
    
 
-   virtual void checkValidity() const;
+   virtual void ensureValidity() const;
 
    Die * die;
    GameParameters * parameters;

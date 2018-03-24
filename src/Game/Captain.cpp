@@ -16,9 +16,9 @@ Captain::~Captain() {
    /* Delete skills? */
 }
 
-void Captain::checkValidity() const {
-   CHECK(type() == CAPTAIN, engine);
-   CHECK(specialism == NoCaptainSpecialism, engine);
+void Captain::ensureValidity() const {
+   ENSURE(type() == CAPTAIN, engine);
+   ENSURE(specialism == NoCaptainSpecialism, engine);
 }
 
 int Captain::stringToSpecialism(char const * const str) const {

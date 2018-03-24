@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 
-#define CHECK(statement,engine) GameObject::check(statement,#statement,typeid(*this).name(),engine)
+#define ENSURE(statement,engine) GameObject::ensure(statement,#statement,typeid(*this).name(),engine)
 
 class GameEngine;
 
@@ -43,17 +43,17 @@ public:
    ObjectType type() const;
    void deallocate();
    void setType(ObjectType const t);
-   virtual void checkValidity() const;
+   virtual void ensureValidity() const;
 
    static void printAllObjects();
    static std::vector<GameObject*> getAllOfType(ObjectType const t);
    static std::vector<GameObject*> getAllOfTypes(std::vector<ObjectType> const& types);
    static size_t numberOfType(ObjectType const t);
-   static void checkEverythingIsValid();
-   static void check(bool const statement,
-                     char const * const string,
-                     char const * const Class,
-                     GameEngine const * const engine);
+   static void ensureEverythingIsValid();
+   static void ensure(bool const statement,
+                      char const * const string,
+                      char const * const Class,
+                      GameEngine const * const engine);
 
 private:
    std::string typeToString() const;

@@ -10,7 +10,7 @@
 class Squad;
 
 typedef enum {
-   NoCaptainSpecialism,
+   NoCaptainSpecialism = 0,
    DemomanCS, /* +armour,   +health */
    ScoutCS,   /* +shooting, +movement */
    SoldierCS, /* +shooting, +strength */
@@ -26,7 +26,7 @@ public:
    ~Captain();
 
    int stringToSpecialism(char const * const str) const override;
-   virtual void checkValidity() const;
+   virtual void ensureValidity() const;
    static std::string specialismToString(int const spec);
 
 private:

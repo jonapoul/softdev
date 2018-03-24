@@ -7,27 +7,21 @@
 class GameEngine;
 class StatBoost;
 
-typedef enum {
-   InitialiseItem,
-   MatchItem,
-   nItemConstructors
-} ItemConstructor;
-
 class Item : public GameObject {
 public:
    Item(GameObject * const o,
-        GameEngine * const e,
-        char const * const itemString,
-        bool * const isValid,
-        ItemConstructor const test = MatchItem);
+        GameEngine * const e);
    ~Item();
+
+   bool init(char const * const itemString);
+   bool initFromEngine(char const * const itemString);
 
    StatBoost * getBoost() const;
    void setOwner(GameObject * const object);
-   virtual void checkValidity() const;
+   virtual void ensureValidity() const;
 
 private:
-   GameObject * owner;
+   GameObject * owner; /* either Squad or Player or GameEngine */
    GameEngine * engine;
    StatBoost * boost;
    std::string name;

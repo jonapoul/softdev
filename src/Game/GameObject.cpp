@@ -4,6 +4,8 @@
 size_t GameObject::id_running_counter = 0;
 std::vector<GameObject*> GameObject::all_objects = {};
 
+/* Force the user to pass a ObjectType enum value as part of the constructor.
+   This helps with debugging things like memory leaks, etc. */
 GameObject::GameObject(ObjectType const t)
       : id_(GameObject::id_running_counter), type_(t) {
    GameObject::id_running_counter++;
@@ -37,10 +39,12 @@ void GameObject::deallocate() {
    delete this; // NEPHEW
 }
 
-void GameObject::checkValidity() const {
+void GameObject::ensureValidity() const {
    /* blank, we don't have a GameEngine to reference */
 }
 
+/* Dump info about every GameObject currently in memory, in the order that they
+   were created */
 void GameObject::printAllObjects() {
    printf("%s\n", std::string(50, '-').c_str());
    printf("%15s %10s %15s\n", "Address", "ID", "Type");
@@ -51,6 +55,7 @@ void GameObject::printAllObjects() {
    printf("%s\n", std::string(50, '-').c_str());
 }
 
+/* Used for debugging and printAllObjects() */
 std::string GameObject::typeToString() const {
    switch (this->type()) {
       case NO_TYPE:                return "NO_TYPE";
@@ -73,6 +78,12 @@ std::string GameObject::typeToString() const {
    }
 }
 
+/* Return a vector of all objects with a given type.
+     e.g.
+       auto array = getAllOfType(PLAYER)
+   returns pointers to all Player objects. It's up to the user to cast them to
+   Player*.
+*/
 std::vector<GameObject*> GameObject::getAllOfType(ObjectType const t) {
    std::vector<GameObject*> result;
    for (GameObject* object : GameObject::all_objects) {
@@ -81,6 +92,13 @@ std::vector<GameObject*> GameObject::getAllOfType(ObjectType const t) {
    return result;
 }
 
+/* Return a vector of all objects that belong to the given array of types..
+     e.g.
+       auto array = getAllOfTypes({PLAYER, SQUAD, ENGINE})
+   returns pointers to all Player objects, all Squad objects and all Engine
+   objects. It's up to the user to cast them correctly, using the pointer's 
+   type() function
+*/
 std::vector<GameObject*> GameObject::getAllOfTypes(std::vector<ObjectType> const& types) {
    std::vector<GameObject*> result;
    for (GameObject* object : GameObject::all_objects) {
@@ -94,6 +112,8 @@ std::vector<GameObject*> GameObject::getAllOfTypes(std::vector<ObjectType> const
    return result;
 }
 
+/* Pass enum representing a derived class, and return how many of that type
+   currently exist in memory */
 size_t GameObject::numberOfType(ObjectType const t) {
    size_t count = 0;
    for (GameObject* object : GameObject::all_objects) {
@@ -102,20 +122,27 @@ size_t GameObject::numberOfType(ObjectType const t) {
    return count;
 }
 
-void GameObject::checkEverythingIsValid() {
+/* Go through every registered object and make sure nothing is invalid */
+void GameObject::ensureEverythingIsValid() {
    for (GameObject* object : GameObject::all_objects) {
-      object->checkValidity();
+      object->ensureValidity();
    }
 }
 
-void GameObject::check(bool const statement,
+/* Make sure the passed boolean statement evaluates to true, and if not send
+   a warning to the game engine. It'll pass a message to the user (via either
+   UI or CLI) showing what failed and where */
+void GameObject::ensure(bool const statement,
                        char const * const statementString,
                        char const * const className,
                        GameEngine const * const engine) {
    if (!statement) {
       char warningbuf[MAX_MESSAGE_LENGTH];
       snprintf(warningbuf, MAX_MESSAGE_LENGTH,
-               "Failed check '%s' in class '%s'", statementString, className);
+               "FAILED CHECK:\n"
+               "    Statement: '%s'\n"
+               "    Location:  '%s'", 
+               statementString, className);
       engine->warningMessage(warningbuf);
    }
 }

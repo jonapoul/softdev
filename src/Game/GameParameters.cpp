@@ -226,8 +226,8 @@ int GameParameters::writeToFile(PF_ParameterEntry * const ParameterEntries,
    return EXIT_SUCCESS;
 }
 
-void GameParameters::checkValidity() const {
-   CHECK(type() == GAMEPARAMETERS, engine);
-   CHECK(MinRoll < MaxRoll, engine);
-   CHECK(EncryptionKey.length() > 0, engine);
+void GameParameters::ensureValidity() const {
+   ENSURE(type() == GAMEPARAMETERS, engine);
+   ENSURE(MinRoll < MaxRoll, engine);
+   ENSURE(EncryptionKey.length() > 0, engine);
 }

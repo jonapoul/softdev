@@ -10,7 +10,7 @@
 class Squad;
 
 typedef enum {
-   NoHierophantSpecialism,
+   NoHierophantSpecialism = 0,
    SpeakerHS, /* +morale,   +movement */
    PriestHS,  /* +health,   +morale */
    MedicHS,   /* +health,   +strength */
@@ -25,7 +25,7 @@ public:
 
    int stringToSpecialism(char const * const str) const override;
    static std::string specialismToString(int const spec);
-   virtual void checkValidity() const;
+   virtual void ensureValidity() const;
 
 private:
    HierophantSpecialism specialism;

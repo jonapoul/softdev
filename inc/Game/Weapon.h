@@ -7,24 +7,18 @@
 class GameEngine;
 class StatBoost;
 
-typedef enum {
-   InitialiseWeapon,
-   MatchWeapon,
-   nWeaponConstructors
-} WeaponConstructor;
-
 class Weapon : public GameObject {
 public:
    Weapon(GameObject * const o,
-          GameEngine * const e,
-          char const * const weaponString,
-          bool * const isValid,
-          WeaponConstructor const test = MatchWeapon);
+          GameEngine * const e);
    ~Weapon();
+
+   bool init(char const * const weaponString);
+   bool initFromEngine(char const * const weaponString);
 
    StatBoost * getBoost() const;
    void setOwner(GameObject * const object);
-   virtual void checkValidity() const;
+   virtual void ensureValidity() const;
 
 private:
    GameObject * owner;

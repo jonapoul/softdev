@@ -36,7 +36,7 @@ public:
    int health() const override;
    int cost() const override;
 
-   virtual void checkValidity() const;
+   virtual void ensureValidity() const;
    virtual int stringToSpecialism(char const * const str) const = 0;
 
 protected:
@@ -44,7 +44,7 @@ protected:
    SkillTree * skillTree;
    std::vector<Weapon *> weapons;
    std::vector<Item *> items;
-   StatBoost * summedBoosts;
+   StatBoost * totalBoost;
 };
 
 #endif

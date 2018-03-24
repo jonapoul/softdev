@@ -27,7 +27,6 @@ int main() {
    QFontDatabase::addApplicationFont("qrc:///fonts/KronaOne.ttf");
 
    GameWindow * window = new GameWindow;
-   GameEngine * engine = new GameEngine(window);
    window->show();
 
    return app.exec();

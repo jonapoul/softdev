@@ -12,29 +12,17 @@
 SkillTree::SkillTree(GameEngine * const e,
                      SpecialisedSquadMember * const o)
       : GameObject(SKILLTREE), engine(e), owner(o) {
-   this->boost = new StatBoost*[2];
-   boost[0] = new StatBoost(engine);
-   boost[1] = new StatBoost(engine);
-   this->child = new Skill*[2];
-   child[0] = new Skill(engine, this, nullptr, "0");
-   child[1] = new Skill(engine, this, nullptr, "1");
+
+   this->headNode   = new Skill(engine, this, nullptr, 0);
+   this->totalBoost = new StatBoost(engine); /* all blank boosts */
+   this->boost0     = new StatBoost(engine);
+   this->boost1     = new StatBoost(engine);
 }
 
-SkillTree::SkillTree(GameEngine * const e,
-                     ObjectType const t,
+bool SkillTree::init(ObjectType const ownerType,
                      int const specialism,
-                     char ** skillString,
-                     bool * const isValid)
-      : GameObject(SKILLTREE), engine(e), owner(nullptr) {
-
-   this->boost = new StatBoost*[2];
-   boost[0] = new StatBoost(engine);
-   boost[1] = new StatBoost(engine);
-   this->child = new Skill*[2];
-   child[0] = new Skill(engine, this, nullptr, "0");
-   child[1] = new Skill(engine, this, nullptr, "1");
-
-   switch (t) {
+                     char ** skillStrings) {
+   switch (ownerType) {
       case CAPTAIN:
          this->name = Captain::specialismToString(specialism);
          this->skillTreeClass = CaptainSkillTreeClass;
@@ -44,70 +32,108 @@ SkillTree::SkillTree(GameEngine * const e,
          this->skillTreeClass = HierophantSkillTreeClass;
          break;
       default:
-         *isValid = false;
-         return;
+         /* Only captain/hierophant have access to skill trees */
+         return false;
    }
 
+   /* skillStrings should have two elements:
+        e.g. [ '+1 Strength', '+1 Shooting' ] */
    for (size_t i = 0; i < 2; i++) {
-      if (Global::wordCount(skillString[i]) != 2) {
-         *isValid = false;
-         return;
+      /* Each skillString needs a modifer and a stat to modify */
+      if (Global::wordCount(skillStrings[i]) != 2) {
+         return false;
       }
-      std::stringstream ss(skillString[i]);
+      std::stringstream ss(skillStrings[i]);
       std::string modifier, modifiedStat;
       ss >> modifier >> modifiedStat;
-      bool boostIsValid = true;
-      StatBoost * b = new StatBoost(engine, modifiedStat, modifier, &boostIsValid);
-      if (boostIsValid) {
-         boost[i]->deallocate();
-         boost[i] = b;
-      } else {
+      StatBoost * b = new StatBoost(engine);
+      /* check if the strings are valid */
+      bool const boostIsValid = b->init(modifiedStat, modifier);
+      if (!boostIsValid) {
+         /* if not, close program */
          b->deallocate();
-         *isValid = false;
-         return;
+         char critbuf[MAX_MESSAGE_LENGTH];
+         snprintf(critbuf, MAX_MESSAGE_LENGTH,
+                  "%s: SkillTree '%s' has an invalid modifer: '%s'",
+                  __FUNCTION__, name.c_str(), skillStrings[i]);
+         engine->criticalMessage(critbuf);
+         /* QUIT */
+      } else {
+         StatBoost * ptr = (i == 0) ? boost0 : boost1;
+         ptr->copy(b);
+         b->deallocate();
       }
    }
+   return true;
 }
 
 SkillTree::~SkillTree() {
-   for (size_t i = 0; i < 2; i++) {
-      child[i]->deallocate();
-      boost[i]->deallocate();
-   }
-   delete[] child;
-   delete[] boost;
+   headNode->deallocate(); /* also deallocates all children */
+   totalBoost->deallocate();
+   boost0->deallocate();
+   boost1->deallocate();
 }
 
 void SkillTree::setSpecialism(char const * const specialismStr) {
-   bool isValid = true;
+   /* e.g. convert the string 'Demoman' to enum integer DEMOMAN */
    this->specialism = owner->stringToSpecialism(specialismStr);
    /* No recognised specialism string */
    if (specialism == 0) {
-      isValid = false;
-   }
-   switch (owner->type()) {
-      case CAPTAIN: 
-         this->skillTreeClass = CaptainSkillTreeClass;
-         break;
-      case HIEROPHANT:
-         this->skillTreeClass = HierophantSkillTreeClass;
-         break;
-      default:
-         this->skillTreeClass = NoSkillTreeClass;
-         isValid = false;
-         break;
-   }
-   if (!isValid) {
       char criticalbuf[MAX_MESSAGE_LENGTH];
       snprintf(criticalbuf, MAX_MESSAGE_LENGTH,
-               "%s: Failed to recognise skill specialism '%s'",
+               "%s: Couldn't recognise SkillTree specialism '%s'",
                __FUNCTION__, specialismStr);
       engine->criticalMessage(criticalbuf);
       /* QUIT */
    }
 }
 
-void SkillTree::checkValidity() const {
-   CHECK(type() == SKILLTREE, engine);
-   CHECK(skillTreeClass != NoSkillTreeClass, engine);
+StatBoost * SkillTree::boost(int const index) const {
+   switch (index) {
+      case 0:  return this->boost0;
+      case 1:  return this->boost1;
+      default: return nullptr;
+   }
+}
+
+std::vector<Skill*> SkillTree::getAllActiveSkills() const {
+   std::vector<Skill*> array = {};
+   if (headNode->isActive() == false) {
+      return array; /* No skills */
+   }
+   array.push_back(headNode);
+   getAllActiveSkillsRecursive(headNode, &array);
+   return array;
+}
+
+/* Recursively go through the tree and append any skills that the user has
+   activated */
+void SkillTree::getAllActiveSkillsRecursive(Skill * const s,
+                                            std::vector<Skill*> * array) const {
+   if (s->child0 != nullptr && s->child0->isActive()) {
+      array->push_back(s->child0);
+      getAllActiveSkillsRecursive(s->child0, array);
+   }
+   if (s->child1 != nullptr && s->child1->isActive()) {
+      array->push_back(s->child1);
+      getAllActiveSkillsRecursive(s->child1, array);
+   }
+}
+
+StatBoost * SkillTree::summedBoosts() {
+   /* 1) Get all active skill objects
+      2) Reset the existing totalBoost object to defaults
+      3) Sum the skills' cumulative effect on stats and put it in totalBoost
+      4) Return */
+   std::vector<Skill*> allSkills = getAllActiveSkills();
+   this->totalBoost->reset();
+   for (auto s : allSkills) {
+      this->totalBoost->add(s->boost);
+   }
+   return this->totalBoost;
+}
+
+void SkillTree::ensureValidity() const {
+   ENSURE(type() == SKILLTREE,                engine);
+   ENSURE(skillTreeClass != NoSkillTreeClass, engine);
 }

@@ -16,9 +16,9 @@ Hierophant::~Hierophant() {
    /* Delete skills? */
 }
 
-void Hierophant::checkValidity() const {
-   CHECK(type() == HIEROPHANT, engine);
-   CHECK(specialism == NoHierophantSpecialism, engine);
+void Hierophant::ensureValidity() const {
+   ENSURE(type() == HIEROPHANT, engine);
+   ENSURE(specialism == NoHierophantSpecialism, engine);
 }
 
 int Hierophant::stringToSpecialism(char const * const str) const {

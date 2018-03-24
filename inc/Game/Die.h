@@ -16,7 +16,7 @@ public:
    int roll() const;
    int maxRoll() const;
    int minRoll() const;
-   virtual void checkValidity() const;
+   virtual void ensureValidity() const;
 
    void testRandomness() const; /* debugging */
 

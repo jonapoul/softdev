@@ -42,15 +42,15 @@ int SquadMember::cost() const {
    return engine->parameters->BaseCost;
 }
 
-void SquadMember::checkValidity() const {
-   CHECK(type() == SQUADMEMBER, engine);
-   CHECK(player != nullptr, engine);
-   CHECK(squad  != nullptr, engine);
-   CHECK(movement() > 0.0, engine);
-   CHECK(strength() >= 0, engine);
-   CHECK(shooting() >= 0, engine);
-   CHECK(health() >= 0, engine);
-   CHECK(armour() >= 0, engine);
-   CHECK(morale() >= 0, engine);
-   CHECK(cost() >= 0, engine);
+void SquadMember::ensureValidity() const {
+   ENSURE(type() == SQUADMEMBER, engine);
+   ENSURE(player != nullptr,     engine);
+   ENSURE(squad != nullptr,      engine);
+   ENSURE(movement() > 0.0,      engine);
+   ENSURE(strength() >= 0,       engine);
+   ENSURE(shooting() >= 0,       engine);
+   ENSURE(health() >= 0,         engine);
+   ENSURE(armour() >= 0,         engine);
+   ENSURE(morale() >= 0,         engine);
+   ENSURE(cost() >= 0,           engine);
 }

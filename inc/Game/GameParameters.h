@@ -43,7 +43,7 @@ public:
                    size_t const NParameterEntries,
                    char const * const Filename);
 
-   virtual void checkValidity() const;
+   virtual void ensureValidity() const;
 
    int MinRoll;
    int MaxRoll;

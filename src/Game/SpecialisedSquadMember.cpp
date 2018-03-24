@@ -12,13 +12,13 @@
 SpecialisedSquadMember::SpecialisedSquadMember(Squad * const s)
       : SquadMember(s), experience(0) {
    this->setType(SPECIALISEDSQUADMEMBER);
-   this->summedBoosts = new StatBoost(engine); /* blank, all default values */
-   this->skillTree = new SkillTree(engine, this); /* blank, no skills active */
+   this->totalBoost = new StatBoost(engine); /* blank, all default values */
+   this->skillTree  = new SkillTree(engine, this); /* blank, no skills active */
 }
 
 SpecialisedSquadMember::~SpecialisedSquadMember() {
    skillTree->deallocate();
-   summedBoosts->deallocate();
+   totalBoost->deallocate();
    for (Weapon * weapon : weapons) {
       weapon->deallocate();
    }
@@ -31,13 +31,14 @@ void SpecialisedSquadMember::initSkills(char ** skillsStr,
                                         size_t const nSkills,
                                         char * specialismStr) {
    skillTree->setSpecialism(specialismStr);
+   /* CONTINUE */
 }
 
 void SpecialisedSquadMember::initItems(char ** itemsStr,
                                        size_t const nItems) {
    for (size_t iItem = 0; iItem < nItems; iItem++) {
-      bool isValid = true;
-      Item * item = new Item(this, engine, itemsStr[iItem], &isValid);
+      Item * item = new Item(this, engine);
+      bool const isValid = item->init(itemsStr[iItem]);
       item->setOwner(this);
       if (!isValid) {
          item->deallocate();
@@ -55,8 +56,8 @@ void SpecialisedSquadMember::initItems(char ** itemsStr,
 void SpecialisedSquadMember::initWeapons(char ** weaponsStr,
                                          size_t const nWeapons) {
    for (size_t iWeapon = 0; iWeapon < nWeapons; iWeapon++) {
-      bool isValid = true;
-      Weapon * weapon = new Weapon(this, engine, weaponsStr[iWeapon], &isValid);
+      Weapon * weapon = new Weapon(this, engine);
+      bool const isValid = weapon->init(weaponsStr[iWeapon]);
       weapon->setOwner(this);
       if (!isValid) {
          weapon->deallocate();
@@ -72,47 +73,47 @@ void SpecialisedSquadMember::initWeapons(char ** weaponsStr,
 }
 
 void SpecialisedSquadMember::updateStats() {
-   summedBoosts->reset();
+   this->totalBoost->reset();
    for (Item * item : items) {
-      summedBoosts->add(item->getBoost());
+      this->totalBoost->add( item->getBoost() );
    }
    for (Weapon * weapon : weapons) {
-      summedBoosts->add(weapon->getBoost());
+      this->totalBoost->add( weapon->getBoost() );
    }
-   /*summedBoosts->add(skillTree->getBoost());*/
+   this->totalBoost->add( skillTree->summedBoosts() );
 }
 
 float SpecialisedSquadMember::movement() const {
-   return engine->parameters->BaseMovement + summedBoosts->addMovement;
+   return engine->parameters->BaseMovement + totalBoost->addMovement;
 }
 
 int SpecialisedSquadMember::strength() const {
-   return engine->parameters->BaseStrength + summedBoosts->addStrength;
+   return engine->parameters->BaseStrength + totalBoost->addStrength;
 }
 
 int SpecialisedSquadMember::shooting() const {
-   return engine->parameters->BaseShooting + summedBoosts->addShooting;
+   return engine->parameters->BaseShooting + totalBoost->addShooting;
 }
 
 int SpecialisedSquadMember::armour() const {
-   return engine->parameters->BaseArmour + summedBoosts->addArmour;
+   return engine->parameters->BaseArmour + totalBoost->addArmour;
 }
 
 int SpecialisedSquadMember::morale() const {
-   return engine->parameters->BaseMorale + summedBoosts->addMorale;
+   return engine->parameters->BaseMorale + totalBoost->addMorale;
 }
 
 int SpecialisedSquadMember::health() const {
-   return engine->parameters->BaseHealth + summedBoosts->addHealth;
+   return engine->parameters->BaseHealth + totalBoost->addHealth;
 }
 
 int SpecialisedSquadMember::cost() const {
-   return engine->parameters->BaseCost * summedBoosts->multiplyCost;
+   return engine->parameters->BaseCost * totalBoost->multiplyCost;
 }
 
-void SpecialisedSquadMember::checkValidity() const {
-   CHECK(type() == SPECIALISEDSQUADMEMBER, engine);
-   CHECK(experience >= 0, engine);
-   CHECK(skillTree != nullptr, engine);
+void SpecialisedSquadMember::ensureValidity() const {
+   ENSURE(type() == SPECIALISEDSQUADMEMBER, engine);
+   ENSURE(experience >= 0, engine);
+   ENSURE(skillTree != nullptr, engine);
    /* something with skills? */
 }

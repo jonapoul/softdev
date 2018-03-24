@@ -42,24 +42,17 @@ enum {
 
 class Squad : public GameObject {
 public:
-   /* New squad initialisation */
    Squad(GameEngine * const e,
          Player * const p);
-
-   /* Loading from an existing save file */
-   Squad(GameEngine * const e,
-         Player * const p,
-         char const * const filename,
-         bool * const squadFileIsValid);
-
    ~Squad();
 
+   bool init(char const * const file);
    void initItems(char ** itemsStr,
                   size_t const Nitems);
    void initWeapons(char ** weaponsStr,
                     size_t const NWeapons);
 
-   virtual void checkValidity() const;
+   virtual void ensureValidity() const;
 
    /* parent pointers */
    GameEngine * engine;
