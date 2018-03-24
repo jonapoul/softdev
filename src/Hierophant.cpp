@@ -5,6 +5,7 @@
 #include "Game/GameEngine.h"
 #include "Game/SkillTree.h"
 #include "Game/Skill.h"
+#include "Global.h"
 
 Hierophant::Hierophant(Squad * const s)
       : SpecialisedSquadMember(s), specialism(NoHierophantSpecialism) {
@@ -38,4 +39,11 @@ std::string Hierophant::specialismToString(int const spec) {
       case SupportHS: return "Support";
       default:        return "Unknown";
    }
+}
+
+void Hierophant::print() const {
+   SpecialisedSquadMember::print();
+   printf("Hierophant:\n");
+   printf("   Specialism       = %d\n", specialism);
+   printf("   SpecialismString = '%s'\n", Hierophant::specialismToString(specialism).c_str());
 }

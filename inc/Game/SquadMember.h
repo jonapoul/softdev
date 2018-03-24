@@ -15,6 +15,7 @@ public:
    ~SquadMember();
 
    virtual void ensureValidity() const;
+   virtual void print() const;
 
    virtual float movement() const;
    virtual int strength() const;

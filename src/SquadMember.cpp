@@ -4,6 +4,7 @@
 #include "Game/Player.h"
 #include "Game/Squad.h"
 #include "Game/GameParameters.h"
+#include "Global.h"
 
 SquadMember::SquadMember(Squad * const s)
       : GameObject(SQUADMEMBER), squad(s), engine(s->engine), player(s->player) {
@@ -53,4 +54,12 @@ void SquadMember::ensureValidity() const {
    ENSURE(armour() >= 0,         engine);
    ENSURE(morale() >= 0,         engine);
    ENSURE(cost() >= 0,           engine);
+}
+
+void SquadMember::print() const {
+   GameObject::print();
+   printf("SquadMember:\n");
+   printf("   engine = %p, ID = %zu\n", engine, engine->ID());
+   printf("   player = %p, ID = %zu\n", player, player->ID());
+   printf("   squad  = %p, ID = %zu\n", squad, squad->ID());
 }

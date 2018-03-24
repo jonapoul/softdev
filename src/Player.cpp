@@ -74,7 +74,7 @@ bool Player::init(std::string const& file) {
    }
 
    this->username = std::string(tempUsername);
-   this->password = std::string(password);
+   this->password = std::string(tempPassword);
 
    /* Create the Squad objects based on the input files, then check that they're
       legit before adding them to the squads array */
@@ -142,4 +142,17 @@ void Player::ensureValidity() const {
    ENSURE(username.length() > 0, engine);
    ENSURE(password.length() > 0, engine);
    ENSURE(loginStatus == true,   engine);
+}
+
+void Player::print() const {
+   GameObject::print();
+   printf("Player:\n");
+   printf("   engine      = %p, ID = %zu\n", engine, engine->ID());
+   printf("   username    = '%s'\n", username.c_str());
+   printf("   password    = '%s'\n", password.c_str());
+   printf("   squads      = [ ");
+   for (auto s : squads) printf("%zu ", s->ID());
+   printf("]\n");
+   printf("   filename    = '%s'\n", filename.c_str());
+   printf("   loginStatus = %d\n", loginStatus);
 }

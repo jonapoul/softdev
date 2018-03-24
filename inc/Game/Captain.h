@@ -27,6 +27,7 @@ public:
 
    int stringToSpecialism(char const * const str) const override;
    virtual void ensureValidity() const;
+   virtual void print() const;
    static std::string specialismToString(int const spec);
 
 private:

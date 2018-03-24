@@ -19,6 +19,7 @@ public:
    StatBoost * getBoost() const;
    void setOwner(GameObject * const object);
    virtual void ensureValidity() const;
+   virtual void print() const;
 
 private:
    GameObject * owner; /* either Squad or Player or GameEngine */

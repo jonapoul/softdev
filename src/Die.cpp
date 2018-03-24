@@ -5,6 +5,7 @@
 #include "Game/Die.h"
 #include "Game/GameEngine.h"
 #include "Game/GameObject.h"
+#include "Global.h"
 
 Die::Die(int const Min,
          int const Max,
@@ -37,6 +38,13 @@ int Die::maxRoll() const {
 void Die::ensureValidity() const {
    ENSURE(type() == DIE, engine);
    ENSURE(minValue < maxValue, engine);
+}
+
+void Die::print() const {
+   printf("Die:\n");
+   printf("   engine   = %p, ID = %zu\n", engine, engine->ID());
+   printf("   minValue = %d\n", minValue);
+   printf("   maxValue = %d\n", maxValue);
 }
 
 /* Generate a load of numbers and test their distribution */

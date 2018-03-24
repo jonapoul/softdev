@@ -39,11 +39,8 @@ public:
                   bool * const paramFileIsValid);
    ~GameParameters();
 
-   int writeToFile(PF_ParameterEntry * const ParameterEntries,
-                   size_t const NParameterEntries,
-                   char const * const Filename);
-
    virtual void ensureValidity() const;
+   virtual void print() const;
 
    int MinRoll;
    int MaxRoll;

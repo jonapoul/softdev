@@ -48,7 +48,7 @@ bool Weapon::initFromEngine(char const * const weaponString) {
    std::string modifier, modifiedStat;
    ss >> this->name >> modifier >> modifiedStat;
 
-   this->boost = new StatBoost(engine);
+   this->boost = new StatBoost(engine, this);
    bool const boostIsValid = boost->init(modifiedStat, modifier);
    if (!boostIsValid) {
       boost->deallocate();
@@ -69,4 +69,13 @@ void Weapon::setOwner(GameObject * const object) {
 void Weapon::ensureValidity() const {
    ENSURE(type() == WEAPON, engine);
    ENSURE(name.length() > 0, engine);
+}
+
+void Weapon::print() const {
+   GameObject::print();
+   printf("Weapon:\n");
+   printf("   name   = '%s'\n", name.c_str());
+   printf("   engine = %p, ID = %zu\n", engine, engine->ID());
+   printf("   owner  = %p, ID = %zu\n", owner, owner->ID());
+   printf("   boost  = %p, ID = %zu\n", boost, boost->ID());
 }

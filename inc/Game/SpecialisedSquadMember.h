@@ -38,6 +38,7 @@ public:
 
    virtual void ensureValidity() const;
    virtual int stringToSpecialism(char const * const str) const = 0;
+   virtual void print() const;
 
 protected:
    int experience;

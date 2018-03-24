@@ -206,16 +206,16 @@ bool Squad::init(char const * const file) {
       }
 
       this->captain = new Captain(this);
-      this->captain->initSkills (CaptainSkills,  NumCaptainSkills, CaptainSpecialism);
-      this->captain->initItems  (CaptainItems,   NumCaptainItems);
-      this->captain->initWeapons(CaptainWeapons, NumCaptainWeapons);
-      this->captain->updateStats();
+      captain->initSkills (CaptainSkills,  NumCaptainSkills, CaptainSpecialism);
+      captain->initItems  (CaptainItems,   NumCaptainItems);
+      captain->initWeapons(CaptainWeapons, NumCaptainWeapons);
+      captain->updateStats();
 
       this->hierophant = new Hierophant(this);
-      this->hierophant->initSkills (HierophantSkills,  NumHierophantSkills, HierophantSpecialism);
-      this->hierophant->initItems  (HierophantItems,   NumHierophantItems);
-      this->hierophant->initWeapons(HierophantWeapons, NumHierophantWeapons);
-      this->hierophant->updateStats();
+      hierophant->initSkills (HierophantSkills,  NumHierophantSkills, HierophantSpecialism);
+      hierophant->initItems  (HierophantItems,   NumHierophantItems);
+      hierophant->initWeapons(HierophantWeapons, NumHierophantWeapons);
+      hierophant->updateStats();
 
       this->initItems  (SquadItems,   NumSquadItems);
       this->initWeapons(SquadWeapons, NumSquadWeapons);
@@ -289,4 +289,25 @@ void Squad::initWeapons(char ** weaponsStr,
 void Squad::ensureValidity() const {
    ENSURE(type() == SQUAD, engine);
    ENSURE(credits >= 0,    engine);
+}
+
+void Squad::print() const {
+   GameObject::print();
+   printf("Squad:\n");
+   printf("   engine       = %p, ID = %zu\n", engine, engine->ID());
+   printf("   player       = %p, ID = %zu\n", player, player->ID());
+   printf("   isPublic     = %d\n", isPublic);
+   printf("   credits      = %d\n", credits);
+   printf("   filename     = '%s'\n", filename.c_str());
+   printf("   squadMembers = [ ");
+   for (auto s : squadMembers) printf("%zu ", s->ID());
+   printf("]\n");
+   printf("   captain      = %p, ID = %zu\n", captain, captain->ID());
+   printf("   hierophant   = %p, ID = %zu\n", hierophant, hierophant->ID());
+   printf("   weapons      = [ ");
+   for (auto w : weapons) printf("%zu ", w->ID());
+   printf("]\n");
+   printf("   items        = [ ");
+   for (auto i : items) printf("%zu ", i->ID());
+   printf("]\n");
 }

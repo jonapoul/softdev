@@ -39,6 +39,10 @@ void Global::trim(std::string * str) {
 }
 
 size_t Global::wordCount(char const * const str) {
+   return Global::wordCount(std::string(str));
+}
+
+size_t Global::wordCount(std::string const& str) {
    size_t count = 0;
    std::stringstream ss(str);
    std::string word;

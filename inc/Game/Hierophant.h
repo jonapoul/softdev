@@ -26,6 +26,7 @@ public:
    int stringToSpecialism(char const * const str) const override;
    static std::string specialismToString(int const spec);
    virtual void ensureValidity() const;
+   virtual void print() const;
 
 private:
    HierophantSpecialism specialism;

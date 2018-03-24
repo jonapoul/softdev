@@ -1,5 +1,8 @@
+#include <iostream>
+
 #include "Game/GameObject.h"
 #include "Game/GameEngine.h"
+#include "Global.h"
 
 size_t GameObject::id_running_counter = 0;
 std::vector<GameObject*> GameObject::all_objects = {};
@@ -43,6 +46,12 @@ void GameObject::ensureValidity() const {
    /* blank, we don't have a GameEngine to reference */
 }
 
+void GameObject::print() const {
+   printf("GameObject:\n");
+   printf("   ID   = %zu\n", this->ID());
+   printf("   Type = '%s'\n", this->typeToString().c_str());
+}
+
 /* Dump info about every GameObject currently in memory, in the order that they
    were created */
 void GameObject::printAllObjects() {
@@ -52,7 +61,38 @@ void GameObject::printAllObjects() {
    for (GameObject* o : GameObject::all_objects) {
       printf("%15p %10zu %15s\n", o, o->ID(), o->typeToString().c_str());
    }
+   if (GameObject::all_objects.size() == 0) {
+      printf("    No objects currently exist!\n");
+      printf("%s\n", std::string(50, '-').c_str());
+      return;
+   }
    printf("%s\n", std::string(50, '-').c_str());
+
+   while (true) {
+      printf("Enter the ID of an object. 'q' = Quit, 'p' = Print\n");
+      std::string input;
+      std::cin >> input;
+      if (tolower(input[0]) == 'q') {
+         return;
+      } else if (tolower(input[0]) == 'p') {
+         printAllObjects();
+         return;
+      }
+      for (size_t i = 0; i < input.length(); i++) {
+         if (!isdigit(input[i])) {
+            printf("Enter a number or 'q'.\n");
+            continue;
+         }
+      }
+      size_t id = std::stoi(input);
+      for (GameObject* o : GameObject::all_objects) {
+         if (id == o->ID()) {
+            o->print();
+            printf("\n");
+            break;
+         }
+      }
+   }
 }
 
 /* Used for debugging and printAllObjects() */

@@ -3,6 +3,7 @@
 
 #include "Game/GameParameters.h"
 #include "Game/GameEngine.h"
+#include "Global.h"
 
 extern "C" {
 #include "PF.h"
@@ -110,124 +111,29 @@ GameParameters::~GameParameters() {
    /* blank */
 }
 
-/* Copied PF_WriteParameters(), but writing to file instead of terminal */
-int GameParameters::writeToFile(PF_ParameterEntry * const ParameterEntries,
-                                size_t const NParameterEntries,
-                                char const * const Filename) {
-   char criticalbuf[MAX_LINE_LENGTH];
-   snprintf(criticalbuf, MAX_LINE_LENGTH,
-            "%s: Need to redo function with streams rather than fprintf",
-            __FUNCTION__);
-   engine->criticalMessage(criticalbuf);
-   return EXIT_FAILURE;
-
-   FILE * OutputFile = fopen(Filename, "w");
-   for (size_t i = 0; i < NParameterEntries; i++) {
-      PF_ParameterEntry * ParameterEntry = &(ParameterEntries[i]);
-      if (ParameterEntry->IsBoolean == 1) {
-         if ( *((int *)ParameterEntry->Pointer) == 1) {
-            fprintf(OutputFile, "%s\n",ParameterEntry->Parameter);
-         }
-      } else if(ParameterEntry->IsArray==1) {
-         for (size_t j = 0; j < *(ParameterEntry->NArrayElements); j++) {
-            switch(ParameterEntry->Type) {
-            case INTEGER:
-               fprintf(OutputFile, "%s[%lu] %i\n",
-                       ParameterEntry->Parameter, j,
-                       (*((int **)(ParameterEntry->Pointer)))[j]);
-               break;
-            case LONG_INTEGER:
-               fprintf(OutputFile, "%s[%lu] %li\n",
-                       ParameterEntry->Parameter, j,
-                       (*((long int **)(ParameterEntry->Pointer)))[j]);
-               break;
-            case UNSIGNED_INTEGER:
-               fprintf(OutputFile, "%s[%lu] %u\n",
-                       ParameterEntry->Parameter, j,
-                       (*((unsigned int **)(ParameterEntry->Pointer)))[j]);
-               break;
-            case UNSIGNED_LONG_INTEGER:
-               fprintf(OutputFile, "%s[%lu] %lu\n",
-                       ParameterEntry->Parameter, j,
-                       (*((unsigned long int **)(ParameterEntry->Pointer)))[j]);
-               break;
-            case FLOAT:
-               fprintf(OutputFile, "%s[%lu] %e\n",
-                       ParameterEntry->Parameter, j,
-                       (*((float **)(ParameterEntry->Pointer)))[j]);
-               break;
-            case DOUBLE:
-               fprintf(OutputFile, "%s[%lu] %e\n",
-                       ParameterEntry->Parameter, j,
-                       (*((double **)(ParameterEntry->Pointer)))[j]);
-               break;
-            case CHAR:
-               fprintf(OutputFile, "%s[%lu] %c\n",
-                       ParameterEntry->Parameter, j,
-                       (*((char **)(ParameterEntry->Pointer)))[j]);
-               break;
-            case STRING:
-               fprintf(OutputFile, "%s[%lu] %s\n",
-                       ParameterEntry->Parameter, j,
-                       (((char **)(ParameterEntry->Pointer)))[j]);
-               break;
-            default:
-               fprintf(OutputFile, "%s: %i: ERROR: Unknown type %i\n",
-                       __FILE__,__LINE__,ParameterEntry->Type);
-               return EXIT_FAILURE;
-            }
-         } /* loop over j < NArrayElements */
-      } else {
-         /* Regular Parameters = value entry */
-         switch(ParameterEntry->Type) {
-         case INTEGER:
-            fprintf(OutputFile, "%s %i\n",
-                    ParameterEntry->Parameter,
-                    *((int *)ParameterEntry->Pointer));
-            break;
-         case LONG_INTEGER:
-            fprintf(OutputFile, "%s %li\n",
-                    ParameterEntry->Parameter,
-                    *((long int *)ParameterEntry->Pointer));
-            break;
-         case UNSIGNED_INTEGER:
-            fprintf(OutputFile, "%s %u\n",
-                    ParameterEntry->Parameter,
-                    *((unsigned int *)ParameterEntry->Pointer));
-            break;
-         case UNSIGNED_LONG_INTEGER:
-            fprintf(OutputFile, "%s %lu\n",
-                    ParameterEntry->Parameter,
-                    *((long int *)ParameterEntry->Pointer));
-            break;
-         case FLOAT:
-            fprintf(OutputFile, "%s %e\n",
-                    ParameterEntry->Parameter,
-                    *((float *)ParameterEntry->Pointer));
-            break;
-         case DOUBLE:
-            fprintf(OutputFile, "%s %e\n",
-                    ParameterEntry->Parameter,
-                    *((double *)ParameterEntry->Pointer));
-            break;
-         case STRING:
-            fprintf(OutputFile, "%s %s\n",
-                    ParameterEntry->Parameter,
-                    (char *)(ParameterEntry->Pointer));
-            break;
-         default:
-            fprintf(OutputFile, "%s: %i: ERROR: Unknown type %i\n",
-                    __FILE__,__LINE__,ParameterEntry->Type);
-            return EXIT_FAILURE;
-         }
-      } /* End of if IsBoolean, elseif IsArray, else tree */
-   } /* End of loop over all parameters */
-   fclose(OutputFile);
-   return EXIT_SUCCESS;
-}
-
 void GameParameters::ensureValidity() const {
    ENSURE(type() == GAMEPARAMETERS, engine);
    ENSURE(MinRoll < MaxRoll, engine);
    ENSURE(EncryptionKey.length() > 0, engine);
+}
+
+void GameParameters::print() const {
+   GameObject::print();
+   printf("GameParameters:\n");
+   printf("   Engine               = %p, ID = %zu\n", engine, engine->ID());
+   printf("   MinRoll              = %d\n", MinRoll);
+   printf("   MaxRoll              = %d\n", MaxRoll);
+   printf("   BaseMovement         = %.2f\n", BaseMovement);
+   printf("   BaseStrength         = %d\n", BaseStrength);
+   printf("   BaseShooting         = %d\n", BaseShooting);
+   printf("   BaseArmour           = %d\n", BaseArmour);
+   printf("   BaseMorale           = %d\n", BaseMorale);
+   printf("   BaseHealth           = %d\n", BaseHealth);
+   printf("   BaseCost             = %d\n", BaseCost);
+   printf("   EncryptionKey        = '%s'\n", EncryptionKey.c_str());
+   printf("   StartingCredits      = %d\n", StartingCredits);
+   printf("   MaxCaptainItems      = %zu\n", MaxCaptainItems);
+   printf("   MaxCaptainWeapons    = %zu\n", MaxCaptainWeapons);
+   printf("   MaxHierophantItems   = %zu\n", MaxHierophantItems);
+   printf("   MaxHierophantWeapons = %zu\n", MaxHierophantWeapons);
 }

@@ -5,6 +5,7 @@
 #include "Game/GameEngine.h"
 #include "Game/SkillTree.h"
 #include "Game/Skill.h"
+#include "Global.h"
 
 Captain::Captain(Squad * const s)
       : SpecialisedSquadMember(s), specialism(NoCaptainSpecialism) {
@@ -14,11 +15,6 @@ Captain::Captain(Squad * const s)
 
 Captain::~Captain() {
    /* Delete skills? */
-}
-
-void Captain::ensureValidity() const {
-   ENSURE(type() == CAPTAIN, engine);
-   ENSURE(specialism == NoCaptainSpecialism, engine);
 }
 
 int Captain::stringToSpecialism(char const * const str) const {
@@ -42,4 +38,16 @@ std::string Captain::specialismToString(int const spec) {
       case EliteCS:   return "Elite";
       default:        return "Unknown";
    }
+}
+
+void Captain::ensureValidity() const {
+   ENSURE(type() == CAPTAIN, engine);
+   ENSURE(specialism == NoCaptainSpecialism, engine);
+}
+
+void Captain::print() const {
+   SpecialisedSquadMember::print();
+   printf("Captain:\n");
+   printf("   specialism       = %d\n", specialism);
+   printf("   specialismString = '%s'\n", Captain::specialismToString(specialism).c_str());
 }

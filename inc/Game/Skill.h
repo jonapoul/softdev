@@ -23,6 +23,7 @@ public:
    void activate();
    bool isActive() const;
    virtual void ensureValidity() const;
+   virtual void print() const;
 
 private:
    GameEngine * engine;

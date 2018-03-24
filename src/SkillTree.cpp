@@ -3,20 +3,19 @@
 #include "Game/SkillTree.h"
 #include "Game/Skill.h"
 #include "Game/GameEngine.h"
-#include "Game/SpecialisedSquadMember.h"
 #include "Game/Captain.h"
 #include "Game/Hierophant.h"
 #include "Game/StatBoost.h"
 #include "Global.h"
 
 SkillTree::SkillTree(GameEngine * const e,
-                     SpecialisedSquadMember * const o)
+                     GameObject * const o)
       : GameObject(SKILLTREE), engine(e), owner(o) {
 
    this->headNode   = new Skill(engine, this, nullptr, 0);
-   this->totalBoost = new StatBoost(engine); /* all blank boosts */
-   this->boost0     = new StatBoost(engine);
-   this->boost1     = new StatBoost(engine);
+   this->totalBoost = new StatBoost(engine, this); /* all blank boosts */
+   this->boost0     = new StatBoost(engine, this);
+   this->boost1     = new StatBoost(engine, this);
 }
 
 bool SkillTree::init(ObjectType const ownerType,
@@ -46,7 +45,7 @@ bool SkillTree::init(ObjectType const ownerType,
       std::stringstream ss(skillStrings[i]);
       std::string modifier, modifiedStat;
       ss >> modifier >> modifiedStat;
-      StatBoost * b = new StatBoost(engine);
+      StatBoost * b = new StatBoost(engine, this);
       /* check if the strings are valid */
       bool const boostIsValid = b->init(modifiedStat, modifier);
       if (!boostIsValid) {
@@ -76,7 +75,7 @@ SkillTree::~SkillTree() {
 
 void SkillTree::setSpecialism(char const * const specialismStr) {
    /* e.g. convert the string 'Demoman' to enum integer DEMOMAN */
-   this->specialism = owner->stringToSpecialism(specialismStr);
+   this->specialism = static_cast<SpecialisedSquadMember*>(owner)->stringToSpecialism(specialismStr);
    /* No recognised specialism string */
    if (specialism == 0) {
       char criticalbuf[MAX_MESSAGE_LENGTH];
@@ -136,4 +135,22 @@ StatBoost * SkillTree::summedBoosts() {
 void SkillTree::ensureValidity() const {
    ENSURE(type() == SKILLTREE,                engine);
    ENSURE(skillTreeClass != NoSkillTreeClass, engine);
+}
+
+void SkillTree::print() const {
+   GameObject::print();
+   printf("SkillTree:\n");
+   printf("   engine         = %p, ID = %zu\n", engine, engine->ID());
+   printf("   owner          = %p, ID = %zu\n", owner, owner->ID());
+   printf("   name           = '%s'\n", name.c_str());
+   printf("   skillTreeClass = %d\n", skillTreeClass);
+   printf("   specialism     = %d\n", specialism);
+   printf("   headNode       = %p, ID = %zu\n", headNode, headNode->ID());
+   printf("   totalBoost     = %p, ID = %zu\n", totalBoost, totalBoost->ID());
+   printf("   boost0         = %p, ID = %zu\n", boost0, boost0->ID());
+   printf("   boost1         = %p, ID = %zu\n", boost1, boost1->ID());
+   printf("   Active Skills  = [ ");
+   auto skills = getAllActiveSkills();
+   for (auto s : skills) printf("%zu ", s->ID());
+   printf("]\n");
 }

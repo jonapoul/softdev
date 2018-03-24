@@ -28,6 +28,7 @@ public:
    size_t numSquads() const;
 
    virtual void ensureValidity() const;
+   virtual void print() const;
 
 private:
    GameEngine * engine;

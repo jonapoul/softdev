@@ -298,6 +298,28 @@ void GameEngine::ensureValidity() const {
    ENSURE(GameObject::numberOfType(GAMEENGINE) == 1, this);
 }
 
+void GameEngine::print() const {
+   GameObject::print();
+   printf("GameEngine:\n");
+#ifdef ENABLE_QT_UI
+   printf("   GameWindow            = %p\n", window);
+#endif
+   printf("   Die                   = %p, ID = %zu\n", die, die->ID());
+   printf("   Parameters            = %p, ID = %zu\n", parameters, parameters->ID());
+   printf("   Players               = [ ");
+   for (auto p : players) printf("%zu ", p->ID());
+   printf("]\n");
+   printf("   AllPossibleItems      = [ ");
+   for (auto i : all_valid_items) printf("%zu ", i->ID());
+   printf("]\n");
+   printf("   AllPossibleWeapons    = [ ");
+   for (auto w : all_valid_weapons) printf("%zu ", w->ID());
+   printf("]\n");
+   printf("   AllPossibleSkillTrees = [ ");
+   for (auto st : all_valid_skilltrees) printf("%zu ", st->ID());
+   printf("]\n");
+}
+
 void GameEngine::readCaptainSkillTreeFile(char const * const filename) {
    char **DemomanModifiers, **ScoutModifiers, **SoldierModifiers,
         **LeaderModifiers,  **HeavyModifiers, **EliteModifiers;
@@ -366,14 +388,16 @@ void GameEngine::readCaptainSkillTreeFile(char const * const filename) {
 
    for (size_t i = 0; i < nParameters; i++) {
       /* nullptr in the constructor means it's not attached to a squad member */
-      SkillTree * tree = new SkillTree(this, nullptr);
+      SkillTree * tree = new SkillTree(this, this);
       char ** skillStrings = *((char***)ParamEntries[i].Pointer);
-      int const specialism = i+1; /* see CaptainSpecialism enum to translate i+1 */
+      int const specialism = (int)(i+1); /* see CaptainSpecialism enum to translate i+1 */
       bool const isValid = tree->init(CAPTAIN, specialism, skillStrings);
       if (isValid) {
          this->all_valid_skilltrees.push_back(tree);
+         printf("tree %zu is valid!\n", i+1);
       } else {
          tree->deallocate();
+         printf("tree %zu is invalid!\n", i+1);
       }
    }
 
@@ -448,7 +472,7 @@ void GameEngine::readHierophantSkillTreeFile(char const * const filename) {
 
    for (size_t i = 0; i < nParameters; i++) {
       /* nullptr in the constructor means it's not attached to a squad member */
-      SkillTree * tree = new SkillTree(this, nullptr);
+      SkillTree * tree = new SkillTree(this, this);
       char ** skillStrings = *((char***)ParamEntries[i].Pointer);
       int const specialism = i+1; /* see HierohantSpecialism enum to translate i+1 */
       bool const isValid = tree->init(HIEROPHANT, specialism, skillStrings);

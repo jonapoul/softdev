@@ -8,7 +8,8 @@ class GameEngine;
 
 class StatBoost : public GameObject {
 public:
-   StatBoost(GameEngine * const e);
+   StatBoost(GameEngine * const e,
+             GameObject * const o);
    StatBoost(StatBoost const * const other);
    ~StatBoost();
 
@@ -23,17 +24,19 @@ public:
    bool isBlank() const;
 
    virtual void ensureValidity() const;
+   virtual void print() const;
 
-   float addMovement  = 0.0;
    int   addStrength  = 0;
    int   addShooting  = 0;
    int   addArmour    = 0;
    int   addMorale    = 0;
    int   addHealth    = 0;
+   float addMovement  = 0.0;
    float multiplyCost = 1.0;
 
 private:
    GameEngine * engine;
+   GameObject * owner;
 };
 
 #endif

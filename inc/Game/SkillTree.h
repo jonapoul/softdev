@@ -7,7 +7,6 @@
 #include "Game/GameObject.h"
 
 class GameEngine;
-class SpecialisedSquadMember;
 class Skill;
 class StatBoost;
 
@@ -24,7 +23,7 @@ class SkillTree : public GameObject {
 
 public:
    SkillTree(GameEngine * const e,
-             SpecialisedSquadMember * const s);
+             GameObject * const s);
    ~SkillTree();
 
    bool init(ObjectType const ownerType,
@@ -35,10 +34,11 @@ public:
    StatBoost * boost(int const index) const;
    StatBoost * summedBoosts();
    virtual void ensureValidity() const;
+   virtual void print() const;
 
 private:
    GameEngine * engine;
-   SpecialisedSquadMember * owner;
+   GameObject * owner;
    std::string name;
    SkillTreeClass skillTreeClass;
    int specialism; /* Either HierophantSpecialism or CaptainSpecialism enum */

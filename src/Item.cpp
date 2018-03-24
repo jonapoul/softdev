@@ -48,7 +48,7 @@ bool Item::initFromEngine(char const * const itemString) {
    std::string modifier, modifiedStat;
    ss >> this->name >> modifier >> modifiedStat;
 
-   this->boost = new StatBoost(engine);
+   this->boost = new StatBoost(engine, this);
    bool const boostIsValid = boost->init(modifiedStat, modifier);
    if (!boostIsValid) {
       boost->deallocate();
@@ -69,4 +69,13 @@ void Item::setOwner(GameObject * const object) {
 void Item::ensureValidity() const {
    ENSURE(type() == ITEM,    engine);
    ENSURE(name.length() > 0, engine);
+}
+
+void Item::print() const {
+   GameObject::print();
+   printf("Item:\n");
+   printf("   name   = '%s'\n", name.c_str());
+   printf("   engine = %p, ID = %zu\n", engine, engine->ID());
+   printf("   owner  = %p, ID = %zu\n", owner, owner->ID());
+   printf("   boost  = %p, ID = %zu\n", boost, boost->ID());
 }

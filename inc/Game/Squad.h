@@ -53,6 +53,7 @@ public:
                     size_t const NWeapons);
 
    virtual void ensureValidity() const;
+   virtual void print() const;
 
    /* parent pointers */
    GameEngine * engine;

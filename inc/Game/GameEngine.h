@@ -45,6 +45,7 @@ public:
    
 
    virtual void ensureValidity() const;
+   virtual void print() const;
 
    Die * die;
    GameParameters * parameters;

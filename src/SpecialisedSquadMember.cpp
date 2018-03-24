@@ -12,7 +12,7 @@
 SpecialisedSquadMember::SpecialisedSquadMember(Squad * const s)
       : SquadMember(s), experience(0) {
    this->setType(SPECIALISEDSQUADMEMBER);
-   this->totalBoost = new StatBoost(engine); /* blank, all default values */
+   this->totalBoost = new StatBoost(engine, this); /* blank, all default values */
    this->skillTree  = new SkillTree(engine, this); /* blank, no skills active */
 }
 
@@ -116,4 +116,18 @@ void SpecialisedSquadMember::ensureValidity() const {
    ENSURE(experience >= 0, engine);
    ENSURE(skillTree != nullptr, engine);
    /* something with skills? */
+}
+
+void SpecialisedSquadMember::print() const {
+   SquadMember::print();
+   printf("SpecialisedSquadMember:\n");
+   printf("   experience = %d\n", experience);
+   printf("   skillTree  = %p, ID = %zu\n", skillTree, skillTree->ID());
+   printf("   totalBoost = %p, ID = %zu\n", totalBoost, totalBoost->ID());
+   printf("   weapons    = [ ");
+   for (auto w : weapons) printf("%zu ", w->ID());
+   printf("]\n");
+   printf("   items      = [ ");
+   for (auto i : items) printf("%zu ", i->ID());
+   printf("]\n");
 }

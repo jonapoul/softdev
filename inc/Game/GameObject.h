@@ -44,6 +44,7 @@ public:
    void deallocate();
    void setType(ObjectType const t);
    virtual void ensureValidity() const;
+   virtual void print() const;
 
    static void printAllObjects();
    static std::vector<GameObject*> getAllOfType(ObjectType const t);

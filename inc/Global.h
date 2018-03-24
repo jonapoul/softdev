@@ -26,7 +26,7 @@ std::string decrypt(std::string const& msg,
 void trim(std::string * str);
 
 size_t wordCount(char const * const str);
-   
+size_t wordCount(std::string const& str);
 }
 
 #endif
