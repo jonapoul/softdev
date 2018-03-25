@@ -4,7 +4,7 @@
 First decide if you want to build using Qt. Barely any of the UI has been built beyond the title screen, but the option is there in `config.h`.
 
 ### CLI-Only (recommended)
-Make sure `#define ENABLE_QT_UI` is **uncommented** in `config.h`. Then:
+Make sure `ENABLE_QT_UI` is **not** defined in `config.h`. Then:
 ```
 make
 ```
@@ -13,7 +13,7 @@ That will :
 2. Put it all together in `bin/softdev`
 
 ### Qt (barely worth trying)
-Make sure `#define ENABLE_QT_UI` is **commented** in `config.h`, and you've installed Qmake (and probably the rest of Qt Creator, I've not tested on a clean machine). Then:
+Make sure `ENABLE_QT_UI` is **defined** in `config.h`, and you've installed Qmake (and probably the rest of Qt Creator too, I've not tested on a clean machine). Then:
 ```
 chmod +x BuildWithQt.sh
 ./BuildWithQt.sh

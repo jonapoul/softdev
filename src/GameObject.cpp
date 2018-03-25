@@ -71,7 +71,7 @@ void GameObject::printAllObjects() {
       printf("%s\n", std::string(50, '-').c_str());
 
       while (true) {
-         printf("Enter an object ID (q = back to testing menu, p = print, h = help, s = sort): ");
+         printf("Enter an object ID (q = back to testing menu, p = print, h = help, s = sort):\n");
          std::string input;
          std::cin >> input;
          char letter = tolower(input[0]);
@@ -80,13 +80,14 @@ void GameObject::printAllObjects() {
          } else if (letter == 'p') {
             break;
          } else if (letter == 'h') {
-            printf("Each line in the list above represents a GameObject-derived object that is currently in memory,\n"
-                   "along with its unique ID number and class name. Typing that ID number in here will print more info\n"
-                   "about that object, with member variables and the ID numbers of any pointers. Using this you can\n"
-                   "keep track of memory allocation and the state of the system at any time just by shoving a call to\n"
-                   "GameObject::printAllObjects() in the code.\n"
-                   "For example, if you create a player as part of the tests, you'll then see a PLAYER object at the\n"
-                   "bottom of this list.\n");
+            printf("Each line in the list above represents a GameObject-derived object that\n"
+                   "is currently in memory, along with its unique ID number and class name.\n"
+                   "Typing that ID number in here will print more info about that object,\n"
+                   "with member variables and the ID numbers of any pointers. Using this you\n"
+                   "can keep track of memory allocation and the state of the system at any\n"
+                   "time just by shoving a call to GameObject::printAllObjects() in the\n"
+                   "code. For example, if you create a player as part of the tests, you'll\n"
+                   "then see a PLAYER object at the bottom of this list.\n");
             continue;
          } else if (letter == 's') {
             /* This could probably have been structured bettwe but I was in a
@@ -104,12 +105,12 @@ void GameObject::printAllObjects() {
                std::sort(GameObject::all_objects.begin(),
                          GameObject::all_objects.end(),
                          sortByID);
-               sortMethod = byID;  
+               sortMethod = byID;
             }
-            break;   
+            break;
          }
          if (!isdigit(input[0])) {
-            printf("Enter a number or q/p/s/h: ");
+            printf("Enter a number or q/p/s/h:\n");
             continue;
          }
          size_t id = std::stoi(input);
@@ -170,7 +171,7 @@ std::vector<GameObject*> GameObject::getAllOfType(ObjectType const t) {
      e.g.
        auto array = getAllOfTypes({PLAYER, SQUAD, ENGINE})
    returns pointers to all Player objects, all Squad objects and all Engine
-   objects. It's up to the user to cast them correctly, using the pointer's 
+   objects. It's up to the user to cast them correctly, using the pointer's
    type() function
 */
 std::vector<GameObject*> GameObject::getAllOfTypes(std::vector<ObjectType> const& types) {
@@ -215,7 +216,7 @@ void GameObject::ensure(bool const statement,
       snprintf(warningbuf, MAX_MESSAGE_LENGTH,
                "FAILED CHECK:\n"
                "    Statement: '%s'\n"
-               "    Location:  '%s'", 
+               "    Location:  '%s'",
                statementString, function);
       engine->warningMessage(warningbuf);
    }

@@ -30,7 +30,7 @@ public:
    virtual void ensureValidity() const;
    virtual void print() const;
 
-   GameEngine * engine;
+   GameEngine * engine = nullptr;
    std::string username;
    std::string password;
    std::vector<Squad *> squads;

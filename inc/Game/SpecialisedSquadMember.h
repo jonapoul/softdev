@@ -42,10 +42,10 @@ public:
 
 protected:
    int experience;
-   SkillTree * skillTree;
+   SkillTree * skillTree = nullptr;
    std::vector<Weapon *> weapons;
    std::vector<Item *> items;
-   StatBoost * totalBoost;
+   StatBoost * totalBoost = nullptr;
 };
 
 #endif

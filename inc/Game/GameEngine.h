@@ -59,10 +59,10 @@ public:
    void initPlayers(char const * const directory);
 
 #ifdef ENABLE_QT_UI
-   GameWindow * window;
+   GameWindow * window = nullptr;
 #endif
-   Die * die;
-   GameParameters * parameters;
+   Die * die = nullptr;
+   GameParameters * parameters = nullptr;
    std::vector<Player *> players;
    std::vector<Item *> all_valid_items;
    std::vector<Weapon *> all_valid_weapons;

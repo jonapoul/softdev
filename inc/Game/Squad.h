@@ -56,10 +56,10 @@ public:
    virtual void print() const;
 
 
-   GameEngine * engine;
-   Player * player;
-   Captain * captain;
-   Hierophant * hierophant;
+   GameEngine * engine     = nullptr;
+   Player * player         = nullptr;
+   Captain * captain       = nullptr;
+   Hierophant * hierophant = nullptr;
    std::vector<SquadMember *> squadMembers;
    std::vector<Item *> items;
    std::vector<Weapon *> weapons;

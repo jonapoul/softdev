@@ -240,11 +240,11 @@ bool Squad::init(char const * const file) {
 
 Squad::~Squad() {
    /* TODO: Prompt the user to save to file? */
+   if (captain)    captain->deallocate();
+   if (hierophant) hierophant->deallocate();
    for (auto member : this->squadMembers) {
       member->deallocate();
    }
-   captain->deallocate();
-   hierophant->deallocate();
    for (auto item : this->items) {
       item->deallocate();
    }

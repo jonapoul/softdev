@@ -41,8 +41,8 @@ public:
    virtual void print() const;
 
 private:
-   GameEngine * engine;
-   GameObject * owner;
+   GameEngine * engine = nullptr;
+   GameObject * owner  = nullptr;
    std::string name;
    TreeType treeType;
    int specialism; /* Either HierophantSpecialism or CaptainSpecialism enum */
@@ -60,10 +60,10 @@ private:
               it, each with the same bonuses.
       There's probably a better way of explaining it
    */
-   Skill * headNode;
-   StatBoost * totalBoost;
-   StatBoost * boost0;
-   StatBoost * boost1;
+   Skill * headNode       = nullptr;
+   StatBoost * totalBoost = nullptr;
+   StatBoost * boost0     = nullptr;
+   StatBoost * boost1     = nullptr;
 
    std::vector<Skill*> getAllActiveSkills() const;
    void getAllActiveSkillsRecursive(Skill * const s,

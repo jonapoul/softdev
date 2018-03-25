@@ -41,6 +41,8 @@ int main() {
    /* Build the game's backend */
    GameEngine * engine = new GameEngine();
    engine->init();
+   printf("Finished loading players/squads/skill trees from file!\n");
+   printf("Beginning the tests...\n");
 
    /* Offer a bunch of common actions */
    TestSuite tests(engine);
@@ -49,7 +51,7 @@ int main() {
    /* Delete all game objects */
    engine->deallocate();
    printf("Exited game successfully!\n");
-   printf("Printing all GameObjects that currently exist (should be none):\n");
+   printf("Printing all GameObjects that still exist (should be none):\n");
    GameObject::printAllObjects();
 
    return 0;

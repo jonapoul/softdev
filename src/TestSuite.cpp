@@ -53,7 +53,7 @@ void TestSuite::run() {
 
    /* Ask for inputs */
    while (true) {
-      printf("Enter test option (h = help): ");
+      printf("Enter test option (h = help):\n");
       std::string key;
       std::cin >> key;
       if (tolower(key[0]) == 'q') return;
@@ -100,7 +100,7 @@ void createSquad() {
       squad = new Squad(engine, player);
       squad->filename = "terminal input";
 
-      printf("Enter starting credits (q to back out): ");
+      printf("Enter starting credits (q to back out):\n");
       std::string input;
       std::cin >> input;
       if (tolower(input[0]) == 'q') {
@@ -117,7 +117,7 @@ void createSquad() {
       }
       squad->credits = std::stoi(input);
 
-      printf("Should the squad be publicly visible? (y/n) (q to back out): ");
+      printf("Should the squad be publicly visible? (y/n) (q to back out):\n");
       input = "";
       std::cin >> input;
       if (tolower(input[0]) == 'q') {
@@ -128,7 +128,7 @@ void createSquad() {
       squad->captain    = new Captain(squad);
       squad->hierophant = new Hierophant(squad);
 
-      printf("How many regular squad members do you want? (%d credits each) (q to back out): ",
+      printf("How many regular squad members? (%d credits each) (q to back out):\n",
              engine->parameters->BaseCost);
       input = "";
       std::cin >> input;
@@ -154,8 +154,9 @@ void createSquad() {
 
    /* Attach the completed squad to the player's array */
    player->squads.push_back(squad);
-   printf("\nSquad with ID = %lu has been successfully created. I've not added ant skilltrees though,\n"
-          "because that would take absolutely ages and it's much easier to do via parameter files in\n"
+   printf("\nSquad with ID = %lu has been successfully created. I've not added\n"
+          "any skilltrees to these tests though, because that would take\n"
+          "absolutely ages and it's much easier to do via parameter files in\n"
           "the directory './data/squads'.\n", squad->ID());
 }
 
@@ -174,7 +175,7 @@ void deleteSquad() {
              s->ID(), s->squadMembers.size(), s->filename.c_str());
    }
    while (true) {
-      printf("Enter the ID of a squad (q to go back): ");
+      printf("Enter the ID of a squad (q to go back):\n");
       std::string input;
       std::cin >> input;
       if (tolower(input[0]) == 'q') return;
@@ -202,10 +203,10 @@ void createPlayer() {
    engine->players.push_back(player);
    player->filename = "terminal input";
 
-   printf("Enter username: ");
-   std::cin >> player->username;  
-     
-   printf("Enter password: ");
+   printf("Enter username:\n");
+   std::cin >> player->username;
+
+   printf("Enter password:\n");
    std::cin >> player->password;
 
    player->print();
@@ -219,7 +220,7 @@ void deletePlayer() {
              player->ID(), player->squads.size(), player->username.c_str());
    }
    while (true) {
-      printf("Enter the ID of the player you want to delete (q to go back): ");
+      printf("Enter the ID of the player you want to delete (q to go back):\n");
       std::string input;
       std::cin >> input;
       if (tolower(input[0]) == 'q') return;
@@ -248,17 +249,18 @@ void reloadEngine() {
    engine = new GameEngine();
    engine->init();
    printf("done!\n");
-   printf("You can do this to reload parameter/squad/skilltree/player files in the ./data/ directory\n"
-          "without having to restart the whole program.\n");
+   printf("You can do this to reload parameter/squad/skilltree/player files in\n"
+          "the ./data/ directory without having to restart the whole program.\n");
 }
 
 void checkEverything() {
    printf("Validating every game object:\n");
    GameObject::ensureEverythingIsValid();
    printf("If nothing was printed, every check passed!\n");
-   printf("This test goes through every GameObject-derived object in the array GameObject::all_objects and\n"
-          "runs the virtual function ensureValidity() on each. Have a look through each class implementation\n"
-          "to see what's being checked at each step.\n");
+   printf("This test goes through every GameObject-derived object in the array\n"
+          "GameObject::all_objects and runs ensureValidity() on each. Have a\n"
+          "look through each class' implementation to see what's being checked\n"
+          "at each step.\n");
 }
 
 Player * choosePlayer() {
@@ -268,7 +270,7 @@ Player * choosePlayer() {
              p->ID(), p->squads.size(), p->username.c_str());
    }
    while (true) {
-      printf("Enter the ID of a player (q to go back): ");
+      printf("Enter the ID of a player (q to go back):\n");
       std::string input;
       std::cin >> input;
       if (tolower(input[0]) == 'q') return nullptr;
