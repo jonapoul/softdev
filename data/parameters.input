@@ -10,7 +10,8 @@ BaseCost         40    # base credits cost per squaddie
 
 EncryptionKey   Scaramouche, Scaramouche, Will You Do The Fandango?
 
-StartingCredits 500    # Amount of money given to a squad when first created
+StartingCredits    500    # Amount of money given to a squad when first created
+MaxSkillTreeDepth    4    # Furthest we can go down the skill tree
 
 # 'Items' means regular items plus weapons. So Hierophant can have 3 items + 1
 # weapon, or 4 items + 0 weapons. Captains can have up to 2 weapons + 4 items,

@@ -17,11 +17,13 @@ public:
    Skill(GameEngine * const e,
          SkillTree * const st,
          Skill * const parent,
-         int const i);
+         int const i,
+         bool const isHeadNode = false);
    ~Skill();
 
    void activate();
    bool isActive() const;
+   void copy(Skill const * const s);
    virtual void ensureValidity() const;
    virtual void print() const;
 
@@ -30,6 +32,7 @@ private:
    SkillTree * tree;
    std::string name;
    int index;
+   int depth;
    bool hasBeenActivated = false;
 
    Skill * child0;

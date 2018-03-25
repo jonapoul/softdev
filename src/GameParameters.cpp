@@ -26,6 +26,7 @@ GameParameters::GameParameters(GameEngine * const e,
    this->BaseCost             =  40;
    this->EncryptionKey        = "nhaekanckjanckaw";
    this->StartingCredits      = 500;
+   this->MaxSkillTreeDepth    = 4;
    this->MaxCaptainItems      = 6;
    this->MaxCaptainWeapons    = 2;
    this->MaxHierophantItems   = 4;
@@ -74,6 +75,9 @@ GameParameters::GameParameters(GameEngine * const e,
    strncpy(ParamEntries[iStartingCredits].Parameter, "StartingCredits", MAX_PARAMETER_NAME_LENGTH);
    ParamEntries[iStartingCredits].Type    = INTEGER;
    ParamEntries[iStartingCredits].Pointer = &(this->StartingCredits);
+   strncpy(ParamEntries[iMaxSkillTreeDepth].Parameter, "MaxSkillTreeDepth", MAX_PARAMETER_NAME_LENGTH);
+   ParamEntries[iMaxSkillTreeDepth].Type    = INTEGER;
+   ParamEntries[iMaxSkillTreeDepth].Pointer = &(this->MaxSkillTreeDepth);
    strncpy(ParamEntries[iMaxCaptainItems].Parameter, "MaxCaptainItems", MAX_PARAMETER_NAME_LENGTH);
    ParamEntries[iMaxCaptainItems].Type    = UNSIGNED_LONG_INTEGER;
    ParamEntries[iMaxCaptainItems].Pointer = &(this->MaxCaptainItems);
@@ -94,7 +98,7 @@ GameParameters::GameParameters(GameEngine * const e,
       *paramFileIsValid = false;
    }
 
-   /* Read the Parameters */
+   /* Read the Parameters into the specified member pointers */
    if (PF_ReadParameterFile(ParamFile, ParamEntries, nGameParameters) != EXIT_SUCCESS) {
       std::cerr << "ERROR: PF_ReadParameterFile failed" << std::endl;
       *paramFileIsValid = false;
@@ -132,6 +136,7 @@ void GameParameters::print() const {
    printf("   BaseCost             = %d\n", BaseCost);
    printf("   EncryptionKey        = '%s'\n", EncryptionKey.c_str());
    printf("   StartingCredits      = %d\n", StartingCredits);
+   printf("   MaxSkillTreeDepth    = %d\n", MaxSkillTreeDepth);
    printf("   MaxCaptainItems      = %zu\n", MaxCaptainItems);
    printf("   MaxCaptainWeapons    = %zu\n", MaxCaptainWeapons);
    printf("   MaxHierophantItems   = %zu\n", MaxHierophantItems);

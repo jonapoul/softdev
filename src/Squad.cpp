@@ -206,16 +206,18 @@ bool Squad::init(char const * const file) {
       }
 
       this->captain = new Captain(this);
-      captain->initSkills (CaptainSkills,  NumCaptainSkills, CaptainSpecialism);
-      captain->initItems  (CaptainItems,   NumCaptainItems);
-      captain->initWeapons(CaptainWeapons, NumCaptainWeapons);
-      captain->updateStats();
+      captain->setSkillTree(CaptainSpecialism);
+      captain->initSkills  (CaptainSkills,  NumCaptainSkills);
+      captain->initItems   (CaptainItems,   NumCaptainItems);
+      captain->initWeapons (CaptainWeapons, NumCaptainWeapons);
+      captain->updateStats ();
 
       this->hierophant = new Hierophant(this);
-      hierophant->initSkills (HierophantSkills,  NumHierophantSkills, HierophantSpecialism);
-      hierophant->initItems  (HierophantItems,   NumHierophantItems);
-      hierophant->initWeapons(HierophantWeapons, NumHierophantWeapons);
-      hierophant->updateStats();
+      hierophant->setSkillTree(HierophantSpecialism);
+      hierophant->initSkills  (HierophantSkills,  NumHierophantSkills);
+      hierophant->initItems   (HierophantItems,   NumHierophantItems);
+      hierophant->initWeapons (HierophantWeapons, NumHierophantWeapons);
+      hierophant->updateStats ();
 
       this->initItems  (SquadItems,   NumSquadItems);
       this->initWeapons(SquadWeapons, NumSquadWeapons);

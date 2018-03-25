@@ -8,7 +8,7 @@
 #include "Global.h"
 
 Hierophant::Hierophant(Squad * const s)
-      : SpecialisedSquadMember(s), specialism(NoHierophantSpecialism) {
+      : SpecialisedSquadMember(s), specialism(NoSpecialism) {
    this->setType(HIEROPHANT);
    /* TODO: Something */
 }
@@ -19,25 +19,34 @@ Hierophant::~Hierophant() {
 
 void Hierophant::ensureValidity() const {
    ENSURE(type() == HIEROPHANT, engine);
-   ENSURE(specialism == NoHierophantSpecialism, engine);
+   ENSURE(specialism != NoSpecialism, engine);
 }
 
 int Hierophant::stringToSpecialism(char const * const str) const {
    std::string const string(str);
-   if      (string == "Speaker") return SpeakerHS;
-   else if (string == "Priest")  return PriestHS;
-   else if (string == "Medic")   return MedicHS;
-   else if (string == "Support") return SupportHS;
-   else                          return NoHierophantSpecialism;
+   if      (string == "Speaker") return Speaker;
+   else if (string == "Priest")  return Priest;
+   else if (string == "Medic")   return Medic;
+   else if (string == "Support") return Support;
+   else                          return NoSpecialism;
 }
 
-std::string Hierophant::specialismToString(int const spec) {
+void Hierophant::setSkillTree(char const * const spec) {
+   int const specInt = this->stringToSpecialism(spec);
+   this->specialism = static_cast<Hierophant::Specialism>(specInt);
+
+   /* initialise the hierophant's skill tree by copying off the array of valid
+      skilltrees stored in the GameEngine */
+   this->skillTree->copy(HIEROPHANT, specialism);
+}
+
+std::string Hierophant::specialismToString(Hierophant::Specialism const spec) {
    switch (spec) {
-      case SpeakerHS: return "Speaker";
-      case PriestHS:  return "Priest";
-      case MedicHS:   return "Medic";
-      case SupportHS: return "Support";
-      default:        return "Unknown";
+      case Speaker: return "Speaker";
+      case Priest:  return "Priest";
+      case Medic:   return "Medic";
+      case Support: return "Support";
+      default:      return "Unknown";
    }
 }
 

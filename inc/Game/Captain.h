@@ -9,29 +9,30 @@
 
 class Squad;
 
-typedef enum {
-   NoCaptainSpecialism = 0,
-   DemomanCS, /* +armour,   +health */
-   ScoutCS,   /* +shooting, +movement */
-   SoldierCS, /* +shooting, +strength */
-   LeaderCS,  /* +morale,   +movement */
-   HeavyCS,   /* +health,   +strength */
-   EliteCS,   /* +morale,   +armour */
-   NumCaptainSpecialisms
-} CaptainSpecialism;
-
 class Captain : public SpecialisedSquadMember {
 public:
    Captain(Squad * const s);
    ~Captain();
 
+   typedef enum {
+      NoSpecialism = 0,
+      Demoman, /* +armour,   +health */
+      Scout,   /* +shooting, +movement */
+      Soldier, /* +shooting, +strength */
+      Leader,  /* +morale,   +movement */
+      Heavy,   /* +health,   +strength */
+      Elite,   /* +morale,   +armour */
+      NumSpecialisms
+   } Specialism;
+
    int stringToSpecialism(char const * const str) const override;
+   void setSkillTree(char const * const spec) override;
    virtual void ensureValidity() const;
    virtual void print() const;
-   static std::string specialismToString(int const spec);
+   static std::string specialismToString(Captain::Specialism const spec);
 
 private:
-   CaptainSpecialism specialism;
+   Captain::Specialism specialism;
 };
 
 #endif

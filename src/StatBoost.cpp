@@ -43,7 +43,7 @@ bool StatBoost::init(std::string const& stat,
    if      (stat == "Cost")     this->multiplyCost =        std::stof(valueStr);
    else if (stat == "Movement") this->addMovement  = sign * std::stof(valueStr);
    else if (stat == "Shooting") this->addShooting  = sign * std::stoi(valueStr);
-   else if (stat == "Strength") this->addShooting  = sign * std::stoi(valueStr);
+   else if (stat == "Strength") this->addStrength  = sign * std::stoi(valueStr);
    else if (stat == "Armour")   this->addArmour    = sign * std::stoi(valueStr);
    else if (stat == "Morale")   this->addMorale    = sign * std::stoi(valueStr);
    else if (stat == "Health")   this->addHealth    = sign * std::stoi(valueStr);

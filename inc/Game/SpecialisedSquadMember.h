@@ -20,8 +20,7 @@ public:
    ~SpecialisedSquadMember();
 
    void initSkills(char ** skillsStr,
-                   size_t const nSkills,
-                   char * specialismStr);
+                   size_t const nSkills);
    void initItems(char ** itemsStr,
                   size_t const nItems);
    void initWeapons(char ** weaponsStr,
@@ -36,8 +35,9 @@ public:
    int health() const override;
    int cost() const override;
 
-   virtual void ensureValidity() const;
+   virtual void setSkillTree(char const * const spec) = 0;
    virtual int stringToSpecialism(char const * const str) const = 0;
+   virtual void ensureValidity() const;
    virtual void print() const;
 
 protected:

@@ -8,41 +8,50 @@
 #include "Global.h"
 
 Captain::Captain(Squad * const s)
-      : SpecialisedSquadMember(s), specialism(NoCaptainSpecialism) {
+      : SpecialisedSquadMember(s), specialism(NoSpecialism) {
    this->setType(CAPTAIN);
-   /* TODO: something */
+   /* TODO: something? */
 }
 
 Captain::~Captain() {
-   /* Delete skills? */
+   /* blank */
 }
 
 int Captain::stringToSpecialism(char const * const str) const {
    std::string const string(str);
-   if      (string == "Demoman") return DemomanCS;
-   else if (string == "Scout")   return ScoutCS;
-   else if (string == "Soldier") return SoldierCS;
-   else if (string == "Leader")  return LeaderCS;
-   else if (string == "Heavy")   return HeavyCS;
-   else if (string == "Elite")   return EliteCS;
-   else                          return NoCaptainSpecialism;
+   if      (string == "Demoman") return Demoman;
+   else if (string == "Scout")   return Scout;
+   else if (string == "Soldier") return Soldier;
+   else if (string == "Leader")  return Leader;
+   else if (string == "Heavy")   return Heavy;
+   else if (string == "Elite")   return Elite;
+   else                          return NoSpecialism;
 }
 
-std::string Captain::specialismToString(int const spec) {
+void Captain::setSkillTree(char const * const specStr) {
+   int const specInt = this->stringToSpecialism(specStr);
+   this->specialism = static_cast<Captain::Specialism>(specInt);
+
+   /* initialise the captain's skill tree by copying off the array of valid
+      skilltrees stored in the GameEngine */
+   this->skillTree->copy(CAPTAIN, specialism);
+}
+
+std::string Captain::specialismToString(Captain::Specialism const spec) {
    switch (spec) {
-      case DemomanCS: return "Demoman";
-      case ScoutCS:   return "Scout";
-      case SoldierCS: return "Soldier";
-      case LeaderCS:  return "Leader";
-      case HeavyCS:   return "Heavy";
-      case EliteCS:   return "Elite";
-      default:        return "Unknown";
+      case Demoman: return "Demoman";
+      case Scout:   return "Scout";
+      case Soldier: return "Soldier";
+      case Leader:  return "Leader";
+      case Heavy:   return "Heavy";
+      case Elite:   return "Elite";
+      default:      return "Unknown";
    }
 }
 
 void Captain::ensureValidity() const {
    ENSURE(type() == CAPTAIN, engine);
-   ENSURE(specialism == NoCaptainSpecialism, engine);
+   ENSURE(specialism == NoSpecialism, engine);
 }
 
 void Captain::print() const {

@@ -386,18 +386,16 @@ void GameEngine::readCaptainSkillTreeFile(char const * const filename) {
       }
    }
 
+   /* Build each Skill tree, only keep if it's valid */
    for (size_t i = 0; i < nParameters; i++) {
-      /* nullptr in the constructor means it's not attached to a squad member */
       SkillTree * tree = new SkillTree(this, this);
       char ** skillStrings = *((char***)ParamEntries[i].Pointer);
-      int const specialism = (int)(i+1); /* see CaptainSpecialism enum to translate i+1 */
+      int const specialism = (int)(i+1); /* see Captain::Specialism enum to translate i+1 */
       bool const isValid = tree->init(CAPTAIN, specialism, skillStrings);
       if (isValid) {
          this->all_valid_skilltrees.push_back(tree);
-         printf("tree %zu is valid!\n", i+1);
       } else {
          tree->deallocate();
-         printf("tree %zu is invalid!\n", i+1);
       }
    }
 

@@ -9,27 +9,28 @@
 
 class Squad;
 
-typedef enum {
-   NoHierophantSpecialism = 0,
-   SpeakerHS, /* +morale,   +movement */
-   PriestHS,  /* +health,   +morale */
-   MedicHS,   /* +health,   +strength */
-   SupportHS, /* +shooting, +armour */
-   NumHierophantSpecialisms
-} HierophantSpecialism;
-
 class Hierophant : public SpecialisedSquadMember {
 public:
    Hierophant(Squad * const s);
    ~Hierophant();
 
+   typedef enum {
+      NoSpecialism = 0,
+      Speaker, /* +morale,   +movement */
+      Priest,  /* +health,   +morale */
+      Medic,   /* +health,   +strength */
+      Support, /* +shooting, +armour */
+      NumSpecialisms
+   } Specialism;
+
    int stringToSpecialism(char const * const str) const override;
-   static std::string specialismToString(int const spec);
+   void setSkillTree(char const * const spec) override;
+   static std::string specialismToString(Hierophant::Specialism const spec);
    virtual void ensureValidity() const;
    virtual void print() const;
 
 private:
-   HierophantSpecialism specialism;
+   Hierophant::Specialism specialism;
 };
 
 #endif

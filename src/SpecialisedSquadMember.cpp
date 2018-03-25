@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "Game/SpecialisedSquadMember.h"
 #include "Game/GameEngine.h"
 #include "Game/Player.h"
@@ -28,10 +30,23 @@ SpecialisedSquadMember::~SpecialisedSquadMember() {
 }
 
 void SpecialisedSquadMember::initSkills(char ** skillsStr,
-                                        size_t const nSkills,
-                                        char * specialismStr) {
-   skillTree->setSpecialism(specialismStr);
-   /* CONTINUE */
+                                        size_t const nSkills) {
+   std::vector<std::string> stringArray;
+   for (size_t iStr = 0; iStr < nSkills; iStr++) {
+      stringArray.push_back( skillsStr[iStr] );
+   }
+   auto lengthSort = [](std::string const& s1, std::string const& s2) {
+      return s1.length() < s2.length();
+   };
+   /* Put the shortest strings at the beginning, so we work DOWN the tree */
+   std::sort(stringArray.begin(), stringArray.end(), lengthSort);
+
+   for (size_t iStr = 0; iStr < nSkills; iStr++) {
+      if ( this->skillTree->skillStringIsValid(stringArray[iStr]) ) {
+         this->skillTree->activateSkill(stringArray[iStr]);
+      }
+   }
+   /* continue */
 }
 
 void SpecialisedSquadMember::initItems(char ** itemsStr,

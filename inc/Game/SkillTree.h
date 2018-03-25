@@ -10,13 +10,6 @@ class GameEngine;
 class Skill;
 class StatBoost;
 
-typedef enum {
-   NoSkillTreeClass,
-   HierophantSkillTreeClass,
-   CaptainSkillTreeClass,
-   NumSkillTreeClasses
-} SkillTreeClass;
-
 class SkillTree : public GameObject {
 
    friend class Skill;
@@ -26,13 +19,24 @@ public:
              GameObject * const s);
    ~SkillTree();
 
+   typedef enum {
+      NoTreeType,
+      CaptainTreeType,
+      HierophantTreeType,
+      NumTreeTypes
+   } TreeType;
+
    bool init(ObjectType const ownerType,
              int const specialism,
              char ** modiferStrings);
+   void copy(ObjectType const type,
+             int const specialism);
 
-   void setSpecialism(char const * const specialismStr);
    StatBoost * boost(int const index) const;
    StatBoost * summedBoosts();
+   bool skillStringIsValid(std::string const& str);
+   void activateSkill(std::string const& str);
+   void updateTotalBoost();
    virtual void ensureValidity() const;
    virtual void print() const;
 
@@ -40,7 +44,7 @@ private:
    GameEngine * engine;
    GameObject * owner;
    std::string name;
-   SkillTreeClass skillTreeClass;
+   TreeType treeType;
    int specialism; /* Either HierophantSpecialism or CaptainSpecialism enum */
 
    /* totalBoost is the sum of all bonuses from child skills that have been
@@ -64,6 +68,9 @@ private:
    std::vector<Skill*> getAllActiveSkills() const;
    void getAllActiveSkillsRecursive(Skill * const s,
                                     std::vector<Skill*> * array) const;
+   std::vector<Skill*> getAllAvailableSkills() const;
+   void getAllAvailableSkillsRecursive(Skill * const s,
+                                       std::vector<Skill*> * array) const;
 };
 
 #endif

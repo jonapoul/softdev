@@ -25,6 +25,7 @@ enum {
    iBaseCost,
    iEncryptionKey,
    iStartingCredits,
+   iMaxSkillTreeDepth,
    iMaxCaptainItems,
    iMaxCaptainWeapons,
    iMaxHierophantItems,
@@ -53,6 +54,7 @@ public:
    int BaseCost;
    std::string EncryptionKey;
    int StartingCredits;
+   int MaxSkillTreeDepth;
    size_t MaxCaptainItems;
    size_t MaxCaptainWeapons;
    size_t MaxHierophantItems;
