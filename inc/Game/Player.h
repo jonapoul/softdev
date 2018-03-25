@@ -30,7 +30,6 @@ public:
    virtual void ensureValidity() const;
    virtual void print() const;
 
-private:
    GameEngine * engine;
    std::string username;
    std::string password;

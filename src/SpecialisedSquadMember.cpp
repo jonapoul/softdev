@@ -137,12 +137,12 @@ void SpecialisedSquadMember::print() const {
    SquadMember::print();
    printf("SpecialisedSquadMember:\n");
    printf("   experience = %d\n", experience);
-   printf("   skillTree  = %p, ID = %zu\n", skillTree, skillTree->ID());
-   printf("   totalBoost = %p, ID = %zu\n", totalBoost, totalBoost->ID());
+   printf("   skillTree  = %p, ID = %lu\n", skillTree, skillTree->ID());
+   printf("   totalBoost = %p, ID = %lu\n", totalBoost, totalBoost->ID());
    printf("   weapons    = [ ");
-   for (auto w : weapons) printf("%zu ", w->ID());
+   for (auto w : weapons) printf("%lu ", w->ID());
    printf("]\n");
    printf("   items      = [ ");
-   for (auto i : items) printf("%zu ", i->ID());
+   for (auto i : items) printf("%lu ", i->ID());
    printf("]\n");
 }

@@ -1,7 +1,7 @@
 CXX      = g++ -std=c++11
-CXXFLAGS = -c -Wall
+CXXFLAGS = -c -Wall -g
 LD       = $(CXX)
-LDFLAGS  = -Wall
+LDFLAGS  = -Wall -g
 
 OBJDIR  := obj
 BINDIR  := bin

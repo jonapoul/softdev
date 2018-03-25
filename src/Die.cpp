@@ -42,7 +42,7 @@ void Die::ensureValidity() const {
 
 void Die::print() const {
    printf("Die:\n");
-   printf("   engine   = %p, ID = %zu\n", engine, engine->ID());
+   printf("   engine   = %p, ID = %lu\n", engine, engine->ID());
    printf("   minValue = %d\n", minValue);
    printf("   maxValue = %d\n", maxValue);
 }

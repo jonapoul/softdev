@@ -55,11 +55,9 @@ public:
    virtual void ensureValidity() const;
    virtual void print() const;
 
-   /* parent pointers */
+
    GameEngine * engine;
    Player * player;
-
-private:
    Captain * captain;
    Hierophant * hierophant;
    std::vector<SquadMember *> squadMembers;

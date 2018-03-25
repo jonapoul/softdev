@@ -17,3 +17,4 @@ fi
 
 qmake
 make -f Qt_Makefile
+rm Qt_Makefile

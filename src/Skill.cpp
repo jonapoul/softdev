@@ -98,15 +98,15 @@ void Skill::ensureValidity() const {
 void Skill::print() const {
    GameObject::print();
    printf("Skill:\n");
-   printf("   engine           = %p, ID = %zu\n", engine, engine->ID());
-   printf("   tree             = %p, ID = %zu\n", tree, tree->ID());
+   printf("   engine           = %p, ID = %lu\n", engine, engine->ID());
+   printf("   tree             = %p, ID = %lu\n", tree, tree->ID());
    printf("   name             = '%s'\n", name.c_str());
    printf("   index            = %d\n", index);
    printf("   hasBeenActivated = %d\n", hasBeenActivated);
-   if (child0) printf("   child0           = %p, ID = %zu\n", child0, child0->ID());
+   if (child0) printf("   child0           = %p, ID = %lu\n", child0, child0->ID());
    else        printf("   child0           = %p\n", nullptr);
-   if (child1) printf("   child1           = %p, ID = %zu\n", child1, child1->ID());
+   if (child1) printf("   child1           = %p, ID = %lu\n", child1, child1->ID());
    else        printf("   child1           = %p\n", nullptr);
-   if (boost)  printf("   boost            = %p, ID = %zu\n", boost, boost->ID());
+   if (boost)  printf("   boost            = %p, ID = %lu\n", boost, boost->ID());
    else        printf("   boost            = %p\n", nullptr);
 }

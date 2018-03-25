@@ -103,7 +103,7 @@ SkillTree::~SkillTree() {
    totalBoost->deallocate();
    boost0->deallocate();
    boost1->deallocate();
-   headNode->deallocate(); /* also deallocates all children */
+   if (headNode != nullptr) headNode->deallocate(); /* also deallocates all children */
 }
 
 StatBoost * SkillTree::boost(int const index) const {
@@ -242,20 +242,20 @@ void SkillTree::ensureValidity() const {
 void SkillTree::print() const {
    GameObject::print();
    printf("SkillTree:\n");
-   printf("   engine           = %p, ID = %zu\n", engine, engine->ID());
-   printf("   owner            = %p, ID = %zu\n", owner, owner->ID());
+   printf("   engine           = %p, ID = %lu\n", engine, engine->ID());
+   printf("   owner            = %p, ID = %lu\n", owner, owner->ID());
    printf("   name             = '%s'\n", name.c_str());
    printf("   specialism       = %d\n", specialism);
-   printf("   headNode         = %p, ID = %zu\n", headNode, headNode->ID());
-   printf("   totalBoost       = %p, ID = %zu\n", totalBoost, totalBoost->ID());
-   printf("   boost0           = %p, ID = %zu\n", boost0, boost0->ID());
-   printf("   boost1           = %p, ID = %zu\n", boost1, boost1->ID());
+   printf("   headNode         = %p, ID = %lu\n", headNode, headNode->ID());
+   printf("   totalBoost       = %p, ID = %lu\n", totalBoost, totalBoost->ID());
+   printf("   boost0           = %p, ID = %lu\n", boost0, boost0->ID());
+   printf("   boost1           = %p, ID = %lu\n", boost1, boost1->ID());
    auto activeSkills = getAllActiveSkills();
    printf("   Active Skills    = [ ");
-   for (auto s : activeSkills) printf("%zu ", s->ID());
+   for (auto s : activeSkills) printf("%lu ", s->ID());
    printf("]\n");
    auto availableSkills = getAllAvailableSkills();
    printf("   Available Skills = [ ");
-   for (auto s : availableSkills) printf("%zu ", s->ID());
+   for (auto s : availableSkills) printf("%lu ", s->ID());
    printf("]\n");
 }

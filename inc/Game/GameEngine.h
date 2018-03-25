@@ -21,6 +21,9 @@ class Weapon;
 class SkillTree;
 
 class GameEngine : public GameObject {
+
+   friend class TestSuite;
+
 public:
 
 #ifdef ENABLE_QT_UI
@@ -42,15 +45,10 @@ public:
 
    bool login(Player const * const player,
               std::string const& plaintextPassword);
-   
 
    virtual void ensureValidity() const;
    virtual void print() const;
 
-   Die * die;
-   GameParameters * parameters;
-
-private:
    void readCaptainSkillTreeFile(char const * const filename);
    void readHierophantSkillTreeFile(char const * const filename);
    void initGameParameters(char const * const filename);
@@ -63,6 +61,8 @@ private:
 #ifdef ENABLE_QT_UI
    GameWindow * window;
 #endif
+   Die * die;
+   GameParameters * parameters;
    std::vector<Player *> players;
    std::vector<Item *> all_valid_items;
    std::vector<Weapon *> all_valid_weapons;

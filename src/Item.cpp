@@ -75,7 +75,7 @@ void Item::print() const {
    GameObject::print();
    printf("Item:\n");
    printf("   name   = '%s'\n", name.c_str());
-   printf("   engine = %p, ID = %zu\n", engine, engine->ID());
-   printf("   owner  = %p, ID = %zu\n", owner, owner->ID());
-   printf("   boost  = %p, ID = %zu\n", boost, boost->ID());
+   printf("   engine = %p, ID = %lu\n", engine, engine->ID());
+   printf("   owner  = %p, ID = %lu\n", owner, owner->ID());
+   printf("   boost  = %p, ID = %lu\n", boost, boost->ID());
 }

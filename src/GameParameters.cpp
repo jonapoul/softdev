@@ -124,7 +124,7 @@ void GameParameters::ensureValidity() const {
 void GameParameters::print() const {
    GameObject::print();
    printf("GameParameters:\n");
-   printf("   Engine               = %p, ID = %zu\n", engine, engine->ID());
+   printf("   Engine               = %p, ID = %lu\n", engine, engine->ID());
    printf("   MinRoll              = %d\n", MinRoll);
    printf("   MaxRoll              = %d\n", MaxRoll);
    printf("   BaseMovement         = %.2f\n", BaseMovement);
@@ -137,8 +137,8 @@ void GameParameters::print() const {
    printf("   EncryptionKey        = '%s'\n", EncryptionKey.c_str());
    printf("   StartingCredits      = %d\n", StartingCredits);
    printf("   MaxSkillTreeDepth    = %d\n", MaxSkillTreeDepth);
-   printf("   MaxCaptainItems      = %zu\n", MaxCaptainItems);
-   printf("   MaxCaptainWeapons    = %zu\n", MaxCaptainWeapons);
-   printf("   MaxHierophantItems   = %zu\n", MaxHierophantItems);
-   printf("   MaxHierophantWeapons = %zu\n", MaxHierophantWeapons);
+   printf("   MaxCaptainItems      = %lu\n", MaxCaptainItems);
+   printf("   MaxCaptainWeapons    = %lu\n", MaxCaptainWeapons);
+   printf("   MaxHierophantItems   = %lu\n", MaxHierophantItems);
+   printf("   MaxHierophantWeapons = %lu\n", MaxHierophantWeapons);
 }

@@ -59,7 +59,7 @@ void SquadMember::ensureValidity() const {
 void SquadMember::print() const {
    GameObject::print();
    printf("SquadMember:\n");
-   printf("   engine = %p, ID = %zu\n", engine, engine->ID());
-   printf("   player = %p, ID = %zu\n", player, player->ID());
-   printf("   squad  = %p, ID = %zu\n", squad, squad->ID());
+   printf("   engine = %p, ID = %lu\n", engine, engine->ID());
+   printf("   player = %p, ID = %lu\n", player, player->ID());
+   printf("   squad  = %p, ID = %lu\n", squad, squad->ID());
 }

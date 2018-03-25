@@ -296,20 +296,20 @@ void Squad::ensureValidity() const {
 void Squad::print() const {
    GameObject::print();
    printf("Squad:\n");
-   printf("   engine       = %p, ID = %zu\n", engine, engine->ID());
-   printf("   player       = %p, ID = %zu\n", player, player->ID());
+   printf("   engine       = %p, ID = %lu\n", engine, engine->ID());
+   printf("   player       = %p, ID = %lu\n", player, player->ID());
    printf("   isPublic     = %d\n", isPublic);
    printf("   credits      = %d\n", credits);
    printf("   filename     = '%s'\n", filename.c_str());
    printf("   squadMembers = [ ");
-   for (auto s : squadMembers) printf("%zu ", s->ID());
+   for (auto s : squadMembers) printf("%lu ", s->ID());
    printf("]\n");
-   printf("   captain      = %p, ID = %zu\n", captain, captain->ID());
-   printf("   hierophant   = %p, ID = %zu\n", hierophant, hierophant->ID());
+   printf("   captain      = %p, ID = %lu\n", captain, captain->ID());
+   printf("   hierophant   = %p, ID = %lu\n", hierophant, hierophant->ID());
    printf("   weapons      = [ ");
-   for (auto w : weapons) printf("%zu ", w->ID());
+   for (auto w : weapons) printf("%lu ", w->ID());
    printf("]\n");
    printf("   items        = [ ");
-   for (auto i : items) printf("%zu ", i->ID());
+   for (auto i : items) printf("%lu ", i->ID());
    printf("]\n");
 }

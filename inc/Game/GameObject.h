@@ -5,12 +5,12 @@
 #include <vector>
 #include <string>
 
-#define ENSURE(statement,engine) GameObject::ensure(statement,#statement,typeid(*this).name(),engine)
+#define ENSURE(statement,engine) GameObject::ensure(statement,#statement,__FUNCTION__,engine)
 
 class GameEngine;
 
 typedef enum {
-   NO_TYPE,
+   NO_TYPE = 0,
    CAPTAIN,
    DIE,
    GAMEENGINE,
@@ -43,9 +43,11 @@ public:
    ObjectType type() const;
    void deallocate();
    void setType(ObjectType const t);
+   std::string typeToString() const;
    virtual void ensureValidity() const;
    virtual void print() const;
 
+   static std::string typeToString(ObjectType const t);
    static void printAllObjects();
    static std::vector<GameObject*> getAllOfType(ObjectType const t);
    static std::vector<GameObject*> getAllOfTypes(std::vector<ObjectType> const& types);
@@ -53,12 +55,10 @@ public:
    static void ensureEverythingIsValid();
    static void ensure(bool const statement,
                       char const * const string,
-                      char const * const Class,
+                      char const * const function,
                       GameEngine const * const engine);
 
 private:
-   std::string typeToString() const;
-
    size_t id_;
    ObjectType type_;
 

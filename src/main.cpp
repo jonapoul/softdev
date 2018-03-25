@@ -9,8 +9,10 @@
 
 #include "Game/GameObject.h"
 #include "Game/GameEngine.h"
+#include "TestSuite.h"
 
 #ifdef ENABLE_QT_UI
+
 int main(int argc, char ** argv) {
    /* Initialise the Qt application */
    QApplication app (argc, argv);
@@ -32,22 +34,25 @@ int main(int argc, char ** argv) {
    window->show();
    return app.exec();
 }
+
 #else // ENABLE_QT_UI
+
 int main() {
    /* Build the game's backend */
    GameEngine * engine = new GameEngine();
    engine->init();
 
-   /* Run through some common actions and print to terminal */
-   // engine->test();
-   GameObject::printAllObjects();
+   /* Offer a bunch of common actions */
+   TestSuite tests(engine);
+   tests.run();
 
    /* Delete all game objects */
    engine->deallocate();
-   printf("Exited game successfully!\n\n");
+   printf("Exited game successfully!\n");
    printf("Printing all GameObjects that currently exist (should be none):\n");
    GameObject::printAllObjects();
 
    return 0;
 }
+
 #endif // ENABLE_QT_UI

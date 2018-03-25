@@ -109,7 +109,7 @@ void Player::deleteSquad(size_t const indexToDelete) {
       char warningbuf[MAX_MESSAGE_LENGTH];
       snprintf(warningbuf, MAX_MESSAGE_LENGTH, 
                "%s: User '%s' tried deleting squad index out of range. "
-               "[indexToDelete = %zu, nSquads = %zu]",
+               "[indexToDelete = %lu, nSquads = %lu]",
                __FUNCTION__, username.c_str(), indexToDelete, numSquads());
       engine->warningMessage(warningbuf);
       return;
@@ -141,17 +141,17 @@ void Player::ensureValidity() const {
    ENSURE(type() == PLAYER,      engine);
    ENSURE(username.length() > 0, engine);
    ENSURE(password.length() > 0, engine);
-   ENSURE(loginStatus == true,   engine);
+   // ENSURE(loginStatus == true,   engine);
 }
 
 void Player::print() const {
    GameObject::print();
    printf("Player:\n");
-   printf("   engine      = %p, ID = %zu\n", engine, engine->ID());
+   printf("   engine      = %p, ID = %lu\n", engine, engine->ID());
    printf("   username    = '%s'\n", username.c_str());
    printf("   password    = '%s'\n", password.c_str());
    printf("   squads      = [ ");
-   for (auto s : squads) printf("%zu ", s->ID());
+   for (auto s : squads) printf("%lu ", s->ID());
    printf("]\n");
    printf("   filename    = '%s'\n", filename.c_str());
    printf("   loginStatus = %d\n", loginStatus);

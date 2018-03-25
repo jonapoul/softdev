@@ -119,8 +119,8 @@ void StatBoost::ensureValidity() const {
 void StatBoost::print() const {
    GameObject::print();
    printf("StatBoost:\n");
-   printf("   engine       = %p, ID = %zu\n", engine, engine->ID());
-   printf("   owner        = %p, ID = %zu\n", owner, owner->ID());
+   printf("   engine       = %p, ID = %lu\n", engine, engine->ID());
+   printf("   owner        = %p, ID = %lu\n", owner, owner->ID());
    printf("   addStrength  = %d\n", addStrength);
    printf("   addShooting  = %d\n", addShooting);
    printf("   addArmour    = %d\n", addArmour);

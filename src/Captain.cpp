@@ -50,8 +50,8 @@ std::string Captain::specialismToString(Captain::Specialism const spec) {
 }
 
 void Captain::ensureValidity() const {
-   ENSURE(type() == CAPTAIN, engine);
-   ENSURE(specialism == NoSpecialism, engine);
+   ENSURE(type() == CAPTAIN,          engine);
+   ENSURE(specialism != NoSpecialism, engine);
 }
 
 void Captain::print() const {

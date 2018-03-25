@@ -49,6 +49,7 @@ SOURCES += \
            src/Captain.cpp \
            src/Die.cpp \
            src/GameEngine.cpp \
+           src/GameEngineTest.cpp \
            src/Hierophant.cpp \
            src/Item.cpp \
            src/GameParameters.cpp \

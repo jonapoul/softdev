@@ -111,8 +111,19 @@ void GameEngine::informationMessage(char const * const message) const {
 }
 
 bool GameEngine::login(Player const * const player,
-                       std::string const& plaintextPassword) {
-   std::string encryptPassword = Global::encrypt(plaintextPassword, parameters->EncryptionKey);
+                       std::string const& password) {
+   std::string encrypted = Global::encrypt(password, parameters->EncryptionKey);
+
+   /* Something like this, but its not really important for the sake of a
+      prototype */
+   // bool passwordIsValid = sendEncryptedPasswordToServer(encrypted);
+   // if (passwordIsValid) {
+   //    player->loginStatus = true;
+   //    return true;
+   // } else {
+   //    return false;
+   // }
+
    return true;
 }
 
@@ -283,7 +294,7 @@ void GameEngine::initPlayers(char const * const directory) {
       if ( !playerFileIsValid ) {
          char warningbuf[MAX_MESSAGE_LENGTH];
          snprintf(warningbuf, MAX_MESSAGE_LENGTH,
-                  "%s: Player %zu has an invalid player file '%s'",
+                  "%s: Player %lu has an invalid player file '%s'",
                   __FUNCTION__, i, playerFiles[i].c_str());
          warningMessage(warningbuf);
          p->deallocate();
@@ -304,19 +315,19 @@ void GameEngine::print() const {
 #ifdef ENABLE_QT_UI
    printf("   GameWindow            = %p\n", window);
 #endif
-   printf("   Die                   = %p, ID = %zu\n", die, die->ID());
-   printf("   Parameters            = %p, ID = %zu\n", parameters, parameters->ID());
+   printf("   Die                   = %p, ID = %lu\n", die, die->ID());
+   printf("   Parameters            = %p, ID = %lu\n", parameters, parameters->ID());
    printf("   Players               = [ ");
-   for (auto p : players) printf("%zu ", p->ID());
+   for (auto p : players) printf("%lu ", p->ID());
    printf("]\n");
    printf("   AllPossibleItems      = [ ");
-   for (auto i : all_valid_items) printf("%zu ", i->ID());
+   for (auto i : all_valid_items) printf("%lu ", i->ID());
    printf("]\n");
    printf("   AllPossibleWeapons    = [ ");
-   for (auto w : all_valid_weapons) printf("%zu ", w->ID());
+   for (auto w : all_valid_weapons) printf("%lu ", w->ID());
    printf("]\n");
    printf("   AllPossibleSkillTrees = [ ");
-   for (auto st : all_valid_skilltrees) printf("%zu ", st->ID());
+   for (auto st : all_valid_skilltrees) printf("%lu ", st->ID());
    printf("]\n");
 }
 
@@ -379,7 +390,7 @@ void GameEngine::readCaptainSkillTreeFile(char const * const filename) {
       if (arraySize != 2) {
          char criticalbuf[MAX_MESSAGE_LENGTH];
          snprintf(criticalbuf, MAX_MESSAGE_LENGTH,
-                  "%s: Skill Tree '%s' has been given %zu elements instead of 2",
+                  "%s: Skill Tree '%s' has been given %lu elements instead of 2",
                   __FUNCTION__, ParamEntries[i].Parameter, arraySize);
          criticalMessage(criticalbuf);
          /* QUIT */
@@ -461,7 +472,7 @@ void GameEngine::readHierophantSkillTreeFile(char const * const filename) {
       if (arraySize != 2) {
          char criticalbuf[MAX_MESSAGE_LENGTH];
          snprintf(criticalbuf, MAX_MESSAGE_LENGTH,
-                  "%s: Skill Tree '%s' has been given %zu elements instead of 2",
+                  "%s: Skill Tree '%s' has been given %lu elements instead of 2",
                   __FUNCTION__, ParamEntries[i].Parameter, arraySize);
          criticalMessage(criticalbuf);
          /* QUIT */

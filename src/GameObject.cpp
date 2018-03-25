@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 
 #include "Game/GameObject.h"
 #include "Game/GameEngine.h"
@@ -48,51 +49,84 @@ void GameObject::ensureValidity() const {
 
 void GameObject::print() const {
    printf("GameObject:\n");
-   printf("   ID   = %zu\n", this->ID());
+   printf("   ID   = %lu\n", this->ID());
    printf("   Type = '%s'\n", this->typeToString().c_str());
 }
 
 /* Dump info about every GameObject currently in memory, in the order that they
    were created */
 void GameObject::printAllObjects() {
-   printf("%s\n", std::string(50, '-').c_str());
-   printf("%15s %10s %15s\n", "Address", "ID", "Type");
-   printf("%s\n", std::string(50, '-').c_str());
-   for (GameObject* o : GameObject::all_objects) {
-      printf("%15p %10zu %15s\n", o, o->ID(), o->typeToString().c_str());
-   }
-   if (GameObject::all_objects.size() == 0) {
-      printf("    No objects currently exist!\n");
-      printf("%s\n", std::string(50, '-').c_str());
-      return;
-   }
-   printf("%s\n", std::string(50, '-').c_str());
-
    while (true) {
-      printf("Enter the ID of an object. 'q' = Quit, 'p' = Print\n");
-      std::string input;
-      std::cin >> input;
-      if (tolower(input[0]) == 'q') {
-         return;
-      } else if (tolower(input[0]) == 'p') {
-         printAllObjects();
+      printf("%s\n", std::string(50, '-').c_str());
+      printf("%15s %10s %15s\n", "Address", "ID", "Type");
+      printf("%s\n", std::string(50, '-').c_str());
+      for (GameObject* o : GameObject::all_objects) {
+         printf("%15p %10zu %15s\n", o, o->ID(), o->typeToString().c_str());
+      }
+      if (GameObject::all_objects.size() == 0) {
+         printf("    No objects currently exist!\n");
+         printf("%s\n", std::string(50, '-').c_str());
          return;
       }
-      for (size_t i = 0; i < input.length(); i++) {
-         if (!isdigit(input[i])) {
-            printf("Enter a number or 'q'.\n");
+      printf("%s\n", std::string(50, '-').c_str());
+
+      while (true) {
+         printf("Enter an object ID (q = back to testing menu, p = print, h = help, s = sort): ");
+         std::string input;
+         std::cin >> input;
+         char letter = tolower(input[0]);
+         if (letter == 'q') {
+            return;
+         } else if (letter == 'p') {
+            break;
+         } else if (letter == 'h') {
+            printf("Each line in the list above represents a GameObject-derived object that is currently in memory,\n"
+                   "along with its unique ID number and class name. Typing that ID number in here will print more info\n"
+                   "about that object, with member variables and the ID numbers of any pointers. Using this you can\n"
+                   "keep track of memory allocation and the state of the system at any time just by shoving a call to\n"
+                   "GameObject::printAllObjects() in the code.\n"
+                   "For example, if you create a player as part of the tests, you'll then see a PLAYER object at the\n"
+                   "bottom of this list.\n");
+            continue;
+         } else if (letter == 's') {
+            /* This could probably have been structured bettwe but I was in a
+               rush, sorry! */
+            typedef enum { byID, byType } SortType;
+            static SortType sortMethod = byID;
+            static auto sortByID   = [](GameObject* a, GameObject* b) { return a->ID()   < b->ID(); };
+            static auto sortByType = [](GameObject* a, GameObject* b) { return a->type() < b->type(); };
+            if (sortMethod == byID) {
+               std::sort(GameObject::all_objects.begin(),
+                         GameObject::all_objects.end(),
+                         sortByType);
+               sortMethod = byType;
+            } else { /* sortMethod == byType */
+               std::sort(GameObject::all_objects.begin(),
+                         GameObject::all_objects.end(),
+                         sortByID);
+               sortMethod = byID;  
+            }
+            break;   
+         }
+         if (!isdigit(input[0])) {
+            printf("Enter a number or q/p/s/h: ");
             continue;
          }
-      }
-      size_t id = std::stoi(input);
-      for (GameObject* o : GameObject::all_objects) {
-         if (id == o->ID()) {
-            o->print();
-            printf("\n");
-            break;
-         }
-      }
-   }
+         size_t id = std::stoi(input);
+         for (GameObject* o : GameObject::all_objects) {
+            if (id == o->ID()) {
+               o->print();
+               printf("\n");
+               break;
+            }
+         } // loop over objects
+      } // second while true
+   } // first while true
+}
+
+std::string GameObject::typeToString(ObjectType const t) {
+   GameObject temp(t);
+   return temp.typeToString();
 }
 
 /* Used for debugging and printAllObjects() */
@@ -174,7 +208,7 @@ void GameObject::ensureEverythingIsValid() {
    UI or CLI) showing what failed and where */
 void GameObject::ensure(bool const statement,
                        char const * const statementString,
-                       char const * const className,
+                       char const * const function,
                        GameEngine const * const engine) {
    if (!statement) {
       char warningbuf[MAX_MESSAGE_LENGTH];
@@ -182,7 +216,7 @@ void GameObject::ensure(bool const statement,
                "FAILED CHECK:\n"
                "    Statement: '%s'\n"
                "    Location:  '%s'", 
-               statementString, className);
+               statementString, function);
       engine->warningMessage(warningbuf);
    }
 }
