@@ -51,8 +51,6 @@ bool Squad::init(char const * const file) {
    size_t  NumCaptainItems      = 0;
    char ** CaptainWeapons       = nullptr;
    size_t  NumCaptainWeapons    = 0;
-   int *   CaptainStatBoosts    = nullptr;
-   size_t  NumCaptainStatBoosts = 0;
    int     HierophantExperience    = 0;
    char    HierophantSpecialism[MAX_LINE_LENGTH];
    strncpy(HierophantSpecialism, "Unknown", MAX_LINE_LENGTH);
@@ -62,8 +60,6 @@ bool Squad::init(char const * const file) {
    size_t  NumHierophantItems      = 0;
    char ** HierophantWeapons       = nullptr;
    size_t  NumHierophantWeapons    = 0;
-   int *   HierophantStatBoosts    = nullptr;
-   size_t  NumHierophantStatBoosts = 0;
    size_t  NumNormalSquadMembers = 0;
    char ** SquadWeapons          = nullptr;
    size_t  NumSquadWeapons       = 0;
@@ -114,10 +110,6 @@ bool Squad::init(char const * const file) {
    ParamEntries[iCaptainWeapons].Type           = STRING;
    ParamEntries[iCaptainWeapons].Pointer        = &CaptainWeapons;
    ParamEntries[iCaptainWeapons].NArrayElements = &NumCaptainWeapons;
-   strncpy(ParamEntries[iCaptainStatBoosts].Parameter, "CaptainStatBoosts", MAX_PARAMETER_NAME_LENGTH);
-   ParamEntries[iCaptainStatBoosts].Type           = INTEGER;
-   ParamEntries[iCaptainStatBoosts].Pointer        = &CaptainStatBoosts;
-   ParamEntries[iCaptainStatBoosts].NArrayElements = &NumCaptainStatBoosts;
 
    strncpy(ParamEntries[iHierophantExperience].Parameter, "HierophantExperience", MAX_PARAMETER_NAME_LENGTH);
    ParamEntries[iHierophantExperience].Type    = INTEGER;
@@ -139,10 +131,6 @@ bool Squad::init(char const * const file) {
    ParamEntries[iHierophantWeapons].Type           = STRING;
    ParamEntries[iHierophantWeapons].Pointer        = &HierophantWeapons;
    ParamEntries[iHierophantWeapons].NArrayElements = &NumHierophantWeapons;
-   strncpy(ParamEntries[iHierophantStatBoosts].Parameter, "HierophantStatBoosts", MAX_PARAMETER_NAME_LENGTH);
-   ParamEntries[iHierophantStatBoosts].Type           = INTEGER;
-   ParamEntries[iHierophantStatBoosts].Pointer        = &HierophantStatBoosts;
-   ParamEntries[iHierophantStatBoosts].NArrayElements = &NumHierophantStatBoosts;
 
    strncpy(ParamEntries[iNumNormalSquadMembers].Parameter, "NumNormalSquadMembers", MAX_PARAMETER_NAME_LENGTH);
    ParamEntries[iNumNormalSquadMembers].Type    = INTEGER;
@@ -232,8 +220,6 @@ bool Squad::init(char const * const file) {
    PF_FreeStringArray(HierophantWeapons, NumHierophantWeapons);
    PF_FreeStringArray(SquadItems,        NumSquadItems);
    PF_FreeStringArray(SquadWeapons,      NumSquadWeapons);
-   free(CaptainStatBoosts);
-   free(HierophantStatBoosts);
 
    return squadFileIsValid;
 }

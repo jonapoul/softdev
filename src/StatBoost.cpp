@@ -5,23 +5,9 @@
 #include "Global.h"
 
 StatBoost::StatBoost(GameEngine * const e,
-                     GameObject * const o) 
+                     GameObject * const o)
       : GameObject(STATBOOST), engine(e), owner(o) {
    /* blank, all defaults as listed in StatBoost.h */
-}
-
-/* Copying another */
-StatBoost::StatBoost(StatBoost const * const that)
-      : GameObject(that->type()) {
-   this->engine       = that->engine;
-   this->owner        = that->owner;
-   this->addShooting  = that->addShooting;
-   this->addStrength  = that->addStrength;
-   this->addArmour    = that->addArmour;
-   this->addMorale    = that->addMorale;
-   this->addHealth    = that->addHealth;
-   this->addMovement  = that->addMovement;
-   this->multiplyCost = that->multiplyCost;
 }
 
 StatBoost::~StatBoost() {
@@ -63,14 +49,14 @@ void StatBoost::copy(StatBoost const * const other) {
    this->multiplyCost = other->multiplyCost;
 }
 
-void StatBoost::add(StatBoost const * const extraBoost) {
-   this->addShooting  += extraBoost->addShooting;
-   this->addStrength  += extraBoost->addStrength;
-   this->addArmour    += extraBoost->addArmour;
-   this->addMorale    += extraBoost->addMorale;
-   this->addHealth    += extraBoost->addHealth;
-   this->addMovement  += extraBoost->addMovement;
-   this->multiplyCost *= extraBoost->multiplyCost;
+void StatBoost::add(StatBoost const * const other) {
+   this->addShooting  += other->addShooting;
+   this->addStrength  += other->addStrength;
+   this->addArmour    += other->addArmour;
+   this->addMorale    += other->addMorale;
+   this->addHealth    += other->addHealth;
+   this->addMovement  += other->addMovement;
+   this->multiplyCost *= other->multiplyCost;
 }
 
 bool StatBoost::add(std::string const& stat,
@@ -114,6 +100,7 @@ void StatBoost::ensureValidity() const {
    ENSURE(addArmour >= 0,      engine);
    ENSURE(addMorale >= 0,      engine);
    ENSURE(addHealth >= 0,      engine);
+   ENSURE(isBlank() != true,   engine);
 }
 
 void StatBoost::print() const {

@@ -154,11 +154,16 @@ void SkillTree::getAllAvailableSkillsRecursive(Skill * const s,
                                                std::vector<Skill*> * array) const {
    if (s->child0->isActive()) {
       getAllAvailableSkillsRecursive(s->child0, array);
+   } else if (s->child0->depth == engine->parameters->MaxSkillTreeDepth) {
+      return;
    } else {
       array->push_back(s->child0);
    }
+
    if (s->child1->isActive()) {
       getAllAvailableSkillsRecursive(s->child1, array);
+   } else if (s->child1->depth == engine->parameters->MaxSkillTreeDepth) {
+      return;
    } else {
       array->push_back(s->child1);
    }
@@ -205,7 +210,7 @@ bool SkillTree::skillStringIsValid(std::string const& skillString) {
 }
 
 /* Traverses the tree based on the numerical directions in the skill string.
-     e.g. for a string of '011': 
+     e.g. for a string of '011':
          1) currentSkill set to headNode (first '0')
          2) currentIndex set to 1, since thats the next index in the string
          3) currentSkill set to head->child1
@@ -213,7 +218,7 @@ bool SkillTree::skillStringIsValid(std::string const& skillString) {
          4) currentIndex set to 1
          5) currentSkill set to head->child1->child1
          6) activate this skill
-   No error checking done in here, because that's all done by
+   No error checking done in here, because that SHOULD all be done by
    skillStringIsValid() right before this is called
 */
 void SkillTree::activateSkill(std::string const& skillString) {

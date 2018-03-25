@@ -49,10 +49,10 @@ public:
 
    static std::string typeToString(ObjectType const t);
    static void printAllObjects();
-   static std::vector<GameObject*> getAllOfType(ObjectType const t);
-   static std::vector<GameObject*> getAllOfTypes(std::vector<ObjectType> const& types);
    static size_t numberOfType(ObjectType const t);
    static void ensureEverythingIsValid();
+
+   /* only called through the macro ENSURE at the top of this file */
    static void ensure(bool const statement,
                       char const * const string,
                       char const * const function,

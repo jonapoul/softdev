@@ -13,3 +13,6 @@ Medic 2
 Support 2
  +1 Shooting
  +1 Armour
+
+# the "two bonus per skilltree" limit is hardcoded for the prototype, but doesn't
+# have to be in general.

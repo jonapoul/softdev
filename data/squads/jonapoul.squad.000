@@ -4,36 +4,25 @@ IsPublic   true
 Credits    500
 
 CaptainExperience 0
-CaptainSpecialism Demoman
+CaptainSpecialism Demoman   # Specialisms and bonuses defined in data/skilltrees
+
 CaptainSkills 0
-CaptainItems 2
+CaptainItems 2    # items and their bonuses defined in items.input
    HealthPotion
-   HealthPotion
-CaptainWeapons 2
+   MoraleBoost
+CaptainWeapons 2   # weapons and their bonuses defined in weapons.input
    MachineGun
    Crossbow
-CaptainStatBoosts 5
-   0
-   0
-   0
-   0
-   0
 
 HierophantExperience 0
 HierophantSpecialism Medic
 HierophantSkills 0
 HierophantItems 3
+   SpeedBoost
    HealthPotion
-   HealthPotion
-   HealthPotion
+   MoraleBoost
 HierophantWeapons 1
    Revolver
-HierophantStatBoosts 5
-   0
-   0
-   0
-   0
-   0
 
 NumNormalSquadMembers 8
 SquadWeapons 4

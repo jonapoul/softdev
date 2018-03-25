@@ -14,7 +14,6 @@ Player::Player(GameEngine * const e)
       : GameObject(PLAYER), engine(e), loginStatus(false) { }
 
 bool Player::init(std::string const& file) {
-
    this->filename = file;
    bool playerFileIsValid = true;
 
@@ -107,7 +106,7 @@ Player::~Player() {
 void Player::deleteSquad(size_t const indexToDelete) {
    if (indexToDelete >= numSquads()) {
       char warningbuf[MAX_MESSAGE_LENGTH];
-      snprintf(warningbuf, MAX_MESSAGE_LENGTH, 
+      snprintf(warningbuf, MAX_MESSAGE_LENGTH,
                "%s: User '%s' tried deleting squad index out of range. "
                "[indexToDelete = %lu, nSquads = %lu]",
                __FUNCTION__, username.c_str(), indexToDelete, numSquads());

@@ -4,24 +4,33 @@ IsPublic   false
 Credits    350
 
 CaptainExperience 20
-CaptainSpecialism Leader
+CaptainSpecialism Leader   # Specialisms and bonuses defined in data/skilltrees
+
+# These binary skill labels indicate the direction to go at each level
+# of the tree. Eg.
+#
+#                 0
+#           --------------
+#           |            |
+#          00           01
+#       -------      -------
+#       |     |      |     |
+#      000   001    010   011
+#
+# etcetera and so on, where each number represents a skill.
+# The maximum depth of the tree is set in data/parameters.input.
+
 CaptainSkills 4
    0
    00
    001
    000
-CaptainItems 2
+CaptainItems 2    # items and their bonuses defined in items.input
+   MoraleBoost
    HealthPotion
-   HealthPotion
-CaptainWeapons 2
+CaptainWeapons 2    # weapons and their bonuses defined in weapons.input
    MachineGun
    Crossbow
-CaptainStatBoosts 5
-   0
-   0
-   0
-   0
-   0
 
 HierophantExperience 30
 HierophantSpecialism Priest
@@ -31,15 +40,9 @@ HierophantSkills 2
 HierophantItems 3
    HealthPotion
    HealthPotion
-   HealthPotion
+   SpeedBoost
 HierophantWeapons 1
    Revolver
-HierophantStatBoosts 5
-   0
-   0
-   0
-   1
-   0
 
 NumNormalSquadMembers 9
 SquadWeapons 4

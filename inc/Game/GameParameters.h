@@ -13,32 +13,32 @@ extern "C" {
 
 class GameEngine;
 
-enum {
-   iMinRoll,
-   iMaxRoll,
-   iBaseMovement,
-   iBaseStrength,
-   iBaseShooting,
-   iBaseArmour,
-   iBaseMorale,
-   iBaseHealth,
-   iBaseCost,
-   iEncryptionKey,
-   iStartingCredits,
-   iMaxSkillTreeDepth,
-   iMaxCaptainItems,
-   iMaxCaptainWeapons,
-   iMaxHierophantItems,
-   iMaxHierophantWeapons,
-   nGameParameters
-};
-
 class GameParameters : public GameObject {
 public:
-   GameParameters(GameEngine * const e,
-                  char const * const Filename,
-                  bool * const paramFileIsValid);
+   GameParameters(GameEngine * const e);
    ~GameParameters();
+
+   bool init(char const * const Filename);
+   /* Used for parameter reading in init() */
+   enum {
+      iMinRoll,
+      iMaxRoll,
+      iBaseMovement,
+      iBaseStrength,
+      iBaseShooting,
+      iBaseArmour,
+      iBaseMorale,
+      iBaseHealth,
+      iBaseCost,
+      iEncryptionKey,
+      iStartingCredits,
+      iMaxSkillTreeDepth,
+      iMaxCaptainItems,
+      iMaxCaptainWeapons,
+      iMaxHierophantItems,
+      iMaxHierophantWeapons,
+      nGameParameters
+   };
 
    virtual void ensureValidity() const;
    virtual void print() const;
@@ -59,7 +59,7 @@ public:
    size_t MaxCaptainWeapons;
    size_t MaxHierophantItems;
    size_t MaxHierophantWeapons;
-   
+
 private:
    GameEngine * engine;
 };

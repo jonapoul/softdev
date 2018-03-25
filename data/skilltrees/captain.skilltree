@@ -21,3 +21,6 @@ Heavy 2
 Elite 2
  +1 Morale
  +1 Armour
+
+# the "two bonus per skilltree" limit is hardcoded for the prototype, but doesn't
+# have to be in general.

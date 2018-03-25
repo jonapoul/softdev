@@ -32,6 +32,9 @@ void GameObject::setType(ObjectType const t) {
    this->type_ = t;
 }
 
+/* Instead of just 'delete'ing each pointer when we're done with them, always
+   pass it this function instead so that it gets removed from the all_objects
+   array */
 void GameObject::deallocate() {
    for (size_t i = 0; i < GameObject::all_objects.size(); i++) {
       if (GameObject::all_objects[i]->ID() == this->ID()) {
@@ -44,7 +47,7 @@ void GameObject::deallocate() {
 }
 
 void GameObject::ensureValidity() const {
-   /* blank, we don't have a GameEngine to reference */
+   /* blank, we don't have anything to check */
 }
 
 void GameObject::print() const {
@@ -90,7 +93,7 @@ void GameObject::printAllObjects() {
                    "then see a PLAYER object at the bottom of this list.\n");
             continue;
          } else if (letter == 's') {
-            /* This could probably have been structured bettwe but I was in a
+            /* This could probably have been structured better but I was in a
                rush, sorry! */
             typedef enum { byID, byType } SortType;
             static SortType sortMethod = byID;
@@ -125,6 +128,7 @@ void GameObject::printAllObjects() {
    } // first while true
 }
 
+/* Static function to make it available without a GameObject to reference */
 std::string GameObject::typeToString(ObjectType const t) {
    GameObject temp(t);
    return temp.typeToString();
@@ -153,40 +157,6 @@ std::string GameObject::typeToString() const {
    }
 }
 
-/* Return a vector of all objects with a given type.
-     e.g.
-       auto array = getAllOfType(PLAYER)
-   returns pointers to all Player objects. It's up to the user to cast them to
-   Player*.
-*/
-std::vector<GameObject*> GameObject::getAllOfType(ObjectType const t) {
-   std::vector<GameObject*> result;
-   for (GameObject* object : GameObject::all_objects) {
-      if (object->type() == t) result.push_back(object);
-   }
-   return result;
-}
-
-/* Return a vector of all objects that belong to the given array of types..
-     e.g.
-       auto array = getAllOfTypes({PLAYER, SQUAD, ENGINE})
-   returns pointers to all Player objects, all Squad objects and all Engine
-   objects. It's up to the user to cast them correctly, using the pointer's
-   type() function
-*/
-std::vector<GameObject*> GameObject::getAllOfTypes(std::vector<ObjectType> const& types) {
-   std::vector<GameObject*> result;
-   for (GameObject* object : GameObject::all_objects) {
-      for (ObjectType t : types) {
-         if (object->type() == t) {
-            result.push_back(object);
-            break;
-         }
-      }
-   }
-   return result;
-}
-
 /* Pass enum representing a derived class, and return how many of that type
    currently exist in memory */
 size_t GameObject::numberOfType(ObjectType const t) {
@@ -197,7 +167,7 @@ size_t GameObject::numberOfType(ObjectType const t) {
    return count;
 }
 
-/* Go through every registered object and make sure nothing is invalid */
+/* Go through every registered object and make sure nothing is broken */
 void GameObject::ensureEverythingIsValid() {
    for (GameObject* object : GameObject::all_objects) {
       object->ensureValidity();

@@ -26,3 +26,5 @@ That will :
 ## Acknowledgements
 Eric Tittley, for letting me use/update his quite handy C library [libPF](https://bitbucket.org/eric_tittley/libpf "libPF")
  for reading parameter files.
+
+ You may want to look at his examples (`lib/libpf/test/test1.c`) for a simple walk through the idea beforehand. I'm sorry for throwing it into this quite so whole-heartedly, by the way :P

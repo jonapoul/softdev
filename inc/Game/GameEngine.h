@@ -64,6 +64,10 @@ public:
    Die * die = nullptr;
    GameParameters * parameters = nullptr;
    std::vector<Player *> players;
+
+   /* These three arrays store every possible item/weapon/skilltree. When a new
+      squad/player/whatever is created, it references these three to make sure
+      that it's being built properly. */
    std::vector<Item *> all_valid_items;
    std::vector<Weapon *> all_valid_weapons;
    std::vector<SkillTree *> all_valid_skilltrees;

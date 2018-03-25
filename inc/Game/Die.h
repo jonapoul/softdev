@@ -8,10 +8,11 @@ class GameEngine;
 
 class Die : public GameObject {
 public:
-   Die(int const minValue,
-       int const maxValue,
-       GameEngine * const e);
+   Die(GameEngine * const e);
    ~Die();
+
+   bool init(int const minValue,
+             int const maxValue);
 
    int roll() const;
    int maxRoll() const;

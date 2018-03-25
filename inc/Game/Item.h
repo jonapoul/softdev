@@ -7,6 +7,10 @@
 class GameEngine;
 class StatBoost;
 
+/* This and Weapon should probably have been inherited from the same base class,
+   but I only realised that not long before submission. One more checkbox for
+   future development! */
+
 class Item : public GameObject {
 public:
    Item(GameObject * const o,
@@ -22,7 +26,7 @@ public:
    virtual void print() const;
 
 private:
-   GameObject * owner; /* either Squad or Player or GameEngine */
+   GameObject * owner; /* Squad or SpecialisedSquadMember or GameEngine */
    GameEngine * engine;
    StatBoost * boost;
    std::string name;

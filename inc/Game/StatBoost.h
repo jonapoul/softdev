@@ -10,12 +10,11 @@ class StatBoost : public GameObject {
 public:
    StatBoost(GameEngine * const e,
              GameObject * const o);
-   StatBoost(StatBoost const * const other);
    ~StatBoost();
 
    bool init(std::string const& stat,
              std::string const& modifier);
-   
+
    void copy(StatBoost const * const other);
    void add(StatBoost const * const other);
    bool add(std::string const& stat,

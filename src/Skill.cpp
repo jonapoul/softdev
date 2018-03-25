@@ -12,7 +12,7 @@ Skill::Skill(GameEngine * const e,
              SkillTree * const st,
              Skill * const parent,
              int const i,
-             bool const isHeadNode) 
+             bool const isHeadNode)
       : GameObject(SKILL), engine(e), tree(st), index(i) {
    if (isHeadNode) {
       /* This is only the case if this is the head node of the tree */
@@ -28,35 +28,25 @@ Skill::Skill(GameEngine * const e,
    this->child1 = nullptr;
 
    this->boost = new StatBoost(engine, this);
-   // if (st->name == "Demoman") {
-   //    boost->print();
-   // }
    if (isHeadNode) {
       /* This is head node, so take both stat boosts */
       boost->add(tree->boost(0));
       boost->add(tree->boost(1));
-      // if (st->name == "Demoman") {
-      //    tree->boost(0)->print();
-      //    tree->boost(1)->print();
-      //    boost->print();
-      //    PRINT(this->ID());
-      //    // exit(1);
-      // }
    } else {
       /* one of two possible stat boosts */
-      boost->add(tree->boost(index));
+      boost->add( tree->boost(index) );
    }
 }
 
 Skill::~Skill() {
    if (child0 != nullptr) child0->deallocate();
    if (child1 != nullptr) child1->deallocate();
-   boost->deallocate();
+   if (boost  != nullptr) boost->deallocate();
 }
 
 void Skill::activate() {
    if (this->depth <= engine->parameters->MaxSkillTreeDepth) {
-      /* Flag this skill as active and create two children below this one. */
+      /* Flag this skill as active and create two new children below this one */
       this->hasBeenActivated = true;
       this->child0 = new Skill(engine, tree, this, 0);
       this->child1 = new Skill(engine, tree, this, 1);

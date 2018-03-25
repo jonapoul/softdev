@@ -47,9 +47,11 @@ TestSuite::TestSuite(GameEngine * e) {
    };
 }
 
+/* Take inputs from the user and pick the correct function using InputOptions.
+   This acts as a "main menu" to the tests */
 void TestSuite::run() {
    /* Print all help options on startup */
-   options[0].func();
+   help();
 
    /* Ask for inputs */
    while (true) {
@@ -58,10 +60,12 @@ void TestSuite::run() {
       std::cin >> key;
       if (tolower(key[0]) == 'q') return;
 
+      /* match the inputted character to a function */
       InputOption opt = TestSuite::matchInputOption(key[0]);
       if (opt.desc == "ERROR") {
          printf("Invalid input\n\n");
       } else {
+         /* Run the test function */
          opt.func();
          printf("\n");
       }
@@ -74,10 +78,11 @@ InputOption TestSuite::matchInputOption(char const key) {
          return opt;
       }
    }
-   /* if no match, return a sort-of error */
+   /* if no match, return a pseudo-error */
    return errorOption;
 }
 
+/* print out all test functions and the required key inputs */
 void help() {
    printf("All test options:\n");
    for (auto o : options) {
@@ -85,10 +90,21 @@ void help() {
    }
 }
 
+/* Print a great big list of every object in memory that was derived from
+   GameObject. That's every class in the 'inc/Game/' directory. You can also
+   use this to print detailed into about every one of these objects and see
+   where various pointers lead to, which objects 'own' others, etc. It's
+   surprisingly useful for debugging the control flow. There's almost certainly
+   more efficient ways of implementing the same kind of system though */
 void printAllObjects() {
    GameObject::printAllObjects();
 }
 
+/* Create a new squad object via std::cin input and match it to a Player of the
+   user's choice. I've skipped the process of initialising SkillTrees for the
+   sake of this test function, but you can follow the templates in
+   'data/skilltrees' and 'data/squad' to see how to add your own skill trees to
+   the game and read them in via libPF */
 void createSquad() {
    /* This is the player who gets the new squad attached */
    Player * player = choosePlayer();
@@ -140,7 +156,8 @@ void createSquad() {
          squad->deallocate();
          continue;
       } else if (std::stoi(input)*engine->parameters->BaseCost > squad->credits) {
-         printf("Costs too much! You're trying to buy %d credits worth but you have %d credits\n\n",
+         printf("Costs too much! You're trying to buy %d credits worth but you "
+                "have %d credits\n\n",
                 std::stoi(input)*engine->parameters->BaseCost, squad->credits);
          squad->deallocate();
          continue;
@@ -164,7 +181,7 @@ void deleteSquad() {
    /* Choose a player to delete a squad from */
    Player * player = choosePlayer();
    if (player == nullptr) return;
-   if (player->squads.size() == 0) {
+   if (player->numSquads() == 0) {
       printf("That player doesn't have any squads!\n");
       return;
    }
@@ -184,7 +201,7 @@ void deleteSquad() {
          continue;
       }
       size_t id = std::stoi(input);
-      for (size_t i = 0; i < player->squads.size(); i++) {
+      for (size_t i = 0; i < player->numSquads(); i++) {
          if (id == player->squads[i]->ID()) {
             player->squads[i]->deallocate();
             player->squads.erase(player->squads.begin() + i);
@@ -217,7 +234,7 @@ void deletePlayer() {
    printf("Existing players:\n");
    for (Player * player : engine->players) {
       printf("    ID = %lu, nSquads = %lu, Username = '%s'\n",
-             player->ID(), player->squads.size(), player->username.c_str());
+             player->ID(), player->numSquads(), player->username.c_str());
    }
    while (true) {
       printf("Enter the ID of the player you want to delete (q to go back):\n");
@@ -267,7 +284,7 @@ Player * choosePlayer() {
    printf("Existing players:\n");
    for (Player * p : engine->players) {
       printf("    ID = %lu, nSquads = %lu, Username = '%s'\n",
-             p->ID(), p->squads.size(), p->username.c_str());
+             p->ID(), p->numSquads(), p->username.c_str());
    }
    while (true) {
       printf("Enter the ID of a player (q to go back):\n");

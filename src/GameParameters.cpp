@@ -9,10 +9,12 @@ extern "C" {
 #include "PF.h"
 }
 
-GameParameters::GameParameters(GameEngine * const e,
-                               char const * const Filename,
-                               bool * const paramFileIsValid)
+GameParameters::GameParameters(GameEngine * const e)
       : GameObject(GAMEPARAMETERS), engine(e) {
+   /* blank */
+}
+
+bool GameParameters::init(char const * const Filename) {
 
    /* Defaults */
    this->MinRoll              =   0;
@@ -92,16 +94,17 @@ GameParameters::GameParameters(GameEngine * const e,
    ParamEntries[iMaxHierophantWeapons].Pointer = &(this->MaxHierophantWeapons);
 
    /* Open Parameters file for reading */
+   bool isValid = true;
    FILE * ParamFile;
    if ( (ParamFile = fopen(Filename, "r")) == NULL) {
       std::cerr << "ERROR: failed to load file " << ParamFile << std::endl;
-      *paramFileIsValid = false;
+      isValid = false;
    }
 
    /* Read the Parameters into the specified member pointers */
    if (PF_ReadParameterFile(ParamFile, ParamEntries, nGameParameters) != EXIT_SUCCESS) {
       std::cerr << "ERROR: PF_ReadParameterFile failed" << std::endl;
-      *paramFileIsValid = false;
+      isValid = false;
    }
 
    this->EncryptionKey = std::string(EncryptionKeyTemp);
@@ -109,6 +112,8 @@ GameParameters::GameParameters(GameEngine * const e,
    /* Clean up */
    delete[] ParamEntries;
    fclose(ParamFile);
+
+   return isValid;
 }
 
 GameParameters::~GameParameters() {

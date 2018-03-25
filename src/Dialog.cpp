@@ -5,6 +5,13 @@
 #include <QtWidgets>
 #include "UI/Dialog.h"
 
+/*
+
+   This has been pretty much abandoned, it was taking ages and ages to learn Qt
+   with any competence, and I had other project work to do.
+
+*/
+
 Dialog::Dialog() {
    createMenu();
    createHorizontalGroupBox();

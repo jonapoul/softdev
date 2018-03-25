@@ -11,6 +11,16 @@
 #include "Game/GameEngine.h"
 #include "Global.h"
 
+/*
+
+   This has been pretty much abandoned, it was taking ages and ages to learn Qt
+   with any competence, and I had other project work to do.
+
+   This was the most fleshed-out screen I had made though, which probably says
+   a lot.
+
+*/
+
 GameWindow::GameWindow() {
    /* Build and display the title screen UI */
    createActions();
@@ -246,7 +256,7 @@ void GameWindow::createMenus() {
    this->FormatMenu->addSeparator()->setText(tr("Alignment"));
    this->FormatMenu->addAction(LeftAlignAction);
    this->FormatMenu->addAction(RightAlignAction);
-   
+
    this->HelpMenu = menuBar()->addMenu(tr("&Help"));
    this->HelpMenu->addAction(AboutAction);
    this->HelpMenu->addAction(AboutQtAction);

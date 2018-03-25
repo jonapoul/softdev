@@ -8,6 +8,13 @@
 #include "UI/GameWindow.h"
 #include "Global.h"
 
+/*
+
+   This has been pretty much abandoned, it was taking ages and ages to learn Qt
+   with any competence, and I had other project work to do.
+
+*/
+
 TitleScreen::TitleScreen(GameWindow * p = Q_NULLPTR)
       : parent(p) { }
 
@@ -23,7 +30,7 @@ void TitleScreen::load() {
    float const factor_w = (float)pixmap.size().width()  / (float)logoBox->size().width();
    float const factor_h = (float)pixmap.size().height() / (float)logoBox->size().height();
    float const factor = MIN(factor_w, factor_h) * 1.6; /* 1.6 = fudge factor */
-   int const w = (int)((float)pixmap.size().width()  / factor); 
+   int const w = (int)((float)pixmap.size().width()  / factor);
    int const h = (int)((float)pixmap.size().height() / factor);
    logoLabel->setScaledContents(true);
    logoLabel->setFixedSize( QSize(w, h) );

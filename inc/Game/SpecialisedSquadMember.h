@@ -19,12 +19,9 @@ public:
    SpecialisedSquadMember(Squad * const s);
    ~SpecialisedSquadMember();
 
-   void initSkills(char ** skillsStr,
-                   size_t const nSkills);
-   void initItems(char ** itemsStr,
-                  size_t const nItems);
-   void initWeapons(char ** weaponsStr,
-                    size_t const nWeapons);
+   void initSkills (char ** skillsStr,  size_t const nSkills);
+   void initItems  (char ** itemsStr,   size_t const nItems);
+   void initWeapons(char ** weaponsStr, size_t const nWeapons);
    void updateStats();
 
    float movement() const override;
@@ -35,8 +32,10 @@ public:
    int health() const override;
    int cost() const override;
 
+   /* these two are implemented by Captain and Hierophant */
    virtual void setSkillTree(char const * const spec) = 0;
    virtual int stringToSpecialism(char const * const str) const = 0;
+
    virtual void ensureValidity() const;
    virtual void print() const;
 

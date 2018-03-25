@@ -51,6 +51,7 @@ GameEngine::~GameEngine() {
 }
 
 void GameEngine::init() {
+   /* Read all the parameter files to get the initial state of things */
    initGameParameters("data/parameters.input");
    initDie();
    initItems("data/items.input");
@@ -71,7 +72,7 @@ std::vector<SkillTree *> GameEngine::allSkillTrees() const {
    return this->all_valid_skilltrees;
 }
 
-
+/* Post message then exit the game */
 void GameEngine::criticalMessage(char const * const message) const {
 #ifdef ENABLE_QT_UI
    if (window) {
@@ -86,6 +87,8 @@ void GameEngine::criticalMessage(char const * const message) const {
 #endif
 }
 
+/* Post message to let you know that something's probably broken, but it's not
+   that bad just yet. */
 void GameEngine::warningMessage(char const * const message) const {
 #ifdef ENABLE_QT_UI
    if (window) {
@@ -98,6 +101,7 @@ void GameEngine::warningMessage(char const * const message) const {
 #endif
 }
 
+/* Anything less important, e.g. You've gained 50XP! */
 void GameEngine::informationMessage(char const * const message) const {
 #ifdef ENABLE_QT_UI
    if (window) {
@@ -116,20 +120,22 @@ bool GameEngine::login(Player const * const player,
 
    /* Something like this, but its not really important for the sake of a
       prototype */
-   // bool passwordIsValid = sendEncryptedPasswordToServer(encrypted);
-   // if (passwordIsValid) {
-   //    player->loginStatus = true;
-   //    return true;
-   // } else {
-   //    return false;
-   // }
+#if 0
+   bool passwordIsValid = sendEncryptedPasswordToServer(encrypted);
+   if (passwordIsValid) {
+      player->loginStatus = true;
+      return true;
+   } else {
+      return false;
+   }
+#endif
 
    return true;
 }
 
 void GameEngine::initGameParameters(char const * const filename) {
-   bool isValid = true;
-   this->parameters = new GameParameters(this, filename, &isValid);
+   this->parameters = new GameParameters(this);
+   bool const isValid = parameters->init(filename);
    if (!isValid) {
       this->parameters->deallocate();
       char criticalbuf[MAX_MESSAGE_LENGTH];
@@ -141,9 +147,11 @@ void GameEngine::initGameParameters(char const * const filename) {
 }
 
 void GameEngine::initDie() {
-   this->die = new Die(parameters->MinRoll, parameters->MaxRoll, this);
+   this->die = new Die(this);
+   die->init(parameters->MinRoll, parameters->MaxRoll);
 }
 
+/* Read all items from data/items.input */
 void GameEngine::initItems(char const * const filename) {
    char ** ItemStrings    = nullptr;
    size_t  NumItemStrings = 0;
@@ -202,6 +210,7 @@ void GameEngine::initItems(char const * const filename) {
    PF_FreeStringArray(ItemStrings, NumItemStrings);
 }
 
+/* Read all weapons from data/weapons.input */
 void GameEngine::initWeapons(char const * const filename) {
    char ** WeaponStrings    = nullptr;
    size_t  NumWeaponStrings = 0;

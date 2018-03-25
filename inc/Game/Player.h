@@ -9,17 +9,18 @@
 class Squad;
 class GameEngine;
 
-enum {
-   iUsername,
-   iPassword,
-   iSquadFiles,
-   nPlayerParameters
-};
-
 class Player : public GameObject {
 public:
    Player(GameEngine * const e);
    ~Player();
+
+   /* Used for parameter reading in init() */
+   enum {
+      iUsername,
+      iPassword,
+      iSquadFiles,
+      nPlayerParameters
+   };
 
    bool init(std::string const& file);
 

@@ -12,7 +12,7 @@ Weapon::Weapon(GameObject * const o,
       : GameObject(WEAPON), owner(o), engine(e), boost(nullptr), name("") { }
 
 Weapon::~Weapon() {
-   boost->deallocate();
+   if (boost != nullptr) boost->deallocate();
 }
 
 /* Expecting a single word string to represent the name of the weapon.
@@ -25,7 +25,8 @@ bool Weapon::init(char const * const weaponString) {
    }
    for (Weapon * w : engine->allWeapons()) {
       if (w->name == this->name) {
-         this->boost = new StatBoost(w->boost);
+         this->boost = new StatBoost(engine, this);
+         boost->copy(w->boost);
          return true;
       }
    }

@@ -1,8 +1,11 @@
-AllWeapons 7
+AllWeapons 8
  SniperRifle +4 Shooting
  MachineGun  +3 Shooting
  Revolver    +2 Shooting
  Crossbow    +1 Shooting
- Battleaxe   +3 Strength
- Sword       +2 Strength
+ Battleaxe   +4 Strength
+ Sword       +3 Strength
+ BoneClub    +2 Strength
  FryingPan   +1 Strength
+
+# SInce no setting was specified, I went for a nice variety of timeframes

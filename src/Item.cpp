@@ -12,12 +12,12 @@ Item::Item(GameObject * const o,
       : GameObject(ITEM), owner(o), engine(e), boost(nullptr), name("") { }
 
 Item::~Item() {
-   boost->deallocate();
+   if (boost != nullptr) boost->deallocate();
 }
 
 /* Expecting a single word string to represent the name of the item.
    Then we go through all the preinitialised items in the GameEngine array of
-   available items and check whether this is in that array. */
+   available items and check whether we have a match. */
 bool Item::init(char const * const itemString) {
    this->name = std::string(itemString);
    if (Global::wordCount(itemString) != 1) {
@@ -25,7 +25,8 @@ bool Item::init(char const * const itemString) {
    }
    for (Item * item : engine->allItems()) {
       if (item->name == this->name) {
-         this->boost = new StatBoost(item->boost);
+         this->boost = new StatBoost(engine, this);
+         boost->copy(item->boost);
          return true;
       }
    }

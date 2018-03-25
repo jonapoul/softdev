@@ -24,14 +24,12 @@ enum {
    iCaptainSkills,
    iCaptainItems,
    iCaptainWeapons,
-   iCaptainStatBoosts,
 
    iHierophantExperience,
    iHierophantSpecialism,
    iHierophantSkills,
    iHierophantItems,
    iHierophantWeapons,
-   iHierophantStatBoosts,
 
    iNumNormalSquadMembers,
    iSquadWeapons,
