@@ -17,4 +17,5 @@ fi
 
 qmake
 make -f Qt_Makefile
-rm Qt_Makefile
+rm -f Qt_Makefile
+rm -rf generated
