@@ -1,5 +1,8 @@
 # Software Development 2018
 
+## Requirements
+You'll need `gcc` with a version of at least 5.0, because the use of `std::experimental::filesystem` doesn't seem to be part of the system include path before then. I have no idea about other compilers (clang, MSVC, etc.).
+
 ## Installation
 First decide if you want to build using Qt. Barely any of the UI has been built beyond the title screen, but the option is there in `config.h`.
 
