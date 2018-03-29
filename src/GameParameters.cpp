@@ -124,6 +124,7 @@ void GameParameters::ensureValidity() const {
    ENSURE(type() == GAMEPARAMETERS, engine);
    ENSURE(MinRoll < MaxRoll, engine);
    ENSURE(EncryptionKey.length() > 0, engine);
+   GameObject::ensureValidity();
 }
 
 void GameParameters::print() const {

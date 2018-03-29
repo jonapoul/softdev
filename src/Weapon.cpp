@@ -70,6 +70,7 @@ void Weapon::setOwner(GameObject * const object) {
 void Weapon::ensureValidity() const {
    ENSURE(type() == WEAPON, engine);
    ENSURE(name.length() > 0, engine);
+   GameObject::ensureValidity();
 }
 
 void Weapon::print() const {

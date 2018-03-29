@@ -70,6 +70,7 @@ void Item::setOwner(GameObject * const object) {
 void Item::ensureValidity() const {
    ENSURE(type() == ITEM,    engine);
    ENSURE(name.length() > 0, engine);
+   GameObject::ensureValidity();
 }
 
 void Item::print() const {

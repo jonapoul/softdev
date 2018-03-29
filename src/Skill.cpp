@@ -83,6 +83,7 @@ void Skill::ensureValidity() const {
    ENSURE(boost->isBlank() == false, engine);
    int const MaxSkillTreeDepth = engine->parameters->MaxSkillTreeDepth;
    ENSURE(depth <= MaxSkillTreeDepth, engine);
+   GameObject::ensureValidity();
 }
 
 void Skill::print() const {

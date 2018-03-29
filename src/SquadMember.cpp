@@ -44,7 +44,6 @@ int SquadMember::cost() const {
 }
 
 void SquadMember::ensureValidity() const {
-   ENSURE(type() == SQUADMEMBER, engine);
    ENSURE(player != nullptr,     engine);
    ENSURE(squad != nullptr,      engine);
    ENSURE(movement() > 0.0,      engine);
@@ -54,6 +53,7 @@ void SquadMember::ensureValidity() const {
    ENSURE(armour() >= 0,         engine);
    ENSURE(morale() >= 0,         engine);
    ENSURE(cost() >= 0,           engine);
+   GameObject::ensureValidity();
 }
 
 void SquadMember::print() const {

@@ -20,6 +20,7 @@ Hierophant::~Hierophant() {
 void Hierophant::ensureValidity() const {
    ENSURE(type() == HIEROPHANT, engine);
    ENSURE(specialism != NoSpecialism, engine);
+   SpecialisedSquadMember::ensureValidity();
 }
 
 int Hierophant::stringToSpecialism(char const * const str) const {

@@ -242,6 +242,7 @@ void SkillTree::updateTotalBoost() {
 void SkillTree::ensureValidity() const {
    ENSURE(type() == SKILLTREE,    engine);
    ENSURE(treeType != NoTreeType, engine);
+   GameObject::ensureValidity();
 }
 
 void SkillTree::print() const {

@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 
-#define ENSURE(statement,engine) GameObject::ensure(statement,#statement,__FUNCTION__,engine)
+#define ENSURE(statement,engine) GameObject::ensure(statement,#statement,__FILE__,__LINE__,engine)
 
 class GameEngine;
 
@@ -56,6 +56,7 @@ public:
    static void ensure(bool const statement,
                       char const * const string,
                       char const * const function,
+                      int const line,
                       GameEngine const * const engine);
 
 private:

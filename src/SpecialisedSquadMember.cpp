@@ -127,10 +127,10 @@ int SpecialisedSquadMember::cost() const {
 }
 
 void SpecialisedSquadMember::ensureValidity() const {
-   ENSURE(type() == SPECIALISEDSQUADMEMBER, engine);
    ENSURE(experience >= 0, engine);
    ENSURE(skillTree != nullptr, engine);
    /* something with skills? */
+   SquadMember::ensureValidity();
 }
 
 void SpecialisedSquadMember::print() const {

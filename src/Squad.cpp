@@ -277,6 +277,7 @@ void Squad::initWeapons(char ** weaponsStr,
 void Squad::ensureValidity() const {
    ENSURE(type() == SQUAD, engine);
    ENSURE(credits >= 0,    engine);
+   GameObject::ensureValidity();
 }
 
 void Squad::print() const {

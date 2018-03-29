@@ -316,6 +316,7 @@ void GameEngine::initPlayers(char const * const directory) {
 void GameEngine::ensureValidity() const {
    ENSURE(type() == GAMEENGINE, this);
    ENSURE(GameObject::numberOfType(GAMEENGINE) == 1, this);
+   GameObject::ensureValidity();
 }
 
 void GameEngine::print() const {

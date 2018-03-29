@@ -45,6 +45,7 @@ int Die::maxRoll() const {
 void Die::ensureValidity() const {
    ENSURE(type() == DIE, engine);
    ENSURE(minValue < maxValue, engine);
+   GameObject::ensureValidity();
 }
 
 void Die::print() const {

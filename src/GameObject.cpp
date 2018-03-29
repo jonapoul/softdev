@@ -180,13 +180,15 @@ void GameObject::ensureEverythingIsValid() {
 void GameObject::ensure(bool const statement,
                        char const * const statementString,
                        char const * const function,
+                       int const line,
                        GameEngine const * const engine) {
    if (!statement) {
       char warningbuf[MAX_MESSAGE_LENGTH];
       snprintf(warningbuf, MAX_MESSAGE_LENGTH,
                "FAILED CHECK:\n"
                "    Statement: '%s'\n"
-               "    Location:  '%s'",
+               "    File:      '%s'\n"
+               "    Line:       %d\n",
                statementString, function);
       engine->warningMessage(warningbuf);
    }

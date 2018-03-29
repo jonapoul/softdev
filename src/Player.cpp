@@ -141,6 +141,7 @@ void Player::ensureValidity() const {
    ENSURE(username.length() > 0, engine);
    ENSURE(password.length() > 0, engine);
    // ENSURE(loginStatus == true,   engine);
+   GameObject::ensureValidity();
 }
 
 void Player::print() const {

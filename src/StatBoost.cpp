@@ -101,6 +101,7 @@ void StatBoost::ensureValidity() const {
    ENSURE(addMorale >= 0,      engine);
    ENSURE(addHealth >= 0,      engine);
    ENSURE(isBlank() != true,   engine);
+   GameObject::ensureValidity();
 }
 
 void StatBoost::print() const {
