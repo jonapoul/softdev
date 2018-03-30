@@ -118,7 +118,7 @@ void createSquad() {
       squad->credits = engine->parameters->StartingCredits;
 
       printf("Should the squad be publicly visible? (y/n) (q to back out):\n");
-      input = "";
+      std::string input = "";
       std::cin >> input;
       if (tolower(input[0]) == 'q') {
          squad->deallocate();
