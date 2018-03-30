@@ -37,6 +37,13 @@ public:
    static std::vector<GameObject*> all_objects;
 
    GameObject(ObjectType const t);
+
+   /**** these are not used, so i'm removing the risk of implicit calling ****/
+   GameObject() = delete;
+   GameObject(GameObject const& other) = delete;
+   GameObject& operator=(GameObject const& other) = delete;
+   /**************************************************************************/
+
    virtual ~GameObject();
 
    size_t ID() const;

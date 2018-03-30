@@ -189,7 +189,7 @@ void GameObject::ensure(bool const statement,
                "    Statement: '%s'\n"
                "    File:      '%s'\n"
                "    Line:       %d\n",
-               statementString, function);
+               statementString, function, line);
       engine->warningMessage(warningbuf);
    }
 }
