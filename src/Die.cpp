@@ -49,6 +49,7 @@ void Die::ensureValidity() const {
 }
 
 void Die::print() const {
+   GameObject::print();
    printf("Die:\n");
    printf("   engine   = %p, ID = %lu\n", engine, engine->ID());
    printf("   minValue = %d\n", minValue);

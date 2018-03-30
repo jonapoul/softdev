@@ -115,23 +115,7 @@ void createSquad() {
    while (true) {
       squad = new Squad(engine, player);
       squad->filename = "terminal input";
-
-      printf("Enter starting credits (q to back out):\n");
-      std::string input;
-      std::cin >> input;
-      if (tolower(input[0]) == 'q') {
-         squad->deallocate();
-         return;
-      } else if (std::all_of(input.begin(), input.end(), ::isdigit) == false) {
-         printf("Needs to be an integer!\n\n");
-         squad->deallocate();
-         continue;
-      } else if (std::stoi(input) < 0) {
-         printf("Needs to be positive!\n\n");
-         squad->deallocate();
-         continue;
-      }
-      squad->credits = std::stoi(input);
+      squad->credits = engine->parameters->StartingCredits;
 
       printf("Should the squad be publicly visible? (y/n) (q to back out):\n");
       input = "";
